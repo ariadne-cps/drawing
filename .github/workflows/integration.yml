@@ -1,0 +1,22 @@
+name: Integration smoke
+
+on:
+  push:
+    branches: [main, bootstrap-from-kernel]
+  pull_request:
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build g++ libgmp-dev libmpfr-dev pkg-config
+      - name: Configure
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DBUILD_PYTHON_BINDINGS=OFF -DWARNINGS_AS_ERRORS=ON
+      - name: Build drawing and tests
+        run: cmake --build build --parallel 2 --target ariadne-drawing tests
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
