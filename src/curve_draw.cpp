@@ -34,15 +34,15 @@ namespace Ariadne {
 Void draw(CanvasInterface& c, Projection2d const& p, InterpolatedCurve const& curve)
 {
     DimensionType xi=p.x_coordinate(); DimensionType yi=p.y_coordinate();
-    ConstIterator iter=curve.begin();
+    if(curve.begin()==curve.end()) { return; }
+    auto iter=curve.begin();
     auto pt=join(iter->second,iter->first);
     c.move_to(numeric_cast<double>(pt[xi]),numeric_cast<double>(pt[yi]));
-    while(iter!=curve.end()) {
-        ++iter;
+    while(++iter!=curve.end()) {
         pt=join(iter->second,iter->first);
         c.line_to(numeric_cast<double>(pt[xi]),numeric_cast<double>(pt[yi]));
     }
-    if( decide(this->begin()->second==(this->end())->second) ) {
+    if( decide(curve.begin()->second==std::prev(curve.end())->second) ) {
         c.fill();
     } else {
         c.stroke();
