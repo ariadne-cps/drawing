@@ -4,3 +4,6 @@
 [submodule "ss/kernel"]
 	path = ss/kernel
 	url = https://github.com/ariadne-cps/kernel
+[submodule "ss/rendering"]
+	path = ss/rendering
+	url = https://github.com/ariadne-cps/rendering
