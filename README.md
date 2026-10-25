@@ -53,6 +53,22 @@ When a compatible Python development environment is available, the standalone bu
 
 The drawing adapters live in this repository; Kernel and Rendering remain independent dependencies. CI verifies installed-library consumption through a separately configured C++ tutorial.
 
+## Windows installed Python tutorial
+
+On Windows, Python 3.8 and later require explicit DLL search directories for
+native extension modules. The Drawing shared libraries are installed under
+`bin`, separate from the `pyariadne` extension in `Lib/site-packages`.
+The installed Python tutorial can be run with the supplied launcher, which
+registers the installed Ariadne DLL directory and the vcpkg runtime directory
+before importing the module:
+
+```powershell
+python python/tutorials/run_installed_tutorial.py --install-prefix .\install --dependency-bin C:\vcpkg\installed\x64-windows-release\bin
+```
+
+The launcher verifies that the imported module comes from the install
+prefix, not the CMake build tree. Unix CI invokes the tutorial directly.
+
 ## Contribution guidelines
 
 Please contact the Ariadne maintainers for contributions.

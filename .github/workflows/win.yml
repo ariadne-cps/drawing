@@ -94,10 +94,7 @@ jobs:
       shell: pwsh
       working-directory: ${{ github.workspace }}/python/tutorials
       run: |
-        $env:PYTHONPATH = "${{ runner.workspace }}\install\Lib\site-packages"
-        $env:PATH = "${{ runner.workspace }}\install\bin;C:\vcpkg\installed\x64-windows-release\bin;$env:PATH"
-        python -c "import os, pathlib, pyariadne; p=pathlib.Path(pyariadne.__file__).resolve(); root=pathlib.Path(os.environ['PYTHONPATH']).resolve(); assert p.is_relative_to(root), (p, root)"
-        python tutorial_drawing.py
+        python run_installed_tutorial.py --install-prefix "${{ runner.workspace }}\install" --dependency-bin "C:\vcpkg\installed\x64-windows-release\bin"
 
 
     - name: Prepare C++ Drawing Tutorial
