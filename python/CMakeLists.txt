@@ -24,7 +24,10 @@ if(Python3_FOUND)
         endif()
         set(PYTHON_BINDINGS_INSTALL_DIR "${_python_install_dir}"
             CACHE STRING "Install destination for Python targets relative to the prefix")
-        install(TARGETS pyariadne DESTINATION "${PYTHON_BINDINGS_INSTALL_DIR}")
+        # pyariadne-kernel is an INTERFACE target: its objects are already
+        # linked into pyariadne. Include it explicitly in this install experiment.
+        install(TARGETS pyariadne pyariadne-kernel
+            DESTINATION "${PYTHON_BINDINGS_INSTALL_DIR}")
         add_subdirectory(tests)
         add_dependencies(bindings pyariadne)
     endif()

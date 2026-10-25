@@ -94,7 +94,10 @@ jobs:
       shell: pwsh
       working-directory: ${{ github.workspace }}/python/tutorials
       run: |
-        python run_installed_tutorial.py --install-prefix "${{ runner.workspace }}\install" --dependency-bin "C:\vcpkg\installed\x64-windows-release\bin"
+        $env:PYTHONPATH = "${{ runner.workspace }}\install\Lib\site-packages"
+        $env:PATH = "${{ runner.workspace }}\install\bin;C:\vcpkg\installed\x64-windows-release\bin;$env:PATH"
+        python -c "import pyariadne; print(pyariadne.__file__)"
+        python tutorial_drawing.py
 
 
     - name: Prepare C++ Drawing Tutorial
