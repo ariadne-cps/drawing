@@ -15,8 +15,15 @@ if(Python3_FOUND)
     add_subdirectory(bindings)
     if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
         ariadne_finalize_python_module(NAME drawing)
-        set(PYTHON_BINDINGS_INSTALL_DIR "${Python3_SITEARCH}"
-            CACHE STRING "Install destination for Python targets")
+        # Keep the module inside the selected CMake install prefix.
+        # An absolute Python3_SITEARCH would ignore cmake --install --prefix.
+        if(WIN32)
+            set(_python_install_dir "Lib/site-packages")
+        else()
+            set(_python_install_dir "lib/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages")
+        endif()
+        set(PYTHON_BINDINGS_INSTALL_DIR "${_python_install_dir}"
+            CACHE STRING "Install destination for Python targets relative to the prefix")
         install(TARGETS pyariadne DESTINATION "${PYTHON_BINDINGS_INSTALL_DIR}")
         add_subdirectory(tests)
         add_dependencies(bindings pyariadne)
