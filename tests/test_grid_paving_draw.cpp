@@ -25,8 +25,11 @@ Void test_grid_paving_draw() {
     ARIADNE_TEST_EQUALS(canvas.boundaries,2u);
 
     ExactBoxSetType box(ExactBoxType{{0.125_x,0.12500762939453125_x},{0.125_x,0.12500762939453125_x}});
-    draw(canvas,projection,static_cast<EffectiveEuclideanCompactSetInterface const&>(box));
-    ARIADNE_TEST_EQUALS(canvas.boundaries,3u);
+    // Compact sets are first outer-approximated on a grid: the chosen depth
+    // subdivides this narrow box into four cells, each with its own boundary.
+    GridPavingCanvas compact_canvas;
+    draw(compact_canvas,projection,static_cast<EffectiveEuclideanCompactSetInterface const&>(box));
+    ARIADNE_TEST_EQUALS(compact_canvas.boundaries,4u);
 }
 Int main() {
     ARIADNE_TEST_CALL(test_grid_paving_draw());
