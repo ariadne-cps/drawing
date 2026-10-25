@@ -10,6 +10,7 @@
 #include "rendering/figure.hpp"
 #include "drawing/drawer.hpp"
 #include "drawing/box_draw.hpp"
+#include "drawing/geometry_draw.hpp"
 #include "drawing/paving_draw.hpp"
 #include "geometry/box.hpp"
 #include "geometry/curve.hpp"
@@ -85,7 +86,7 @@ class TestFigureDrawing {
         g.write("test_rendering-bx3");
         g.clear();
 
-        plot("test_rendering_set",Projection2d(2,0,1),bbx1,{{orange,s1}});
+        plot("test_rendering_set",Projection2d(2,0,1),bbx1,orange,s1);
 
         InterpolatedCurve cv(0,Point<FloatDP>(2,FloatDP(0.0_x,dp)));
         for(Int i=1; i<=10; ++i) {
