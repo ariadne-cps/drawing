@@ -11,6 +11,7 @@
 #include "drawing/drawer.hpp"
 #include "drawing/drawer_manager.hpp"
 #include "drawing/box_draw.hpp"
+#include "drawing/geometry_draw.hpp"
 
 #include "rendering/figure.hpp"
 #include "geometry/box.hpp"
@@ -81,6 +82,26 @@ Void export_drawing_figure_adapters(pybind11::module& module)
     figure_class.def("draw",
         [](Figure& figure, ApproximateBoxType const& box) -> Figure& {
             draw_to_figure(figure,box); return figure;
+        }, reference_internal);
+    figure_class.def("draw",
+        [](Figure& figure, BoundedConstraintSet const& set) -> Figure& {
+            draw_to_figure(figure,set); return figure;
+        }, reference_internal);
+    figure_class.def("draw",
+        [](Figure& figure, ConstrainedImageSet const& set) -> Figure& {
+            draw_to_figure(figure,set); return figure;
+        }, reference_internal);
+    figure_class.def("draw",
+        [](Figure& figure, ValidatedConstrainedImageSet const& set) -> Figure& {
+            draw_to_figure(figure,set); return figure;
+        }, reference_internal);
+    figure_class.def("draw",
+        [](Figure& figure, ValidatedAffineConstrainedImageSet const& set) -> Figure& {
+            draw_to_figure(figure,set); return figure;
+        }, reference_internal);
+    figure_class.def("draw",
+        [](Figure& figure, InterpolatedCurve const& set) -> Figure& {
+            draw_to_figure(figure,set); return figure;
         }, reference_internal);
 }
 
