@@ -1,0 +1,23 @@
+execute_process(
+    COMMAND "${Python3_EXECUTABLE}" -m pytest --version
+    RESULT_VARIABLE PYTEST_result OUTPUT_QUIET ERROR_QUIET
+)
+if(PYTEST_result EQUAL 0)
+    add_custom_target(test_python_drawing
+        COMMAND "${Python3_EXECUTABLE}" -m pytest "${CMAKE_CURRENT_SOURCE_DIR}/test_drawing.py"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    )
+    add_test(NAME test_python_drawing
+        COMMAND "${Python3_EXECUTABLE}" -m pytest "${CMAKE_CURRENT_SOURCE_DIR}/test_drawing.py"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    )
+    set_property(TEST test_python_drawing PROPERTY
+        ENVIRONMENT "PYTHONPATH=$<TARGET_FILE_DIR:pyariadne>"
+        LABELS "python;drawing")
+    add_dependencies(test_python_drawing pyariadne)
+    add_dependencies(tests pyariadne)
+elseif(PYTHON_ENFORCE_TESTS)
+    message(FATAL_ERROR "pytest is not available for ${Python3_EXECUTABLE}.")
+else()
+    message(WARNING "pytest is not available; Python tests will not be performed.")
+endif()
