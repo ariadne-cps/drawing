@@ -23,6 +23,7 @@
  */
 
 #include "drawing/geometry_draw.hpp"
+#include <iterator>
 #include "geometry/point.hpp"
 #include "algebra/vector.hpp"
 #include "numeric/numeric.hpp"
