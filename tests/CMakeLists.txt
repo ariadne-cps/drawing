@@ -1,15 +1,18 @@
 include(CTest)
-if(NOT TARGET tests)
-    add_custom_target(tests)
-endif()
-if(NOT TARGET tests-cpp)
-    add_custom_target(tests-cpp)
-endif()
-add_dependencies(tests tests-cpp)
-foreach(name drawer drawing_command_line_interface point_draw box_draw paving_draw figure_drawing)
-    add_executable(test_${name} test_${name}.cpp)
-    target_link_libraries(test_${name} PRIVATE ariadne-drawing drawing)
-    add_test(NAME test_${name} COMMAND $<TARGET_FILE:test_${name}>)
-    set_property(TEST test_${name} PROPERTY LABELS drawing)
-    add_dependencies(tests-cpp test_${name})
+
+set(UNIT_TESTS
+    test_drawer
+    test_drawing_command_line_interface
+    test_point_draw
+    test_box_draw
+    test_paving_draw
+    test_figure_drawing
+)
+foreach(TEST ${UNIT_TESTS})
+    add_executable(${TEST} ${TEST}.cpp)
+    target_link_libraries(${TEST} ariadne-drawing drawing)
+    add_test(NAME ${TEST} COMMAND $<TARGET_FILE:${TEST}>)
+    set_property(TEST ${TEST} PROPERTY LABELS "drawing")
 endforeach()
+add_custom_target(tests)
+add_dependencies(tests ${UNIT_TESTS})

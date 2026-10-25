@@ -9,4 +9,7 @@ add_library(DRAWING_SRC OBJECT
     function_set_draw.cpp
     grid_paving_draw.cpp
 )
-target_link_libraries(DRAWING_SRC PRIVATE drawing)
+
+target_include_directories(DRAWING_SRC PRIVATE
+    "${PROJECT_SOURCE_DIR}/include/drawing"
+)
