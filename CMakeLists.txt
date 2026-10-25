@@ -21,7 +21,6 @@ if(EXISTS "${PROJECT_SOURCE_DIR}/.git")
         CHAINS
             "configuration"
             "kernel|configuration"
-            "kernel|rendering|configuration"
             "rendering|configuration"
     )
 endif()
