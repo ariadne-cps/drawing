@@ -22,7 +22,7 @@
  *  along with Ariadne.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "geometry/curve.hpp"
+#include "drawing/geometry_draw.hpp"
 #include "geometry/point.hpp"
 #include "algebra/vector.hpp"
 #include "numeric/numeric.hpp"
@@ -30,17 +30,14 @@
 
 namespace Ariadne {
 
-template<> double numeric_cast(const CheckedAssignable<Approximation<FloatDP>>& a) { return a.get_d(); }
-template<> double numeric_cast(const CheckedAssignable<Approximation<FloatMP>>& a) { return a.get_d(); }
 
-Void
-InterpolatedCurve::draw(CanvasInterface& c, const Projection2d& p) const
+Void draw(CanvasInterface& c, Projection2d const& p, InterpolatedCurve const& curve)
 {
     DimensionType xi=p.x_coordinate(); DimensionType yi=p.y_coordinate();
-    ConstIterator iter=this->begin();
+    ConstIterator iter=curve.begin();
     auto pt=join(iter->second,iter->first);
     c.move_to(numeric_cast<double>(pt[xi]),numeric_cast<double>(pt[yi]));
-    while(iter!=this->end()) {
+    while(iter!=curve.end()) {
         ++iter;
         pt=join(iter->second,iter->first);
         c.line_to(numeric_cast<double>(pt[xi]),numeric_cast<double>(pt[yi]));

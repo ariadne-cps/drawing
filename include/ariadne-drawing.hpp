@@ -5,6 +5,7 @@
 #include "rendering/figure.hpp"
 #include "rendering/rendering_manager.hpp"
 #include "drawing/box_draw.hpp"
+#include "drawing/geometry_draw.hpp"
 #include "drawing/point_draw.hpp"
 #include "drawing/paving_draw.hpp"
 #include "drawing/grid_paving_draw.hpp"

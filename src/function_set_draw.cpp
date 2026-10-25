@@ -22,7 +22,7 @@
  *  along with Ariadne.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "geometry/function_set.hpp"
+#include "drawing/geometry_draw.hpp"
 #include "geometry/box.hpp"
 #include "drawing/drawer_manager.hpp"
 #include "rendering/rendering_interface.hpp"
@@ -30,23 +30,23 @@
 namespace Ariadne {
 
 Void
-BoundedConstraintSet::draw(CanvasInterface& c, const Projection2d& p) const
+draw(CanvasInterface& c, const Projection2d& p, BoundedConstraintSet const& set)
 {
-    return ConstrainedImageSet(*this).draw(c,p);
+    draw(c,p,ConstrainedImageSet(set));
 }
 
 Void
-ConstrainedImageSet::draw(CanvasInterface& cnvs, const Projection2d& proj) const
+draw(CanvasInterface& cnvs, const Projection2d& proj, ConstrainedImageSet const& set)
 {
     // Preserve the exact-box conversion used by geometry/function_set.cpp.
     DoublePrecision precision;
-    ExactBoxType domain=cast_exact_box(ApproximateBoxType(this->_domain,precision));
-    ValidatedConstrainedImageSet(domain,this->_function,this->_constraints).draw(cnvs,proj);
+    ExactBoxType domain=cast_exact_box(ApproximateBoxType(set.domain(),precision));
+    draw(cnvs,proj,ValidatedConstrainedImageSet(domain,set.function(),set.constraints()));
 }
 
 Void
-ValidatedConstrainedImageSet::draw(CanvasInterface& cnvs, const Projection2d& proj) const {
-    DrawerManager::instance().drawer().draw(cnvs,proj,*this);
+draw(CanvasInterface& cnvs, const Projection2d& proj, ValidatedConstrainedImageSet const& set) {
+    DrawerManager::instance().drawer().draw(cnvs,proj,set);
 }
 
 } // namespace Ariadne

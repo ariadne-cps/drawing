@@ -24,6 +24,7 @@
 
 #include "function/functional.hpp"
 #include "drawing/drawer.hpp"
+#include "drawing/geometry_draw.hpp"
 #include "drawing/box_draw.hpp"
 #include "drawing/grid_paving_draw.hpp"
 
@@ -66,7 +67,7 @@ Void box_draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedCo
 Void affine_draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set, Nat splittings_remaining)
 {
     if(splittings_remaining==0) {
-        set.affine_over_approximation().draw(cnvs,proj);
+        Ariadne::draw(cnvs,proj,set.affine_over_approximation());
     } else {
         Pair<ValidatedConstrainedImageSet,ValidatedConstrainedImageSet> split=set.split();
         affine_draw(cnvs,proj,split.first,splittings_remaining-1u);
