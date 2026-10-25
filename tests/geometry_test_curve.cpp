@@ -103,6 +103,12 @@ Void test_curve_overloads_and_drawing() {
     P b({FloatDPApproximation(3,dp),FloatDPApproximation(4,dp)});
     InterpolatedCurve empty;
     ARIADNE_TEST_EQUALS(empty.size(),0u);
+    CurveCanvas empty_canvas;
+    draw(empty_canvas,Projection2d(2,0,1),empty);
+    ARIADNE_TEST_EQUALS(empty_canvas.moves,0u);
+    ARIADNE_TEST_EQUALS(empty_canvas.lines,0u);
+    ARIADNE_TEST_EQUALS(empty_canvas.fills,0u);
+    ARIADNE_TEST_EQUALS(empty_canvas.strokes,0u);
     empty.insert(Dyadic(0),a);
     ARIADNE_TEST_EQUALS(empty.size(),1u);
     InterpolatedCurve parameter(FloatDP(2,dp),a);
@@ -118,10 +124,6 @@ Void test_curve_overloads_and_drawing() {
     ARIADNE_TEST_FAIL(from_raw.insert(FloatDP(2,dp),Vector<FloatDP>({1.0_x},dp)));
     ARIADNE_TEST_ASSERT(decide(from_raw.begin()->second==a));
 
-    CurveCanvas empty_canvas;
-    draw(empty_canvas,Projection2d(2,0,1),empty);
-    ARIADNE_TEST_EQUALS(empty_canvas.moves,0u);
-    ARIADNE_TEST_EQUALS(empty_canvas.lines,0u);
     CurveCanvas single_canvas;
     draw(single_canvas,Projection2d(2,0,1),parameter);
     ARIADNE_TEST_EQUALS(single_canvas.moves,1u);
