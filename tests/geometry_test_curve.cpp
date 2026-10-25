@@ -121,16 +121,16 @@ Void test_curve_overloads_and_drawing() {
 
     CurveCanvas canvas;
     InterpolatedCurve open(a,b);
-    open.__DRAW_REMOVE__(Projection2d(2,0,1));
+    draw(canvas,Projection2d(2,0,1),open);
     ARIADNE_TEST_EQUALS(canvas.lines,1u);
     ARIADNE_TEST_EQUALS(canvas.strokes,1u);
     ARIADNE_TEST_EQUALS(canvas.last_x,3.0);
     ARIADNE_TEST_EQUALS(canvas.last_y,4.0);
     open.insert(Dyadic(2),a);
-    open.__DRAW_REMOVE__(Projection2d(2,0,1));
+    draw(canvas,Projection2d(2,0,1),open);
     ARIADNE_TEST_EQUALS(canvas.fills,1u);
     ARIADNE_TEST_EQUALS(canvas.lines,3u);
-    from_raw.__DRAW_REMOVE__(Projection2d(2,0,1));
+    draw(canvas,Projection2d(2,0,1),from_raw);
     ARIADNE_TEST_EQUALS(canvas.fills,2u);
     std::ostringstream repr;
     open._write(repr);

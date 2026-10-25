@@ -101,7 +101,7 @@ Void test_constraint_sets() {
     ARIADNE_TEST_EQUALS(class_name<ValidatedConstrainedImageSet>(),String("ValidatedConstrainedImageSet"));
     ARIADNE_TEST_EQUALS(class_name<ValidatedAffineConstrainedImageSet>(),String("ValidatedAffineConstrainedImageSet"));
     NullCanvas canvas;
-    bounded.__DRAW_REMOVE__(Projection2d(2u,0u,1u));
+    draw(canvas,Projection2d(2u,0u,1u),bounded);
     std::ostringstream repr;
     repr<<constraint<<bounded<<bounded_list;
     ARIADNE_TEST_ASSERT(repr.str().find("BoundedConstraintSet")!=String::npos);

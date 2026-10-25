@@ -88,7 +88,7 @@ Void test_validated_image_operations() {
     box_set.adjoin_outer_approximation_to(another_outer,0u);
     ARIADNE_TEST_ASSERT(!another_outer.is_empty());
     NullCanvas canvas;
-    set.__DRAW_REMOVE__(Projection2d(2u,0u,1u));
+    draw(canvas,Projection2d(2u,0u,1u),set);
     std::ostringstream repr;
     repr<<set;
     ARIADNE_TEST_ASSERT(repr.str().find("ValidatedConstrainedImageSet")!=String::npos);
