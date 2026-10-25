@@ -10,6 +10,8 @@
 #include "geometry/affine_set.hpp"
 #include "geometry/function_set.hpp"
 #include "geometry/curve.hpp"
+// Figure constructors from mathematical boxes need the Drawing conversion adapter.
+#include "drawing/box_draw.hpp"
 #include "rendering/figure.hpp"
 
 namespace Ariadne {
