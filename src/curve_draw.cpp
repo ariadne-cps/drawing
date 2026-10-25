@@ -23,7 +23,6 @@
  */
 
 #include "drawing/geometry_draw.hpp"
-#include <iterator>
 #include "geometry/point.hpp"
 #include "algebra/vector.hpp"
 #include "numeric/numeric.hpp"
@@ -34,16 +33,20 @@ namespace Ariadne {
 
 Void draw(CanvasInterface& c, Projection2d const& p, InterpolatedCurve const& curve)
 {
-    DimensionType xi=p.x_coordinate(); DimensionType yi=p.y_coordinate();
-    if(curve.begin()==curve.end()) { return; }
+    // InterpolatedCurve::end() denotes the last point (not past-the-end).
+    if(curve.size()==0u) { return; }
+    DimensionType xi=p.x_coordinate();
+    DimensionType yi=p.y_coordinate();
     auto iter=curve.begin();
+    auto const last=curve.end();
     auto pt=join(iter->second,iter->first);
-    c.move_to(numeric_cast<double>(pt[xi]),numeric_cast<double>(pt[yi]));
-    while(++iter!=curve.end()) {
+    c.move_to(pt[xi].get_d(),pt[yi].get_d());
+    while(iter!=last) {
+        ++iter;
         pt=join(iter->second,iter->first);
-        c.line_to(numeric_cast<double>(pt[xi]),numeric_cast<double>(pt[yi]));
+        c.line_to(pt[xi].get_d(),pt[yi].get_d());
     }
-    if( decide(curve.begin()->second==std::prev(curve.end())->second) ) {
+    if(decide(curve.begin()->second==last->second)) {
         c.fill();
     } else {
         c.stroke();

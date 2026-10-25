@@ -17,7 +17,6 @@
 #include "geometry/curve.hpp"
 #include "rendering/null_rendering.hpp"
 
-namespace Ariadne { template<> double numeric_cast<double>(const CheckedAssignable<FloatMPApproximation>&); }
 #include "geometry/point.hpp"
 #include "geometry/box.hpp"
 #include "drawing/geometry_draw.hpp"
@@ -119,6 +118,16 @@ Void test_curve_overloads_and_drawing() {
     ARIADNE_TEST_FAIL(from_raw.insert(FloatDP(2,dp),Vector<FloatDP>({1.0_x},dp)));
     ARIADNE_TEST_ASSERT(decide(from_raw.begin()->second==a));
 
+    CurveCanvas empty_canvas;
+    draw(empty_canvas,Projection2d(2,0,1),empty);
+    ARIADNE_TEST_EQUALS(empty_canvas.moves,0u);
+    ARIADNE_TEST_EQUALS(empty_canvas.lines,0u);
+    CurveCanvas single_canvas;
+    draw(single_canvas,Projection2d(2,0,1),parameter);
+    ARIADNE_TEST_EQUALS(single_canvas.moves,1u);
+    ARIADNE_TEST_EQUALS(single_canvas.lines,0u);
+    ARIADNE_TEST_EQUALS(single_canvas.fills,1u);
+
     CurveCanvas canvas;
     InterpolatedCurve open(a,b);
     draw(canvas,Projection2d(2,0,1),open);
@@ -130,6 +139,8 @@ Void test_curve_overloads_and_drawing() {
     draw(canvas,Projection2d(2,0,1),open);
     ARIADNE_TEST_EQUALS(canvas.fills,1u);
     ARIADNE_TEST_EQUALS(canvas.lines,3u);
+    ARIADNE_TEST_EQUALS(canvas.last_x,1.0);
+    ARIADNE_TEST_EQUALS(canvas.last_y,2.0);
     draw(canvas,Projection2d(2,0,1),from_raw);
     ARIADNE_TEST_EQUALS(canvas.fills,2u);
     std::ostringstream repr;
@@ -141,7 +152,7 @@ Void test_curve_overloads_and_drawing() {
     repr<<interface;
     ARIADNE_TEST_ASSERT(repr.str().find("Curve( function=")!=String::npos);
     Vector<FloatMPApproximation> mp({1.5_x},precision(128));
-    ARIADNE_TEST_EQUALS(numeric_cast<double>(mp[0]),1.5);
+    ARIADNE_TEST_EQUALS(mp[0].get_d(),1.5);
 }
 
 Int main() {

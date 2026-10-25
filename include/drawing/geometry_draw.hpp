@@ -5,6 +5,8 @@
 #ifndef ARIADNE_GEOMETRY_DRAW_HPP
 #define ARIADNE_GEOMETRY_DRAW_HPP
 
+// Load complete numeric and function types before affine_set.hpp.
+#include "function/function.hpp"
 #include "geometry/affine_set.hpp"
 #include "geometry/function_set.hpp"
 #include "geometry/curve.hpp"
