@@ -1,0 +1,2 @@
+add_executable(tutorial_drawing tutorial_drawing.cpp)
+target_link_libraries(tutorial_drawing PRIVATE ariadne-drawing drawing)

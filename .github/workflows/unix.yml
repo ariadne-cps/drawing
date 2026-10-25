@@ -81,6 +81,10 @@ jobs:
         PYTHONPATH: ${{ runner.workspace }}/build/python
       run: python tutorial_drawing.py
 
+    - name: Check C++ Drawing Tutorial
+      working-directory: ${{ runner.workspace }}/build
+      run: ./tutorials/tutorial_drawing/tutorial_drawing
+
     - name: Install Ariadne Drawing
       working-directory: ${{ runner.workspace }}/build
       run: cmake --install . --prefix ${{ runner.workspace }}/install

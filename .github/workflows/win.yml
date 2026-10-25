@@ -93,6 +93,11 @@ jobs:
         $env:PYTHONPATH = "${{ runner.workspace }}\\build\\python"
         python tutorial_drawing.py
 
+    - name: Check C++ Drawing Tutorial
+      working-directory: ${{ runner.workspace }}/build
+      shell: pwsh
+      run: '& "./tutorials/tutorial_drawing/tutorial_drawing.exe"'
+
     - name: Install Ariadne Drawing
       working-directory: ${{ runner.workspace }}/build
       run: cmake --install . --prefix "${{ runner.workspace }}/install"
