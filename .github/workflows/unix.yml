@@ -81,13 +81,21 @@ jobs:
         PYTHONPATH: ${{ runner.workspace }}/build/python
       run: python tutorial_drawing.py
 
-    - name: Check C++ Drawing Tutorial
-      working-directory: ${{ runner.workspace }}/build
-      run: ./tutorials/tutorial_drawing/tutorial_drawing
-
     - name: Install Ariadne Drawing
       working-directory: ${{ runner.workspace }}/build
       run: cmake --install . --prefix ${{ runner.workspace }}/install
+
+    - name: Prepare C++ Drawing Tutorial
+      run: cmake -E copy_directory $GITHUB_WORKSPACE/tutorials/tutorial_drawing ${{ runner.workspace }}/tutorial_drawing
+
+    - name: Check C++ Drawing Tutorial
+      working-directory: ${{ runner.workspace }}/tutorial_drawing
+      run: |
+        cmake -S . -B build -DCMAKE_PREFIX_PATH=${{ runner.workspace }}/install -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache -G Ninja
+        cmake --build build --parallel $($NPROC)
+        export LD_LIBRARY_PATH=${{ runner.workspace }}/install/lib:${LD_LIBRARY_PATH:-}
+        export DYLD_LIBRARY_PATH=${{ runner.workspace }}/install/lib:${DYLD_LIBRARY_PATH:-}
+        ./build/tutorial_drawing
 
 
     - name: Verify Uninstallation

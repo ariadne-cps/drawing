@@ -19,7 +19,7 @@ The umbrella header is `include/ariadne-drawing.hpp`.
 Drawing depends on:
 
 - [ariadne-cps/kernel](https://github.com/ariadne-cps/kernel), as a Git submodule, for mathematical functions and geometric sets.
-- [ariadne-cps/rendering](https://github.com/ariadne-cps/rendering), provided by the kernel dependency tree, for `Figure`, `CanvasInterface` and the rendering backend.
+- [ariadne-cps/rendering](https://github.com/ariadne-cps/rendering), as a direct Git submodule, for `Figure`, `CanvasInterface` and the rendering backend.
 - [ariadne-cps/configuration](https://github.com/ariadne-cps/configuration) for shared build configuration.
 
 The intended graph is **drawing → kernel and rendering**. Kernel and rendering must build without drawing.
@@ -34,13 +34,24 @@ cmake --build build --parallel --target everything
 ctest --test-dir build --output-on-failure
 ```
 
+## C++ tutorial
+
+The C++ tutorial is an external consumer of an installed library. Build and install Drawing first, then configure the tutorial with `CMAKE_PREFIX_PATH` pointing to the install prefix:
+
+```bash
+cmake --install build --prefix "$PWD/install"
+cmake -S tutorials/tutorial_drawing -B build-tutorial -DCMAKE_PREFIX_PATH="$PWD/install"
+cmake --build build-tutorial --parallel
+./build-tutorial/tutorial_drawing
+```
+
 ## Python bindings
 
 When a compatible Python development environment is available, the standalone build is intended to build `pyariadne` from the kernel and rendering bindings plus the drawing adapters. Python bindings are organized as a separate drawing layer, extending the classes registered by Rendering and Kernel. A standalone build produces the combined `pyariadne` module when Python development dependencies are available.
 
 ## Extraction status
 
-**Work in progress.** This branch imports the original drawing module, but its currently pinned kernel commit still builds the drawing implementations into `ariadne-kernel`. The remaining work is to remove the mathematical classes' `Drawable2dInterface` inheritance, move the drawing-only tests and Python registrations, and validate independent linking and installation. Do not merge or release this branch until the Unix, Windows and Coverage checks and standalone consumer tests pass.
+The drawing adapters live in this repository; Kernel and Rendering remain independent dependencies. CI verifies installed-library consumption through a separately configured C++ tutorial.
 
 ## Contribution guidelines
 

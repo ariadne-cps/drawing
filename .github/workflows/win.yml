@@ -93,14 +93,22 @@ jobs:
         $env:PYTHONPATH = "${{ runner.workspace }}\\build\\python"
         python tutorial_drawing.py
 
-    - name: Check C++ Drawing Tutorial
-      working-directory: ${{ runner.workspace }}/build
-      shell: pwsh
-      run: '& "./tutorials/tutorial_drawing/tutorial_drawing.exe"'
-
     - name: Install Ariadne Drawing
       working-directory: ${{ runner.workspace }}/build
       run: cmake --install . --prefix "${{ runner.workspace }}/install"
+
+    - name: Prepare C++ Drawing Tutorial
+      shell: pwsh
+      run: cmake -E copy_directory "$env:GITHUB_WORKSPACE/tutorials/tutorial_drawing" "${{ runner.workspace }}/tutorial_drawing"
+
+    - name: Check C++ Drawing Tutorial
+      shell: pwsh
+      working-directory: ${{ runner.workspace }}/tutorial_drawing
+      run: |
+        cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${{ runner.workspace }}/install" -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-release -DVCPKG_HOST_TRIPLET=x64-windows-release -DX_VCPKG_APPLOCAL_DEPS_SERIALIZED=ON
+        cmake --build build --parallel
+        $env:PATH = "${{ runner.workspace }}\install\bin;C:\vcpkg\installed\x64-windows-release\bin;$env:PATH"
+        & ".\build\tutorial_drawing.exe"
 
 
     - name: Verify Uninstallation

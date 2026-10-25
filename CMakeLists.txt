@@ -62,8 +62,6 @@ setup_standalone_project_tests(
         "${PROJECT_SOURCE_DIR}/src"
 )
 
-add_subdirectory(tutorials)
-
 if(BUILD_PYTHON_BINDINGS)
     add_subdirectory(python)
 endif()
