@@ -60,7 +60,7 @@ jobs:
 
     - name: Configure CMake
       working-directory: ${{ runner.workspace }}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache -G Ninja -DWARNINGS_AS_ERRORS=ON -DBUILD_PYTHON_BINDINGS=OFF
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache -G Ninja -DWARNINGS_AS_ERRORS=ON -DPYTHON_ENFORCE_TESTS=ON
 
     - name: Build
       working-directory: ${{ runner.workspace }}/build
@@ -70,6 +70,16 @@ jobs:
       working-directory: ${{ runner.workspace }}/build
       run: ctest -j $($NPROC) -LE python --output-on-failure
 
+
+    - name: Test Python
+      working-directory: ${{ runner.workspace }}/build
+      run: ctest -L python -V --output-on-failure
+
+    - name: Check Python Drawing Tutorial
+      working-directory: ${{ github.workspace }}/python/tutorials
+      env:
+        PYTHONPATH: ${{ runner.workspace }}/build/python
+      run: python tutorial_drawing.py
 
     - name: Install Ariadne Drawing
       working-directory: ${{ runner.workspace }}/build
@@ -103,7 +113,7 @@ jobs:
 
     - name: Configure CMake
       working-directory: ${{runner.workspace}}/build-tsan
-      run: cmake ${{github.workspace}} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=clang++-16 -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache -DTHREAD_SANITIZER=ON -DBUILD_PYTHON_BINDINGS=OFF -G Ninja -DWARNINGS_AS_ERRORS=ON
+      run: cmake ${{github.workspace}} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=clang++-16 -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache -DTHREAD_SANITIZER=ON -DPYTHON_ENFORCE_TESTS=ON -G Ninja -DWARNINGS_AS_ERRORS=ON
 
     - name: Build
       working-directory: ${{runner.workspace}}/build-tsan

@@ -36,7 +36,7 @@ ctest --test-dir build --output-on-failure
 
 ## Python bindings
 
-When a compatible Python development environment is available, the standalone build is intended to build `pyariadne` from the kernel and rendering bindings plus the drawing adapters. The Python registration migration is not yet complete.
+When a compatible Python development environment is available, the standalone build is intended to build `pyariadne` from the kernel and rendering bindings plus the drawing adapters. Python bindings are organized as a separate drawing layer, extending the classes registered by Rendering and Kernel. A standalone build produces the combined `pyariadne` module when Python development dependencies are available.
 
 ## Extraction status
 

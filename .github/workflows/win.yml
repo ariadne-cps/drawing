@@ -71,7 +71,7 @@ jobs:
 
     - name: Configure CMake
       working-directory: ${{ runner.workspace }}/build
-      run: cmake $env:GITHUB_WORKSPACE -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-release -DVCPKG_HOST_TRIPLET=x64-windows-release -DX_VCPKG_APPLOCAL_DEPS_SERIALIZED=ON -DVCPKG_USE_LEGACY_APPLOCAL=ON -DWARNINGS_AS_ERRORS=ON -DBUILD_PYTHON_BINDINGS=OFF
+      run: cmake $env:GITHUB_WORKSPACE -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-release -DVCPKG_HOST_TRIPLET=x64-windows-release -DX_VCPKG_APPLOCAL_DEPS_SERIALIZED=ON -DVCPKG_USE_LEGACY_APPLOCAL=ON -DWARNINGS_AS_ERRORS=ON -DPYTHON_ENFORCE_TESTS=ON
 
     - name: Build
       working-directory: ${{ runner.workspace }}/build
@@ -81,6 +81,17 @@ jobs:
       working-directory: ${{ runner.workspace }}/build
       run: ctest -LE python -V --timeout 30
 
+
+    - name: Test Python
+      working-directory: ${{ runner.workspace }}/build
+      run: ctest -L python -V --timeout 60
+
+    - name: Check Python Drawing Tutorial
+      shell: pwsh
+      working-directory: ${{ github.workspace }}/python/tutorials
+      run: |
+        $env:PYTHONPATH = "${{ runner.workspace }}\\build\\python"
+        python tutorial_drawing.py
 
     - name: Install Ariadne Drawing
       working-directory: ${{ runner.workspace }}/build
