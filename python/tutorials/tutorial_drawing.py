@@ -156,16 +156,17 @@ def tutorial_rendering():
     drawer_manager.set_drawer(BoxDrawer())
 
     precision = DoublePrecision()
-    pt = FloatDPPoint([FloatDP(exact("0.25"), precision),
-                       FloatDP(exact("0.5"), precision)])
+    pt = FloatDPPoint([FloatDP(exact(0.25), precision),
+                       FloatDP(exact(0.5), precision)])
     points = Figure(view2d, plane)
     points.draw(pt)
     points.write("tutorial_drawing_points")
 
     def curve_point(x, y):
+        # The numeric bindings accept decimal strings here, unlike exact().
         return FloatDPApproximationPoint([
-            FloatDPApproximation(exact(x), precision),
-            FloatDPApproximation(exact(y), precision),
+            FloatDPApproximation(x, precision),
+            FloatDPApproximation(y, precision),
         ])
 
     curve = InterpolatedCurve(curve_point("-1", "-0.5"),
@@ -176,12 +177,12 @@ def tutorial_rendering():
 
     list_set = ExactBoxListSet(2)
     list_set.adjoin(FloatDPExactBox([
-        {exact("-1.5"): exact("-0.5")},
-        {exact("-0.75"): exact("0.25")},
+        {exact(-1.5): exact(-0.5)},
+        {exact(-0.75): exact(0.25)},
     ]))
     list_set.adjoin(FloatDPExactBox([
-        {exact("0.25"): exact("1.25")},
-        {exact("-0.25"): exact(1)},
+        {exact(0.25): exact(1.25)},
+        {exact(-0.25): exact(1)},
     ]))
     collection = Figure(view2d, plane)
     collection.draw(list_set)
