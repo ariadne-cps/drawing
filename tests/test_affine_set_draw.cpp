@@ -3,11 +3,14 @@
  * Mathematical algorithms are exercised by kernel/tests/geometry.
  ***************************************************************************/
 #include <iostream>
+#include <sstream>
 #include "function/function.hpp"
 #include "geometry/box.hpp"
 #include "geometry/affine_set.hpp"
 #include "rendering/geometry2d.hpp"
 #include "rendering/null_rendering.hpp"
+#include "logging/logging.hpp"
+#include "threading/thread_manager.hpp"
 #include "drawing/box_draw.hpp"
 #include "drawing/geometry_draw.hpp"
 #include "macro/testing.hpp"
@@ -228,9 +231,55 @@ Void test_infeasible_affine_set_draw() {
     ARIADNE_TEST_EQUALS(canvas.boundaries,0u)
 }
 
+// The diagnostic rendering path must emit the set, projection and boundary
+// when logging is enabled, without changing the canvas output.
+class ScopedVerboseAffineLogCapture {
+  public:
+    ScopedVerboseAffineLogCapture()
+        : _old_verbosity(Logger::instance().configuration().verbosity()) {
+        // Flush queued logs and make the capture deterministic.
+        ThreadManager::instance().set_logging_immediate_scheduler();
+        Logger::instance().configuration().set_verbosity(2u);
+        _old_buffer=std::clog.rdbuf(_output.rdbuf());
+    }
+
+    ~ScopedVerboseAffineLogCapture() {
+        std::clog.rdbuf(_old_buffer);
+        Logger::instance().configuration().set_verbosity(_old_verbosity);
+        ThreadManager::instance().set_logging_nonblocking_scheduler();
+    }
+
+    std::string str() const { return _output.str(); }
+
+  private:
+    std::ostringstream _output;
+    std::streambuf* _old_buffer=nullptr;
+    unsigned int _old_verbosity;
+};
+
+Void test_verbose_affine_set_draw() {
+    ExactBoxType domain=ExactBoxType::unit_box(2);
+    auto variables=Affine<FloatDPBounds>::variables(2,dp);
+    ValidatedAffineConstrainedImageSet square(domain,{variables[0],variables[1]});
+    AffineBoundaryCanvas canvas;
+    std::string log;
+
+    {
+        ScopedVerboseAffineLogCapture capture;
+        draw(canvas,Projection2d(2u,0u,1u),square);
+        log=capture.str();
+    }
+
+    ARIADNE_TEST_EQUALS(canvas.boundaries,1u)
+    ARIADNE_TEST_ASSERT(log.find("set=")!=std::string::npos)
+    ARIADNE_TEST_ASSERT(log.find("projection=")!=std::string::npos)
+    ARIADNE_TEST_ASSERT(log.find("boundary=")!=std::string::npos)
+}
+
 Int main() {
     TestAffineSetDraw test;
     ARIADNE_TEST_CALL(test.test_draw());
     ARIADNE_TEST_CALL(test_infeasible_affine_set_draw());
+    ARIADNE_TEST_CALL(test_verbose_affine_set_draw());
     return ARIADNE_TEST_FAILURES;
 }
