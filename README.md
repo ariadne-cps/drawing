@@ -3,6 +3,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Unix Status](https://github.com/ariadne-cps/drawing/actions/workflows/unix.yml/badge.svg)](https://github.com/ariadne-cps/drawing/actions/workflows/unix.yml)
 [![Windows Status](https://github.com/ariadne-cps/drawing/actions/workflows/win.yml/badge.svg)](https://github.com/ariadne-cps/drawing/actions/workflows/win.yml)
+[![Sanitizers Status](https://github.com/ariadne-cps/drawing/actions/workflows/sanitizers.yml/badge.svg)](https://github.com/ariadne-cps/drawing/actions/workflows/sanitizers.yml)
 [![Coverage Status](https://github.com/ariadne-cps/drawing/actions/workflows/coverage.yml/badge.svg)](https://github.com/ariadne-cps/drawing/actions/workflows/coverage.yml)
 [![codecov](https://codecov.io/gh/ariadne-cps/drawing/branch/main/graph/badge.svg)](https://codecov.io/gh/ariadne-cps/drawing)
 
@@ -47,24 +48,21 @@ cmake --build build-tutorial --parallel
 
 ## Python bindings
 
-When a compatible Python development environment is available, the standalone build is intended to build `pyariadne` from the kernel and rendering bindings plus the drawing adapters. Python bindings are organized as a separate drawing layer, extending the classes registered by Rendering and Kernel. A standalone build produces the combined `pyariadne` module when Python development dependencies are available. The module is installed under the chosen CMake prefix (`lib/pythonX.Y/site-packages` on Unix and `Lib/site-packages` on Windows). CI runs the Python tutorial **after installation**, with `PYTHONPATH` pointing to that installed copy and a check that the module is not imported from the build tree.
+When a compatible Python development environment is available, the standalone build produces `pyariadne` from the lower Algebra bindings plus the Kernel, Rendering and Drawing bindings.
 
 ## Extraction status
 
-The drawing adapters live in this repository; Kernel and Rendering remain independent dependencies. CI verifies installed-library consumption through a separately configured C++ tutorial.
+The drawing adapters live in this standalone repository; Kernel and Rendering remain independent submodules. CMake checks that they use consistent Configuration and Python Common commits, and Release CI verifies the installed Drawing library through a separately configured C++ tutorial.
 
 ## Windows Python tutorial
 
-Windows CI runs the Python tutorial after installing Drawing, using the
-installed `Lib/site-packages` directory and the installed library
-`bin` directory on `PATH`. This intentionally tests the conventional
-installed import without a custom DLL-loading launcher. The INTERFACE
-target `pyariadne-kernel` contributes its compiled objects to the
-`pyariadne` extension; it does not produce a separate `.pyd` file.
+Windows Release CI installs Drawing, then runs `python/tutorials/tutorial_drawing.py` using the installed `Lib/site-packages` directory on `PYTHONPATH` and the installed `bin` directory on `PATH`. The `pyariadne-kernel` INTERFACE target contributes objects to the combined `pyariadne` extension; it does not produce a separate `.pyd` file.
 
 ## Contribution guidelines
 
-Please contact the Ariadne maintainers for contributions.
+If you would like to contribute to Ariadne Drawing, please contact the developer:
+
+- Luca Geretti <luca.geretti@univr.it>
 
 ## License
 
