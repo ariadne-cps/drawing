@@ -20,6 +20,15 @@ def real_box(bounds):
     ])
 
 
+def completed(name):
+    print(f"Completed: {name}.png", flush=True)
+
+
+def save(figure, name):
+    figure.write(name)
+    completed(name)
+
+
 def make_demo_set():
     u0 = EffectiveScalarMultivariateFunction.coordinate(3, 0)
     u1 = EffectiveScalarMultivariateFunction.coordinate(3, 1)
@@ -53,6 +62,7 @@ def tutorial_rendering():
     manager.set_backend(DefaultRenderingBackend())
     drawer_manager.set_drawer(AffineDrawer(1))
     show("current drawer", drawer_manager.drawer())
+    print("Completed: rendering backend and initial drawer", flush=True)
 
     section("Colours and reusable rendering properties")
 
@@ -65,6 +75,7 @@ def tutorial_rendering():
 
     show("custom colour", custom_blue)
     show("rendering properties", style)
+    print("Completed: rendering properties", flush=True)
 
     section("Layering a two-dimensional figure")
 
@@ -98,7 +109,7 @@ def tutorial_rendering():
     show("line width", figure.get_line_width())
     show("fill opacity", figure.get_fill_opacity())
 
-    figure.write("tutorial_drawing_boxes")
+    save(figure, "tutorial_drawing_boxes")
 
     section("Projecting higher-dimensional sets")
 
@@ -113,13 +124,13 @@ def tutorial_rendering():
     xy.set_fill_colour(cyan)
     xy.set_fill_opacity(0.40)
     xy.draw(set3d)
-    xy.write("tutorial_drawing_projection_xy")
+    save(xy, "tutorial_drawing_projection_xy")
 
     xz = Figure(viewport3d, Projection2d(3, 0, 2))
     xz.set_fill_colour(magenta)
     xz.set_fill_opacity(0.40)
     xz.draw(set3d)
-    xz.write("tutorial_drawing_projection_xz")
+    save(xz, "tutorial_drawing_projection_xz")
 
     show("xy projection", xy.get_2d_projection_map())
     show("xz projection", xz.get_2d_projection_map())
@@ -131,21 +142,21 @@ def tutorial_rendering():
     box_view.set_fill_colour(red)
     box_view.set_fill_opacity(0.25)
     box_view.draw(set3d)
-    box_view.write("tutorial_drawing_drawer_box")
+    save(box_view, "tutorial_drawing_drawer_box")
 
     drawer_manager.set_drawer(AffineDrawer(2))
     affine_view = Figure(viewport3d, Projection2d(3, 0, 1))
     affine_view.set_fill_colour(blue)
     affine_view.set_fill_opacity(0.25)
     affine_view.draw(set3d)
-    affine_view.write("tutorial_drawing_drawer_affine")
+    save(affine_view, "tutorial_drawing_drawer_affine")
 
     drawer_manager.set_drawer(GridDrawer(4))
     grid_view = Figure(viewport3d, Projection2d(3, 0, 1))
     grid_view.set_fill_colour(orange)
     grid_view.set_fill_opacity(0.25)
     grid_view.draw(set3d)
-    grid_view.write("tutorial_drawing_drawer_grid")
+    save(grid_view, "tutorial_drawing_drawer_grid")
 
     drawer_manager.set_drawer(AffineDrawer(0))
 
@@ -160,7 +171,7 @@ def tutorial_rendering():
                        FloatDP(exact(0.5), precision)])
     points = Figure(view2d, plane)
     points.draw(pt)
-    points.write("tutorial_drawing_points")
+    save(points, "tutorial_drawing_points")
 
     def curve_point(x, y):
         # The numeric bindings accept decimal strings here, unlike exact().
@@ -173,7 +184,7 @@ def tutorial_rendering():
                               curve_point("0", "0.75"))
     curves = Figure(view2d, plane)
     curves.draw(curve)
-    curves.write("tutorial_drawing_curve")
+    save(curves, "tutorial_drawing_curve")
 
     list_set = ExactBoxListSet(2)
     list_set.adjoin(FloatDPExactBox([
@@ -186,7 +197,7 @@ def tutorial_rendering():
     ]))
     collection = Figure(view2d, plane)
     collection.draw(list_set)
-    collection.write("tutorial_drawing_list")
+    save(collection, "tutorial_drawing_list")
 
     grid = Grid(2)
     paving = GridTreePaving(grid)
@@ -196,17 +207,15 @@ def tutorial_rendering():
     cell = next(iter(paving))
     cells = Figure(view2d, plane)
     cells.draw(cell)
-    cells.write("tutorial_drawing_cell")
+    save(cells, "tutorial_drawing_cell")
     paving_view = Figure(view2d, plane)
     paving_view.draw(paving)
-    paving_view.write("tutorial_drawing_paving")
+    save(paving_view, "tutorial_drawing_paving")
 
     domain = real_box([("-1", "1"), ("-1", "1")])
-    x0 = EffectiveScalarMultivariateFunction.coordinate(2, 0)
-    x1 = EffectiveScalarMultivariateFunction.coordinate(2, 1)
-    mapping = EffectiveVectorMultivariateFunction([x0, x1])
-    bounded = BoundedConstraintSet(domain, mapping, domain)
-    effective = ConstrainedImageSet(domain, mapping)
+    # Match the C++ single-box constructors without an intermediate mapping.
+    bounded = BoundedConstraintSet(domain)
+    effective = ConstrainedImageSet(domain)
     validated = ValidatedConstrainedImageSet(FloatDPExactBox([
         {exact(-1): exact(1)}, {exact(-1): exact(1)},
     ]))
@@ -217,7 +226,7 @@ def tutorial_rendering():
                        ("validated", validated), ("affine_set", affine_set)):
         illustration = Figure(view2d, plane)
         illustration.draw(item)
-        illustration.write("tutorial_drawing_" + name)
+        save(illustration, "tutorial_drawing_" + name)
 
     section("What the Drawing layer is responsible for")
     print("Figure: collect drawable objects and their per-layer style.")

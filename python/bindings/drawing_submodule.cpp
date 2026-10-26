@@ -79,7 +79,12 @@ Void extend_kernel_geometry_bindings(pybind11::module& module)
 {
     auto bounded=pybind11::reinterpret_borrow<pybind11::class_<BoundedConstraintSet>>(
         module.attr("BoundedConstraintSet"));
+    bounded.def(pybind11::init<RealBox>());
     bounded.def(pybind11::init<RealBox,EffectiveVectorMultivariateFunction,RealBox>());
+
+    auto constrained=pybind11::reinterpret_borrow<pybind11::class_<ConstrainedImageSet>>(
+        module.attr("ConstrainedImageSet"));
+    constrained.def(pybind11::init<RealBox>());
 
     auto curve=pybind11::reinterpret_borrow<pybind11::class_<InterpolatedCurve>>(
         module.attr("InterpolatedCurve"));

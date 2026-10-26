@@ -33,3 +33,13 @@ def test_tutorial_numeric_constructors():
     ])
     assert point.dimension() == 2
     assert curve_point.dimension() == 2
+
+
+def test_drawing_single_box_constructors():
+    # The same RealBox-based constructors are used by the C++ tutorial.
+    domain = RealBox([
+        RealInterval(Real(Decimal("-1")), Real(Decimal("1"))),
+        RealInterval(Real(Decimal("-1")), Real(Decimal("1"))),
+    ])
+    assert BoundedConstraintSet(domain).dimension() == 2
+    assert ConstrainedImageSet(domain).dimension() == 2
