@@ -7,6 +7,7 @@
 #include "geometry/box.hpp"
 #include "geometry/affine_set.hpp"
 #include "rendering/geometry2d.hpp"
+#include "rendering/null_rendering.hpp"
 #include "drawing/box_draw.hpp"
 #include "drawing/geometry_draw.hpp"
 #include "macro/testing.hpp"
@@ -207,8 +208,29 @@ class TestAffineSetDraw {
         figure.write("test_affine_set-draw");
     }
 };
+
+// An infeasible affine image has no boundary and must not call the canvas.
+class AffineBoundaryCanvas final : public NullCanvas {
+  public:
+    Nat boundaries=0u;
+    Void fill_boundary(List<Point2d> const&) override { ++boundaries; }
+};
+
+Void test_infeasible_affine_set_draw() {
+    ExactBoxType domain=ExactBoxType::unit_box(2);
+    auto variables=Affine<FloatDPBounds>::variables(2,dp);
+    ValidatedAffineConstrainedImageSet empty_set(domain,{variables[0],variables[1]});
+    empty_set.new_parameter_constraint(variables[0]<=-2.0_x);
+
+    ARIADNE_TEST_ASSERT(empty_set.boundary(0u,1u).empty())
+    AffineBoundaryCanvas canvas;
+    draw(canvas,Projection2d(2u,0u,1u),empty_set);
+    ARIADNE_TEST_EQUALS(canvas.boundaries,0u)
+}
+
 Int main() {
     TestAffineSetDraw test;
     ARIADNE_TEST_CALL(test.test_draw());
+    ARIADNE_TEST_CALL(test_infeasible_affine_set_draw());
     return ARIADNE_TEST_FAILURES;
 }
