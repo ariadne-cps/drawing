@@ -37,9 +37,14 @@ Void test_grid_paving_draw() {
     Figure figure(ApproximateBoxType({{-2,+2},{-2,+2}}),projection);
     figure.draw(*product_set.begin());
     figure.draw(subpaving);
+
+    // All three public Figure entry points must retain and render the cell.
+    // These also cover the free draw(Figure&, GridCell) overload and operator<<.
+    draw(figure,*product_set.begin());
+    figure << *product_set.begin();
     GridPavingCanvas figure_canvas;
     figure._paint_all(figure_canvas);
-    ARIADNE_TEST_EQUALS(figure_canvas.boundaries,2u);
+    ARIADNE_TEST_EQUALS(figure_canvas.boundaries,4u);
 
     ExactBoxSetType box(ExactBoxType{{0.125_x,0.12500762939453125_x},{0.125_x,0.12500762939453125_x}});
     // Compact sets are first outer-approximated on a grid: the chosen depth
