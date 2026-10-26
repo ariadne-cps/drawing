@@ -12,6 +12,10 @@
 #include "drawing/drawer_manager.hpp"
 #include "drawing/box_draw.hpp"
 #include "drawing/geometry_draw.hpp"
+#include "drawing/point_draw.hpp"
+#include "drawing/paving_draw.hpp"
+#include "drawing/grid_paving_draw.hpp"
+#include "drawing/list_set_draw.hpp"
 
 #include "rendering/figure.hpp"
 #include "geometry/box.hpp"
@@ -62,6 +66,26 @@ Void export_drawer_manager(pybind11::module& module)
 
 }
 
+Void export_drawing_collections(pybind11::module& module)
+{
+    using ExactBoxList=ListSet<ExactBoxType>;
+    pybind11::class_<ExactBoxList>(module,"ExactBoxListSet")
+        .def(pybind11::init<DimensionType>())
+        .def("adjoin",(Void(ExactBoxList::*)(ExactBoxType const&))&ExactBoxList::adjoin)
+        .def("size",&ExactBoxList::size);
+}
+
+Void extend_kernel_geometry_bindings(pybind11::module& module)
+{
+    auto bounded=pybind11::reinterpret_borrow<pybind11::class_<BoundedConstraintSet>>(
+        module.attr("BoundedConstraintSet"));
+    bounded.def(pybind11::init<RealBox,EffectiveVectorMultivariateFunction,RealBox>());
+
+    auto curve=pybind11::reinterpret_borrow<pybind11::class_<InterpolatedCurve>>(
+        module.attr("InterpolatedCurve"));
+    curve.def(pybind11::init<InterpolatedCurve::PointType,InterpolatedCurve::PointType>());
+}
+
 Void export_drawing_figure_adapters(pybind11::module& module)
 {
     static constexpr auto reference_internal = pybind11::return_value_policy::reference_internal;
@@ -103,6 +127,22 @@ Void export_drawing_figure_adapters(pybind11::module& module)
         [](Figure& figure, InterpolatedCurve const& set) -> Figure& {
             draw_to_figure(figure,set); return figure;
         }, reference_internal);
+    figure_class.def("draw",
+        [](Figure& figure, FloatDPPoint const& point) -> Figure& {
+            Ariadne::draw(figure,point); return figure;
+        }, reference_internal);
+    figure_class.def("draw",
+        [](Figure& figure, GridCell const& cell) -> Figure& {
+            Ariadne::draw(figure,cell); return figure;
+        }, reference_internal);
+    figure_class.def("draw",
+        [](Figure& figure, GridTreeSubpaving const& paving) -> Figure& {
+            Ariadne::draw(figure,static_cast<SubPavingInterface const&>(paving)); return figure;
+        }, reference_internal);
+    figure_class.def("draw",
+        [](Figure& figure, ListSet<ExactBoxType> const& boxes) -> Figure& {
+            Ariadne::draw(figure,boxes); return figure;
+        }, reference_internal);
 }
 
 } // namespace
@@ -112,5 +152,7 @@ void drawing_submodule(pybind11::module& module)
     export_cli(module);
     export_drawer(module);
     export_drawer_manager(module);
+    export_drawing_collections(module);
+    extend_kernel_geometry_bindings(module);
     export_drawing_figure_adapters(module);
 }

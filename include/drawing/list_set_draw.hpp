@@ -22,6 +22,25 @@ inline Void draw(CanvasInterface& canvas, Projection2d const& projection, ListSe
     }
 }
 
+// A list is copied into the Figure so the caller can reuse or destroy it.
+template<class BS>
+class ListSetDrawable final : public Drawable2dInterface {
+  public:
+    explicit ListSetDrawable(ListSet<BS> const& set) : _set(set) { }
+    ListSetDrawable* clone() const override { return new ListSetDrawable(*this); }
+    DimensionType dimension() const override { return _set.dimension(); }
+    Void draw(CanvasInterface& canvas, Projection2d const& projection) const override {
+        Ariadne::draw(canvas,projection,_set);
+    }
+  private:
+    ListSet<BS> _set;
+};
+
+template<class BS>
+inline Void draw(Figure& figure, ListSet<BS> const& set) {
+    figure.draw(ListSetDrawable<BS>(set));
+}
+
 } // namespace Ariadne
 
 #endif // ARIADNE_LIST_SET_DRAW_HPP
