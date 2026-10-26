@@ -23,6 +23,11 @@ if(EXISTS "${PROJECT_SOURCE_DIR}/.git")
             "kernel|configuration"
             "rendering|configuration"
     )
+    require_same_dependency_commit(PythonCommon
+        CHAINS
+            "kernel|bdd|python-common"
+            "rendering|python-common"
+    )
 endif()
 
 setup_project()
