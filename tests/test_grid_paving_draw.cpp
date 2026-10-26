@@ -24,6 +24,16 @@ Void test_grid_paving_draw() {
     draw(canvas,projection,product_set);
     ARIADNE_TEST_EQUALS(canvas.boundaries,2u);
 
+    // The borrowed GridTreeSubpaving view must render the same enabled cells.
+    // Also verify that its empty range does not emit a boundary.
+    GridTreeSubpaving const& subpaving=product_set;
+    draw(canvas,projection,subpaving);
+    ARIADNE_TEST_EQUALS(canvas.boundaries,3u);
+    GridTreePaving empty_paving(2u);
+    GridTreeSubpaving const& empty_subpaving=empty_paving;
+    draw(canvas,projection,empty_subpaving);
+    ARIADNE_TEST_EQUALS(canvas.boundaries,3u);
+
     ExactBoxSetType box(ExactBoxType{{0.125_x,0.12500762939453125_x},{0.125_x,0.12500762939453125_x}});
     // Compact sets are first outer-approximated on a grid: the chosen depth
     // subdivides this narrow box into four cells, each with its own boundary.
