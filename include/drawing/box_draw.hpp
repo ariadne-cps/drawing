@@ -34,6 +34,10 @@ inline RenderingBox to_rendering_box(RealBox const& box) {
 
 Void draw(CanvasInterface&, Projection2d const&, ApproximateBoxType const&);
 
+// Out-of-line, value-owning Figure adapters implemented in figure_draw.cpp.
+Void draw(Figure&, RealBox const&);
+Void draw(Figure&, FloatDPApproximateBox const&);
+
 template<class I>
 inline Void draw(CanvasInterface& canvas, Projection2d const& projection, Box<I> const& box) {
     Ariadne::draw(canvas,projection,ApproximateBoxType(box));
