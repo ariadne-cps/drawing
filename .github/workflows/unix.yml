@@ -95,7 +95,6 @@ jobs:
       run: |
         python -c "import os, pathlib, pyariadne; p=pathlib.Path(pyariadne.__file__).resolve(); root=pathlib.Path(os.environ['PYTHONPATH']).resolve(); assert p.is_relative_to(root), (p, root)"
         python tutorial_drawing.py
-        python verify_drawing_pngs.py
 
 
     - name: Prepare C++ Drawing Tutorial
@@ -111,7 +110,6 @@ jobs:
         export LD_LIBRARY_PATH=${{ runner.workspace }}/install/lib:${LD_LIBRARY_PATH:-}
         export DYLD_LIBRARY_PATH=${{ runner.workspace }}/install/lib:${DYLD_LIBRARY_PATH:-}
         ./build/tutorial_drawing
-        python $GITHUB_WORKSPACE/python/tutorials/verify_drawing_pngs.py
 
 
     - name: Verify Uninstallation

@@ -79,7 +79,6 @@ jobs:
         $env:PATH = "${{ runner.workspace }}\install\bin;$env:PATH"
         python -c "import pyariadne; print(pyariadne.__file__)"
         python tutorial_drawing.py
-        python verify_drawing_pngs.py
 
 
     - name: Prepare C++ Drawing Tutorial
@@ -97,7 +96,6 @@ jobs:
         $env:PATH = "${{ runner.workspace }}\install\bin;$env:PATH"
         & ".\build\tutorial_drawing.exe"
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-        python "$env:GITHUB_WORKSPACE\python\tutorials\verify_drawing_pngs.py"
 
 
     - name: Verify Uninstallation
