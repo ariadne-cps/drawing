@@ -37,21 +37,31 @@ class SubPavingDrawable final : public Drawable2dInterface {
     std::unique_ptr<SubPavingInterface> _paving;
 };
 
-inline Void draw(Figure& figure, SubPavingInterface const& paving) {
+inline Void draw_to_figure(Figure& figure, SubPavingInterface const& paving) {
     figure.draw(SubPavingDrawable(paving));
+}
+
+inline Void draw(Figure& figure, SubPavingInterface const& paving) {
+    draw_to_figure(figure,paving);
 }
 inline Figure& operator<<(Figure& figure, SubPavingInterface const& paving) {
     draw(figure,paving); return figure;
 }
 
+inline Void draw_to_figure(Figure& figure, PavingHandle const& paving) {
+    draw_to_figure(figure,static_cast<PavingInterface const&>(paving));
+}
 inline Void draw(Figure& figure, PavingHandle const& paving) {
-    draw(figure,static_cast<PavingInterface const&>(paving));
+    draw_to_figure(figure,paving);
 }
 inline Figure& operator<<(Figure& figure, PavingHandle const& paving) {
     draw(figure,paving); return figure;
 }
+inline Void draw_to_figure(Figure& figure, SubPavingHandle const& paving) {
+    draw_to_figure(figure,static_cast<SubPavingInterface const&>(paving));
+}
 inline Void draw(Figure& figure, SubPavingHandle const& paving) {
-    draw(figure,static_cast<SubPavingInterface const&>(paving));
+    draw_to_figure(figure,paving);
 }
 inline Figure& operator<<(Figure& figure, SubPavingHandle const& paving) {
     draw(figure,paving); return figure;

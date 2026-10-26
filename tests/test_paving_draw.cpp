@@ -31,10 +31,14 @@ Void test_paving_adapters() {
     figure << handle;
     SubPavingHandle sub_handle(static_cast<SubPavingInterface const&>(paving));
     figure << sub_handle;
+    figure.draw(static_cast<SubPavingInterface const&>(paving));
+    figure.draw(paving);
+    figure.draw(handle);
+    figure.draw(sub_handle);
 
     // Figure owns independent clones of each paving.
     figure._paint_all(canvas);
-    ARIADNE_TEST_EQUALS(canvas.boundaries,4u)
+    ARIADNE_TEST_EQUALS(canvas.boundaries,8u)
 }
 
 Int main() {

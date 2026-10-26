@@ -37,8 +37,13 @@ class ListSetDrawable final : public Drawable2dInterface {
 };
 
 template<class BS>
-inline Void draw(Figure& figure, ListSet<BS> const& set) {
+inline Void draw_to_figure(Figure& figure, ListSet<BS> const& set) {
     figure.draw(ListSetDrawable<BS>(set));
+}
+
+template<class BS>
+inline Void draw(Figure& figure, ListSet<BS> const& set) {
+    draw_to_figure(figure,set);
 }
 
 } // namespace Ariadne

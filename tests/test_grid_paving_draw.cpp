@@ -34,6 +34,13 @@ Void test_grid_paving_draw() {
     draw(canvas,projection,empty_subpaving);
     ARIADNE_TEST_EQUALS(canvas.boundaries,3u);
 
+    Figure figure(ApproximateBoxType({{-2,+2},{-2,+2}}),projection);
+    figure.draw(*product_set.begin());
+    figure.draw(subpaving);
+    GridPavingCanvas figure_canvas;
+    figure._paint_all(figure_canvas);
+    ARIADNE_TEST_EQUALS(figure_canvas.boundaries,2u);
+
     ExactBoxSetType box(ExactBoxType{{0.125_x,0.12500762939453125_x},{0.125_x,0.12500762939453125_x}});
     // Compact sets are first outer-approximated on a grid: the chosen depth
     // subdivides this narrow box into four cells, each with its own boundary.

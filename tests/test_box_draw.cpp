@@ -67,6 +67,14 @@ Void test_box_figure() {
     figure._paint_all(canvas);
     ARIADNE_TEST_EQUALS(canvas.boundaries,5u)
 
+    ListSet<ExactBoxType> list(2u);
+    list.adjoin(exact);
+    list.adjoin(exact);
+    figure.draw(list);
+    CountingBoxCanvas with_list;
+    figure._paint_all(with_list);
+    ARIADNE_TEST_EQUALS(with_list.boundaries,7u)
+
     // Both conversion overloads preserve the actual display bounds.
     RenderingBox primitive{{-1.0,3.0},{0.0,6.0}};
     RenderingBox identity=to_rendering_box(primitive);

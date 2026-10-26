@@ -64,11 +64,12 @@ Void test_figure_point() {
 
     draw(figure,pt);
     figure << pt;
+    figure.draw(pt); // Test template dispatch in addition to free draw.
 
     PointCanvas canvas;
     figure._paint_all(canvas);
-    ARIADNE_TEST_EQUALS(canvas.dots,2u)
-    ARIADNE_TEST_EQUALS(canvas.strokes,2u)
+    ARIADNE_TEST_EQUALS(canvas.dots,3u)
+    ARIADNE_TEST_EQUALS(canvas.strokes,3u)
     ARIADNE_TEST_EQUALS(canvas.x,1.0)
     ARIADNE_TEST_EQUALS(canvas.y,2.0)
 }

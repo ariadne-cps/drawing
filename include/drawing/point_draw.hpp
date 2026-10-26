@@ -47,8 +47,13 @@ class PointDrawable final : public Drawable2dInterface {
 
 //! The Figure clones its drawable, so the temporary adapter is safe.
 template<class X>
-inline Void draw(Figure& figure, Point<X> const& point) {
+inline Void draw_to_figure(Figure& figure, Point<X> const& point) {
     figure.draw(PointDrawable<X>(point));
+}
+
+template<class X>
+inline Void draw(Figure& figure, Point<X> const& point) {
+    draw_to_figure(figure,point);
 }
 
 template<class X>

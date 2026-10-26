@@ -33,8 +33,12 @@ class GridCellDrawable final : public Drawable2dInterface {
     GridCell _cell;
 };
 
-inline Void draw(Figure& figure, GridCell const& cell) {
+inline Void draw_to_figure(Figure& figure, GridCell const& cell) {
     figure.draw(GridCellDrawable(cell));
+}
+
+inline Void draw(Figure& figure, GridCell const& cell) {
+    draw_to_figure(figure,cell);
 }
 inline Figure& operator<<(Figure& figure, GridCell const& cell) {
     draw(figure,cell); return figure;
