@@ -98,18 +98,7 @@ def tutorial_rendering():
     show("line width", figure.get_line_width())
     show("fill opacity", figure.get_fill_opacity())
 
-    figure.write("tutorial_drawing_layers")
-    figure.write("tutorial_drawing_layers_large", 1000, 700)
-
-    section("Reusing a figure with clear()")
-
-    figure.clear()
-    figure.set_fill_colour(green)
-    figure.set_fill_opacity(0.30)
-    figure.set_line_colour(darkgrey)
-    figure.set_line_width(1.0)
-    figure.draw(intersection(region_a, region_b))
-    figure.write("tutorial_drawing_intersection")
+    figure.write("tutorial_drawing_boxes")
 
     section("Projecting higher-dimensional sets")
 
