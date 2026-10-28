@@ -68,11 +68,14 @@ Void export_drawer_manager(pybind11::module& module)
 
 Void export_drawing_collections(pybind11::module& module)
 {
+    // Set already registers ListSet<ExactBoxType>. Reuse that Python type
+    // instead of registering the same C++ class a second time with pybind11.
     using ExactBoxList=ListSet<ExactBoxType>;
-    pybind11::class_<ExactBoxList>(module,"ExactBoxListSet")
-        .def(pybind11::init<DimensionType>())
-        .def("adjoin",(Void(ExactBoxList::*)(ExactBoxType const&))&ExactBoxList::adjoin)
-        .def("size",&ExactBoxList::size);
+    auto box_list_class=pybind11::reinterpret_borrow<pybind11::class_<ExactBoxList>>(
+        module.attr("ListSetFloatDPExactBox"));
+    // Preserve Drawing's dimensional constructor and its historical name.
+    box_list_class.def(pybind11::init<DimensionType>());
+    module.attr("ExactBoxListSet")=module.attr("ListSetFloatDPExactBox");
 }
 
 Void extend_set_geometry_bindings(pybind11::module& module)

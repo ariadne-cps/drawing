@@ -43,3 +43,16 @@ def test_drawing_single_box_constructors():
     ])
     assert BoundedConstraintSet(domain).dimension() == 2
     assert ConstrainedImageSet(domain).dimension() == 2
+
+def test_exact_box_list_set_uses_existing_set_binding():
+    # Drawing must not register ListSet<ExactBoxType> twice.
+    import pyariadne
+    assert pyariadne.ExactBoxListSet is pyariadne.ListSetFloatDPExactBox
+    boxes = pyariadne.ExactBoxListSet(2)
+    assert boxes.size() == 0
+    boxes.adjoin(pyariadne.FloatDPExactBox([
+        {pyariadne.exact(-1): pyariadne.exact(1)},
+        {pyariadne.exact(-1): pyariadne.exact(1)},
+    ]))
+    assert boxes.size() == 1
+    assert boxes.dimension() == 2
