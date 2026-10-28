@@ -20,12 +20,13 @@ if(EXISTS "${PROJECT_SOURCE_DIR}/.git")
     require_same_dependency_commit(Configuration
         CHAINS
             "configuration"
-            "kernel|configuration"
-            "rendering|configuration"
+            "paving|configuration"
+            "paving|set|configuration"
+            "paving|bdd|configuration"
     )
     require_same_dependency_commit(PythonCommon
         CHAINS
-            "kernel|bdd|python-common"
+            "paving|bdd|python-common"
             "rendering|python-common"
     )
 endif()
@@ -41,7 +42,7 @@ target_include_directories(drawing INTERFACE
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/ariadne-drawing>
 )
-target_link_libraries(drawing INTERFACE kernel rendering)
+target_link_libraries(drawing INTERFACE paving rendering)
 
 add_subdirectory(src)
 target_link_libraries(DRAWING_SRC PRIVATE drawing)

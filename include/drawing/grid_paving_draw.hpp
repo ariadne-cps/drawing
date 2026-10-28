@@ -11,7 +11,7 @@
 #define ARIADNE_GRID_PAVING_DRAW_HPP
 
 #include "drawing/paving_draw.hpp"
-#include "geometry/grid_paving.hpp"
+#include "paving/grid_paving.hpp"
 
 namespace Ariadne {
 

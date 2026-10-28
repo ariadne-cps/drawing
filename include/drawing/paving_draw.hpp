@@ -11,7 +11,7 @@
 #define ARIADNE_PAVING_DRAW_HPP
 
 #include <memory>
-#include "geometry/paving_interface.hpp"
+#include "paving/paving_interface.hpp"
 #include "drawing/box_draw.hpp"
 
 namespace Ariadne {

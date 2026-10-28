@@ -7,9 +7,9 @@
 
 // Load complete numeric and function types before affine_set.hpp.
 #include "function/function.hpp"
-#include "geometry/affine_set.hpp"
-#include "geometry/function_set.hpp"
-#include "geometry/curve.hpp"
+#include "set/affine_set.hpp"
+#include "set/function_set.hpp"
+#include "set/curve.hpp"
 // Figure constructors from mathematical boxes need the Drawing conversion adapter.
 #include "drawing/box_draw.hpp"
 #include "rendering/figure.hpp"

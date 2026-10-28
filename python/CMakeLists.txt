@@ -6,8 +6,8 @@ option(PYTHON_ENFORCE_TESTS "Enforce Python tests" OFF)
 
 if(Python3_FOUND)
     report_python_configuration_once()
-    if(NOT TARGET pyariadne-kernel)
-        message(FATAL_ERROR "The Kernel Python binding target is required for pyariadne-drawing.")
+    if(NOT TARGET pyariadne-paving)
+        message(FATAL_ERROR "The Paving Python binding target is required for pyariadne-drawing.")
     endif()
     if(NOT TARGET pyariadne-rendering)
         message(FATAL_ERROR "The Rendering Python binding target is required for pyariadne-drawing.")
@@ -24,9 +24,9 @@ if(Python3_FOUND)
         endif()
         set(PYTHON_BINDINGS_INSTALL_DIR "${_python_install_dir}"
             CACHE STRING "Install destination for Python targets relative to the prefix")
-        # pyariadne-kernel is an INTERFACE target: its objects are already
-        # linked into pyariadne. Include it explicitly in this install experiment.
-        install(TARGETS pyariadne pyariadne-kernel
+        # Dependency INTERFACE targets contribute objects to pyariadne; only
+        # the assembled extension module is installed.
+        install(TARGETS pyariadne
             DESTINATION "${PYTHON_BINDINGS_INSTALL_DIR}")
         add_subdirectory(tests)
         add_dependencies(bindings pyariadne)

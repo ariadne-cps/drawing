@@ -7,7 +7,7 @@
 [![Coverage Status](https://github.com/ariadne-cps/drawing/actions/workflows/coverage.yml/badge.svg)](https://github.com/ariadne-cps/drawing/actions/workflows/coverage.yml)
 [![codecov](https://codecov.io/gh/ariadne-cps/drawing/branch/main/graph/badge.svg)](https://codecov.io/gh/ariadne-cps/drawing)
 
-Ariadne Drawing provides mathematical drawing adapters and drawing strategies that connect Ariadne's kernel geometry to the independent Rendering library. Drawing is distinct from rasterization: it converts mathematical sets into drawing operations and selects approximation strategies.
+Ariadne Drawing provides mathematical drawing adapters and drawing strategies that connect Ariadne's Paving and Set layers to the independent Rendering library. Drawing is distinct from rasterization: it converts mathematical sets into drawing operations and selects approximation strategies.
 
 ## Layout
 
@@ -19,11 +19,11 @@ The umbrella header is `include/ariadne-drawing.hpp`.
 
 Drawing depends on:
 
-- [ariadne-cps/kernel](https://github.com/ariadne-cps/kernel), as a Git submodule, for mathematical functions and geometric sets.
+- [ariadne-cps/paving](https://github.com/ariadne-cps/paving), as Git submodule `ss/paving`, providing sets, grids, pavings, functions and their lower dependencies.
 - [ariadne-cps/rendering](https://github.com/ariadne-cps/rendering), as a direct Git submodule, for `Figure`, `CanvasInterface` and the rendering backend.
 - [ariadne-cps/configuration](https://github.com/ariadne-cps/configuration) for shared build configuration.
 
-The intended graph is **drawing → kernel and rendering**. Kernel and rendering must build without drawing.
+The intended graph is **drawing → paving and rendering**. Paving and Rendering build independently of Drawing. Paving provides Set, BDD, and their transitive dependencies. Rendering currently pins an older Configuration commit than Paving, so cross-module build compatibility must be verified in CI.
 
 ## Build
 
@@ -48,15 +48,15 @@ cmake --build build-tutorial --parallel
 
 ## Python bindings
 
-When a compatible Python development environment is available, the standalone build produces `pyariadne` from the lower Algebra bindings plus the Kernel, Rendering and Drawing bindings.
+When a compatible Python development environment is available, the standalone build produces `pyariadne` from the transitive Paving and Set bindings plus the Rendering and Drawing bindings.
 
 ## Extraction status
 
-The drawing adapters live in this standalone repository; Kernel and Rendering remain independent submodules. CMake checks that they use consistent Configuration and Python Common commits, and Release CI verifies the installed Drawing library through a separately configured C++ tutorial.
+The drawing adapters live in this standalone repository; Paving and Rendering remain independent submodules. CMake checks Configuration consistency in the Paving dependency chain and Python Common consistency across Paving and Rendering. Rendering currently pins an older Configuration commit, so cross-chain Configuration equality is not asserted. Release CI verifies the installed Drawing library through a separately configured C++ tutorial.
 
 ## Windows Python tutorial
 
-Windows Release CI installs Drawing, then runs `python/tutorials/tutorial_drawing.py` using the installed `Lib/site-packages` directory on `PYTHONPATH` and the installed `bin` directory on `PATH`. The `pyariadne-kernel` INTERFACE target contributes objects to the combined `pyariadne` extension; it does not produce a separate `.pyd` file.
+Windows Release CI installs Drawing, then runs `python/tutorials/tutorial_drawing.py` using the installed `Lib/site-packages` directory on `PYTHONPATH` and the installed `bin` directory on `PATH`. The `pyariadne-paving` INTERFACE target contributes objects to the combined `pyariadne` extension; it does not produce a separate `.pyd` file.
 
 ## Contribution guidelines
 

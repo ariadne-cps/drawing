@@ -1,12 +1,12 @@
 /***************************************************************************
  * Drawing adapters for affine constrained sets.
- * Mathematical algorithms are exercised by kernel/tests/geometry.
+ * Mathematical algorithms are exercised by set/tests.
  ***************************************************************************/
 #include <iostream>
 #include <sstream>
 #include "function/function.hpp"
 #include "geometry/box.hpp"
-#include "geometry/affine_set.hpp"
+#include "set/affine_set.hpp"
 #include "rendering/geometry2d.hpp"
 #include "rendering/null_rendering.hpp"
 #include "logging/logging.hpp"

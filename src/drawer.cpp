@@ -29,9 +29,9 @@
 #include "drawing/grid_paving_draw.hpp"
 
 #include "macro/general.hpp"
-#include "geometry/function_set.hpp"
-#include "geometry/affine_set.hpp"
-#include "geometry/grid_paving.hpp"
+#include "set/function_set.hpp"
+#include "set/affine_set.hpp"
+#include "paving/grid_paving.hpp"
 
 #include "rendering/rendering_interface.hpp"
 

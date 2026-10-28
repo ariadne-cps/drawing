@@ -1,6 +1,6 @@
 /***************************************************************************
  * Canvas rendering of InterpolatedCurve. Its constructors, bounding boxes,
- * cloning and functional semantics are tested by Kernel.
+ * cloning and functional semantics are tested by Set.
  ***************************************************************************/
 #include "drawing/geometry_draw.hpp"
 #include "rendering/null_rendering.hpp"

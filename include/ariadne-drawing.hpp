@@ -1,7 +1,8 @@
 #ifndef ARIADNE_ARIADNE_DRAWING_HPP
 #define ARIADNE_ARIADNE_DRAWING_HPP
 
-#include "ariadne-kernel.hpp"
+#include "ariadne-paving.hpp"
+#include "ariadne-rendering.hpp"
 #include "rendering/figure.hpp"
 #include "rendering/rendering_manager.hpp"
 #include "drawing/box_draw.hpp"

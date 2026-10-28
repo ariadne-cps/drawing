@@ -5,7 +5,7 @@
  ****************************************************************************/
 
 #include "pybind11.hpp"
-#include "kernel-utilities.hpp"
+#include "paving-utilities.hpp"
 
 #include "drawing/drawing_command_line_interface.hpp"
 #include "drawing/drawer.hpp"
@@ -75,7 +75,7 @@ Void export_drawing_collections(pybind11::module& module)
         .def("size",&ExactBoxList::size);
 }
 
-Void extend_kernel_geometry_bindings(pybind11::module& module)
+Void extend_set_geometry_bindings(pybind11::module& module)
 {
     auto bounded=pybind11::reinterpret_borrow<pybind11::class_<BoundedConstraintSet>>(
         module.attr("BoundedConstraintSet"));
@@ -158,6 +158,6 @@ void drawing_submodule(pybind11::module& module)
     export_drawer(module);
     export_drawer_manager(module);
     export_drawing_collections(module);
-    extend_kernel_geometry_bindings(module);
+    extend_set_geometry_bindings(module);
     export_drawing_figure_adapters(module);
 }

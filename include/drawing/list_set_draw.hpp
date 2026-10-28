@@ -10,7 +10,7 @@
 #ifndef ARIADNE_LIST_SET_DRAW_HPP
 #define ARIADNE_LIST_SET_DRAW_HPP
 
-#include "geometry/list_set.hpp"
+#include "set/list_set.hpp"
 #include "drawing/box_draw.hpp"
 
 namespace Ariadne {

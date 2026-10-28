@@ -25,7 +25,7 @@
 #include <sstream>
 
 #include "macro/testing.hpp"
-#include "geometry/function_set.hpp"
+#include "set/function_set.hpp"
 #include "rendering/null_rendering.hpp"
 #include "drawing/drawer.hpp"
 #include "drawing/null_drawer.hpp"

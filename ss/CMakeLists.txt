@@ -1,6 +1,6 @@
-if(NOT TARGET kernel)
-    ensure_submodule_initialized(kernel)
-    add_subdirectory(kernel)
+if(NOT TARGET paving)
+    ensure_submodule_initialized(paving)
+    add_subdirectory(paving)
 endif()
 
 if(NOT TARGET rendering)

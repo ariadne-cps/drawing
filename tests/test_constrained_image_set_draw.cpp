@@ -1,12 +1,12 @@
 /***************************************************************************
  * Figure adapters for effective constrained images and their subdivisions.
- * Geometry algorithms themselves are tested in kernel.
+ * Set and Paving algorithms are tested in their respective modules.
  ***************************************************************************/
 #include <limits>
 #include "function/function.hpp"
 #include "geometry/box.hpp"
-#include "geometry/function_set.hpp"
-#include "geometry/grid_paving.hpp"
+#include "set/function_set.hpp"
+#include "paving/grid_paving.hpp"
 #include "drawing/box_draw.hpp"
 #include "drawing/geometry_draw.hpp"
 #include "drawing/paving_draw.hpp"

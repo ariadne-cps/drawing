@@ -13,9 +13,9 @@
 #include "drawing/geometry_draw.hpp"
 #include "drawing/paving_draw.hpp"
 #include "geometry/box.hpp"
-#include "geometry/curve.hpp"
-#include "geometry/function_set.hpp"
-#include "geometry/grid_paving.hpp"
+#include "set/curve.hpp"
+#include "set/function_set.hpp"
+#include "paving/grid_paving.hpp"
 
 using namespace Ariadne;
 
