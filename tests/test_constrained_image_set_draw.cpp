@@ -7,6 +7,7 @@
 #include "geometry/box.hpp"
 #include "set/function_set.hpp"
 #include "paving/grid_paving.hpp"
+#include "paving/set_approximation.hpp"
 #include "drawing/box_draw.hpp"
 #include "drawing/geometry_draw.hpp"
 #include "drawing/paving_draw.hpp"
@@ -24,7 +25,7 @@ class TestConstrainedImageSetDraw {
         figure.set_bounding_box(ExactBoxType({{-2.75_x,+2.75_x},{-1.5_x,+2.0_x}}));
         ARIADNE_TEST_ASSERT(set.dimension()<=std::numeric_limits<Nat>::max());
         GridTreePaving paving(static_cast<Nat>(set.dimension()));
-        set.adjoin_outer_approximation_to(paving,acc+1);
+        adjoin_outer_approximation_to(paving,set,acc+1);
         figure.set_fill_opacity(1.0);
         figure.set_fill_colour(red);
         paving.recombine();
