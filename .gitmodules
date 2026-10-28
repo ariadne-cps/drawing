@@ -1,9 +1,9 @@
-[submodule "ss/configuration"]
-	path = ss/configuration
+[submodule "cfg"]
+	path = ss/cfg
 	url = https://github.com/ariadne-cps/configuration
-[submodule "ss/paving"]
-	path = ss/paving
+[submodule "pav"]
+	path = ss/pav
 	url = https://github.com/ariadne-cps/paving
-[submodule "ss/rendering"]
-	path = ss/rendering
+[submodule "ren"]
+	path = ss/ren
 	url = https://github.com/ariadne-cps/rendering

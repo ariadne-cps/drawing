@@ -19,11 +19,11 @@ The umbrella header is `include/ariadne-drawing.hpp`.
 
 Drawing depends on:
 
-- [ariadne-cps/paving](https://github.com/ariadne-cps/paving), as Git submodule `ss/paving`, providing sets, grids, pavings, functions and their lower dependencies.
+- [ariadne-cps/paving](https://github.com/ariadne-cps/paving), as Git submodule `ss/pav`, providing sets, grids, pavings, functions and their lower dependencies.
 - [ariadne-cps/rendering](https://github.com/ariadne-cps/rendering), as a direct Git submodule, for `Figure`, `CanvasInterface` and the rendering backend.
 - [ariadne-cps/configuration](https://github.com/ariadne-cps/configuration) for shared build configuration.
 
-The intended graph is **drawing → paving and rendering**. Paving and Rendering build independently of Drawing. Paving provides Set, BDD, and their transitive dependencies. Rendering currently pins an older Configuration commit than Paving, so cross-module build compatibility must be verified in CI.
+The intended graph is **drawing → paving and rendering**. Paving and Rendering build independently of Drawing. Paving provides Set, BDD, and their transitive dependencies. Rendering and Paving pin the same Configuration commit; CMake checks cross-path commit consistency.
 
 ## Build
 
@@ -52,7 +52,7 @@ When a compatible Python development environment is available, the standalone bu
 
 ## Extraction status
 
-The drawing adapters live in this standalone repository; Paving and Rendering remain independent submodules. CMake checks Configuration consistency in the Paving dependency chain and Python Common consistency across Paving and Rendering. Rendering currently pins an older Configuration commit, so cross-chain Configuration equality is not asserted. Release CI verifies the installed Drawing library through a separately configured C++ tutorial.
+The drawing adapters live in this standalone repository; Paving and Rendering remain independent submodules. CMake checks Configuration consistency in the Paving dependency chain and Python Common consistency across Paving and Rendering. Rendering now pins the same Configuration commit, and cross-chain Configuration and Utility equality are checked. Release CI verifies the installed Drawing library through a separately configured C++ tutorial.
 
 ## Windows Python tutorial
 

@@ -1,9 +1,7 @@
 if(NOT TARGET paving)
-    ensure_submodule_initialized(paving)
-    add_subdirectory(paving)
+    ariadne_add_submodule(paving)
 endif()
 
 if(NOT TARGET rendering)
-    ensure_submodule_initialized(rendering)
-    add_subdirectory(rendering)
+    ariadne_add_submodule(rendering)
 endif()
