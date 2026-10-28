@@ -32,6 +32,7 @@
 #include "set/function_set.hpp"
 #include "set/affine_set.hpp"
 #include "paving/grid_paving.hpp"
+#include "paving/set_approximation.hpp"
 
 #include "rendering/rendering_interface.hpp"
 
@@ -56,7 +57,7 @@ Void AffineDrawer::draw(CanvasInterface& cnvs, const Projection2d& proj, const V
 }
 
 Void GridDrawer::draw(CanvasInterface& canvas, const Projection2d& projection, const ValidatedConstrainedImageSet& set) const {
-    Ariadne::draw(canvas,projection,set.outer_approximation(Grid(set.dimension()),this->_fineness));
+    Ariadne::draw(canvas,projection,outer_approximation(set,Grid(set.dimension()),this->_fineness));
 }
 
 Void box_draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set)
