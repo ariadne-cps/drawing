@@ -26,11 +26,11 @@ class TestFigureDrawing : public Ariadne::Testing::ContextFixture {
     void test_box_adapters() {
         RealBox real_box({{-0.5_dec,0.5_dec},{-0.25_dec,0.25_dec}});
         Figure figure(ApproximateBoxType({{-1,+1},{-1,+1}}),Projection2d(2,0,1));
-        draw(figure,real_box);
-        figure.draw(real_box);
+        ARIADNE_TESTING_EXPECT_NO_THROW(draw(figure,real_box));
+        ARIADNE_TESTING_EXPECT_NO_THROW(figure.draw(real_box));
     }
 
-    void test_default_drawer() {
+    void run_default_drawer_scenario() {
         ExactBoxType bx1(2); bx1[0]=ExactIntervalType(-0.2_pr,0.2_pr); bx1[1]=ExactIntervalType(-0.1_pr,0.10_pr);
         ExactBoxType bx2(2); bx2[0]=ExactIntervalType(0.1_pr,0.3_pr); bx2[1]=ExactIntervalType(0.05_pr,0.15_pr);
         ExactBoxType bx3(2); bx3[0]=ExactIntervalType(0.2_pr,0.4_pr); bx3[1]=ExactIntervalType(0.10_pr,0.25_pr);
@@ -116,6 +116,10 @@ class TestFigureDrawing : public Ariadne::Testing::ContextFixture {
         g << gts;
         g.write("test_rendering-paving");
         g.clear();
+    }
+
+    void test_default_drawer() {
+        ARIADNE_TESTING_EXPECT_NO_THROW(run_default_drawer_scenario());
     }
 };
 
