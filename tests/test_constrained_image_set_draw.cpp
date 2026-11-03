@@ -20,7 +20,7 @@ class TestConstrainedImageSetDraw : public Ariadne::Testing::ContextFixture {
   public:
     explicit TestConstrainedImageSetDraw(Ariadne::Testing::Context& context)
         : ContextFixture(context), figure(ApproximateBoxType({{-1,+1},{-1,+1}}),Projection2d(2,0,1)) { }
-    Void test_draw(const StringType& str, const EffectiveConstrainedImageSet& set, Nat acc) {
+    Void draw_constrained_image_case(const StringType& str, const EffectiveConstrainedImageSet& set, Nat acc) {
         figure.clear();
         figure.set_bounding_box(ExactBoxType({{-2.75_x,+2.75_x},{-1.5_x,+2.0_x}}));
         ARIADNE_TESTING_PROVE(set.dimension()<=std::numeric_limits<Nat>::max());
@@ -54,8 +54,8 @@ class TestConstrainedImageSetDraw : public Ariadne::Testing::ContextFixture {
         EffectiveScalarMultivariateFunction y=EffectiveScalarMultivariateFunction::coordinate(2,1);
         Nat acc = 2u;
 
-        test_draw("ellipse",EffectiveConstrainedImageSet(RealBox(2,RealInterval(-1,1)),{2*s+t,s+t},{s*s+t*t<=0.75_x}),acc+1u);
-        test_draw("concave",EffectiveConstrainedImageSet(RealBox(2,RealInterval(-1.01_dec,1.01_dec)),{s,1.0_x*s*s+t},{2*s+0.25_x*s*s+t-2.0_x<=0}),acc);
+        draw_constrained_image_case("ellipse",EffectiveConstrainedImageSet(RealBox(2,RealInterval(-1,1)),{2*s+t,s+t},{s*s+t*t<=0.75_x}),acc+1u);
+        draw_constrained_image_case("concave",EffectiveConstrainedImageSet(RealBox(2,RealInterval(-1.01_dec,1.01_dec)),{s,1.0_x*s*s+t},{2*s+0.25_x*s*s+t-2.0_x<=0}),acc);
     }
 };
 int main(int argc, char** argv) {
