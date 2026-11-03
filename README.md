@@ -22,6 +22,7 @@ Drawing depends on:
 - [ariadne-cps/paving](https://github.com/ariadne-cps/paving), as Git submodule `ss/pav`, providing sets, grids, pavings, functions and their lower dependencies.
 - [ariadne-cps/rendering](https://github.com/ariadne-cps/rendering), as a direct Git submodule, for `Figure`, `CanvasInterface` and the rendering backend.
 - [ariadne-cps/configuration](https://github.com/ariadne-cps/configuration) for shared build configuration.
+- [ariadne-cps/testing](https://github.com/ariadne-cps/testing), as Git submodule `ss/tst`, for independent C++ fixture tests and diagnostics.
 
 The intended graph is **drawing → paving and rendering**. Paving and Rendering build independently of Drawing. Paving provides Set, BDD, and their transitive dependencies. Rendering and Paving pin the same Configuration commit; CMake checks cross-path commit consistency.
 

@@ -23,6 +23,9 @@ if(EXISTS "${PROJECT_SOURCE_DIR}/.git")
             "paving|configuration"
             "paving|set|configuration"
             "paving|bdd|configuration"
+            "testing|configuration"
+            "paving|testing|configuration"
+            "rendering|testing|configuration"
     )
     require_same_dependency_commit(Utility
         CHAINS
@@ -38,6 +41,15 @@ if(EXISTS "${PROJECT_SOURCE_DIR}/.git")
         CHAINS
             "paving|bdd|python-common"
             "rendering|python-common"
+    )
+    require_same_dependency_commit(Testing
+        CHAINS
+            "testing"
+            "paving|testing"
+            "rendering|testing"
+            "rendering|utility|testing"
+            "paving|set|testing"
+            "paving|bdd|testing"
     )
 endif()
 

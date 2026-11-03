@@ -6,7 +6,7 @@
 #include <fstream>
 #include <memory>
 #include <type_traits>
-#include "macro/testing.hpp"
+#include "ariadne-testing.hpp"
 #include "drawing/box_draw.hpp"
 #include "drawing/list_set_draw.hpp"
 #include "rendering/null_rendering.hpp"
@@ -19,7 +19,11 @@ class CountingBoxCanvas final : public NullCanvas {
     Void fill_boundary(List<Point2d> const&) override { ++boundaries; }
 };
 
-Void test_box_drawing() {
+class TestBoxDraw : public Ariadne::Testing::ContextFixture {
+  public:
+    using ContextFixture::ContextFixture;
+
+    Void test_box_drawing() {
     static_assert(not std::is_base_of_v<Drawable2dInterface,ExactBoxSetType>);
     static_assert(not std::is_base_of_v<Drawable2dInterface,ApproximateBoxSetType>);
     static_assert(not std::is_base_of_v<Drawable2dInterface,RealBoxSet>);
@@ -36,18 +40,18 @@ Void test_box_drawing() {
     draw(canvas,projection,exact_set);
     draw(canvas,projection,approx_set);
     draw(canvas,projection,real_set);
-    ARIADNE_TEST_EQUALS(canvas.boundaries,3u)
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries,3u);
 
     BoxDrawable<ExactIntervalType> adapter(exact);
     std::unique_ptr<Drawable2dInterface> copy(adapter.clone());
     copy->draw(canvas,projection);
-    ARIADNE_TEST_EQUALS(canvas.boundaries,4u)
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries,4u);
 
     ListSet<ExactBoxType> list(2u);
     list.adjoin(exact);
     list.adjoin(exact);
     draw(canvas,projection,list);
-    ARIADNE_TEST_EQUALS(canvas.boundaries,6u)
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries,6u);
 }
 
 Void test_box_figure() {
@@ -65,7 +69,7 @@ Void test_box_figure() {
     draw(figure,real);
     draw(figure,approximate);
     figure._paint_all(canvas);
-    ARIADNE_TEST_EQUALS(canvas.boundaries,5u)
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries,5u);
 
     ListSet<ExactBoxType> list(2u);
     list.adjoin(exact);
@@ -73,18 +77,18 @@ Void test_box_figure() {
     figure.draw(list);
     CountingBoxCanvas with_list;
     figure._paint_all(with_list);
-    ARIADNE_TEST_EQUALS(with_list.boundaries,7u)
+    ARIADNE_TESTING_EXPECT_EQUAL(with_list.boundaries,7u);
 
     // Both conversion overloads preserve the actual display bounds.
     RenderingBox primitive{{-1.0,3.0},{0.0,6.0}};
     RenderingBox identity=to_rendering_box(primitive);
-    ARIADNE_TEST_EQUALS(identity.dimension(),2u)
-    ARIADNE_TEST_EQUALS(identity[0].lower_bound(),-1.0)
-    ARIADNE_TEST_EQUALS(identity[1].upper_bound(),6.0)
+    ARIADNE_TESTING_EXPECT_EQUAL(identity.dimension(),2u);
+    ARIADNE_TESTING_EXPECT_EQUAL(identity[0].lower_bound(),-1.0);
+    ARIADNE_TESTING_EXPECT_EQUAL(identity[1].upper_bound(),6.0);
     RenderingBox real_bounds=to_rendering_box(real);
-    ARIADNE_TEST_EQUALS(real_bounds.dimension(),2u)
-    ARIADNE_TEST_EQUALS(real_bounds[0].lower_bound(),0.0)
-    ARIADNE_TEST_EQUALS(real_bounds[1].upper_bound(),5.0)
+    ARIADNE_TESTING_EXPECT_EQUAL(real_bounds.dimension(),2u);
+    ARIADNE_TESTING_EXPECT_EQUAL(real_bounds[0].lower_bound(),0.0);
+    ARIADNE_TESTING_EXPECT_EQUAL(real_bounds[1].upper_bound(),5.0);
 }
 
 Void test_coloured_box_plot() {
@@ -101,15 +105,18 @@ Void test_coloured_box_plot() {
     unsigned char signature[8]{};
     image.read(reinterpret_cast<char*>(signature),8);
     const unsigned char expected[8]={137,80,78,71,13,10,26,10};
-    ARIADNE_TEST_ASSERT(image.gcount()==8)
+    ARIADNE_TESTING_PROVE(image.gcount()==8);
     for(unsigned i=0; i!=8; ++i) {
-        ARIADNE_TEST_EQUALS(signature[i],expected[i])
+        ARIADNE_TESTING_EXPECT_EQUAL(signature[i],expected[i]);
     }
 }
 
-Int main() {
-    ARIADNE_TEST_CALL(test_box_drawing())
-    ARIADNE_TEST_CALL(test_box_figure())
-    ARIADNE_TEST_CALL(test_coloured_box_plot())
-    return ARIADNE_TEST_FAILURES;
+};
+
+int main(int argc, char** argv) {
+    ARIADNE_TESTING_SUITE("test_box_draw");
+    ARIADNE_TESTING_ADD_TEST(TestBoxDraw, test_box_drawing);
+    ARIADNE_TESTING_ADD_TEST(TestBoxDraw, test_box_figure);
+    ARIADNE_TESTING_ADD_TEST(TestBoxDraw, test_coloured_box_plot);
+    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
 }

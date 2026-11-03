@@ -13,7 +13,7 @@
 #include "threading/thread_manager.hpp"
 #include "drawing/box_draw.hpp"
 #include "drawing/geometry_draw.hpp"
-#include "macro/testing.hpp"
+#include "ariadne-testing.hpp"
 
 using namespace Ariadne;
 using namespace std;
@@ -39,14 +39,14 @@ struct FloatDPVector2d : FloatDPVector, Vector2d {
 };
 
 
-class TestAffineSetDraw {
+class TestAffineSetDraw : public Ariadne::Testing::ContextFixture {
     Figure figure;
     ExactBoxType D;
     Vector< Affine<FloatDPBounds> > x;
     ValidatedAffineConstrainedImageSet set;
   public:
-    TestAffineSetDraw()
-        : figure(ApproximateBoxType({{-1,+1},{-1,+1}}),Projection2d(2,0,1)),
+    explicit TestAffineSetDraw(Ariadne::Testing::Context& context)
+        : ContextFixture(context), figure(ApproximateBoxType({{-1,+1},{-1,+1}}),Projection2d(2,0,1)),
           set(ExactBoxType::unit_box(2),Matrix<FloatDP>(2,2,dp),Vector<FloatDP>(2,dp)) { }
 
     Void test_draw() {
@@ -219,16 +219,20 @@ class AffineBoundaryCanvas final : public NullCanvas {
     Void fill_boundary(List<Point2d> const&) override { ++boundaries; }
 };
 
-Void test_infeasible_affine_set_draw() {
+class TestAffineSetDiagnostics : public Ariadne::Testing::ContextFixture {
+  public:
+    using ContextFixture::ContextFixture;
+
+    Void test_infeasible_affine_set_draw() {
     ExactBoxType domain=ExactBoxType::unit_box(2);
     auto variables=Affine<FloatDPBounds>::variables(2,dp);
     ValidatedAffineConstrainedImageSet empty_set(domain,{variables[0],variables[1]});
     empty_set.new_parameter_constraint(variables[0]<=-2.0_x);
 
-    ARIADNE_TEST_ASSERT(empty_set.boundary(0u,1u).empty())
+    ARIADNE_TESTING_PROVE(empty_set.boundary(0u,1u).empty());
     AffineBoundaryCanvas canvas;
     draw(canvas,Projection2d(2u,0u,1u),empty_set);
-    ARIADNE_TEST_EQUALS(canvas.boundaries,0u)
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries,0u);
 }
 
 // The diagnostic rendering path must emit the set, projection and boundary
@@ -270,16 +274,18 @@ Void test_verbose_affine_set_draw() {
         log=capture.str();
     }
 
-    ARIADNE_TEST_EQUALS(canvas.boundaries,1u)
-    ARIADNE_TEST_ASSERT(log.find("set=")!=std::string::npos)
-    ARIADNE_TEST_ASSERT(log.find("projection=")!=std::string::npos)
-    ARIADNE_TEST_ASSERT(log.find("boundary=")!=std::string::npos)
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries,1u);
+    ARIADNE_TESTING_PROVE(log.find("set=")!=std::string::npos);
+    ARIADNE_TESTING_PROVE(log.find("projection=")!=std::string::npos);
+    ARIADNE_TESTING_PROVE(log.find("boundary=")!=std::string::npos);
 }
 
-Int main() {
-    TestAffineSetDraw test;
-    ARIADNE_TEST_CALL(test.test_draw());
-    ARIADNE_TEST_CALL(test_infeasible_affine_set_draw());
-    ARIADNE_TEST_CALL(test_verbose_affine_set_draw());
-    return ARIADNE_TEST_FAILURES;
+};
+
+int main(int argc, char** argv) {
+    ARIADNE_TESTING_SUITE("test_affine_set_draw");
+    ARIADNE_TESTING_ADD_TEST(TestAffineSetDraw, test_draw);
+    ARIADNE_TESTING_ADD_TEST(TestAffineSetDiagnostics, test_infeasible_affine_set_draw);
+    ARIADNE_TESTING_ADD_TEST(TestAffineSetDiagnostics, test_verbose_affine_set_draw);
+    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
 }

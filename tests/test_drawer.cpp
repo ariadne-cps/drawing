@@ -24,7 +24,7 @@
 
 #include <sstream>
 
-#include "macro/testing.hpp"
+#include "ariadne-testing.hpp"
 #include "set/function_set.hpp"
 #include "rendering/null_rendering.hpp"
 #include "drawing/drawer.hpp"
@@ -32,12 +32,9 @@
 
 using namespace Ariadne;
 
-class TestDrawer {
+class TestDrawer : public Ariadne::Testing::ContextFixture {
   public:
-    void test() {
-        ARIADNE_TEST_CALL(test_drawer())
-        ARIADNE_TEST_CALL(test_concrete_drawers())
-    }
+    using ContextFixture::ContextFixture;
 
     void test_concrete_drawers() {
         NullCanvas canvas;
@@ -48,19 +45,19 @@ class TestDrawer {
         box_drawer.draw(canvas,projection,set);
         std::ostringstream box_stream;
         box_drawer._write(box_stream);
-        ARIADNE_TEST_EQUALS(box_stream.str(),"BoxDrawer()")
+        ARIADNE_TESTING_EXPECT_EQUAL(box_stream.str(),"BoxDrawer()");
 
         AffineDrawer affine_drawer(1u);
         affine_drawer.draw(canvas,projection,set);
         std::ostringstream affine_stream;
         affine_drawer._write(affine_stream);
-        ARIADNE_TEST_EQUALS(affine_stream.str(),"AffineDrawer(splittings=1)")
+        ARIADNE_TESTING_EXPECT_EQUAL(affine_stream.str(),"AffineDrawer(splittings=1)");
 
         GridDrawer grid_drawer(1u);
         grid_drawer.draw(canvas,projection,set);
         std::ostringstream grid_stream;
         grid_drawer._write(grid_stream);
-        ARIADNE_TEST_EQUALS(grid_stream.str(),"GridDrawer(fineness=1)")
+        ARIADNE_TESTING_EXPECT_EQUAL(grid_stream.str(),"GridDrawer(fineness=1)");
     }
 
     void test_drawer() {
@@ -73,17 +70,18 @@ class TestDrawer {
 
         std::ostringstream oss;
         drawer._write(oss);
-        ARIADNE_TEST_EQUALS(oss.str(), "NullDrawer()")
+        ARIADNE_TESTING_EXPECT_EQUAL(oss.str(), "NullDrawer()");
 
         Drawer handle = NullDrawer();
         std::ostringstream handle_oss;
         handle_oss << handle;
-        ARIADNE_TEST_EQUALS(handle_oss.str(), "NullDrawer()")
+        ARIADNE_TESTING_EXPECT_EQUAL(handle_oss.str(), "NullDrawer()");
     }
 };
 
-Int main()
-{
-    TestDrawer().test();
-    return ARIADNE_TEST_FAILURES;
+int main(int argc, char** argv) {
+    ARIADNE_TESTING_SUITE("test_drawer");
+    ARIADNE_TESTING_ADD_TEST(TestDrawer, test_drawer);
+    ARIADNE_TESTING_ADD_TEST(TestDrawer, test_concrete_drawers);
+    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
 }

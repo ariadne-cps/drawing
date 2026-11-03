@@ -28,7 +28,7 @@
 #include "drawing/box_draw.hpp"
 #include "drawing/grid_paving_draw.hpp"
 
-#include "macro/general.hpp"
+#include "utility/macros.hpp"
 #include "set/function_set.hpp"
 #include "set/affine_set.hpp"
 #include "paving/grid_paving.hpp"

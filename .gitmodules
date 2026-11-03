@@ -7,3 +7,6 @@
 [submodule "ren"]
 	path = ss/ren
 	url = https://github.com/ariadne-cps/rendering
+[submodule "tst"]
+	path = ss/tst
+	url = https://github.com/ariadne-cps/testing

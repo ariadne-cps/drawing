@@ -5,7 +5,7 @@
 #include "drawing/drawer.hpp"
 #include "drawing/drawer_manager.hpp"
 #include "rendering/null_rendering.hpp"
-#include "macro/testing.hpp"
+#include "ariadne-testing.hpp"
 using namespace Ariadne;
 
 class ValidatedImageCanvas final : public NullCanvas {
@@ -13,7 +13,11 @@ class ValidatedImageCanvas final : public NullCanvas {
     Nat boundaries=0u;
     Void fill_boundary(List<Point2d> const&) override { ++boundaries; }
 };
-Void test_validated_constrained_image_set_draw() {
+class TestValidatedConstrainedImageSetDraw : public Ariadne::Testing::ContextFixture {
+  public:
+    using ContextFixture::ContextFixture;
+
+    Void test_validated_constrained_image_set_draw() {
     auto x=ValidatedScalarMultivariateFunction::coordinate(2u,0u);
     auto y=ValidatedScalarMultivariateFunction::coordinate(2u,1u);
     ValidatedVectorMultivariateFunction mapping({x+y,x-y});
@@ -23,18 +27,21 @@ Void test_validated_constrained_image_set_draw() {
 
     DrawerManager::instance().set_drawer(BoxDrawer());
     draw(canvas,projection,set);
-    ARIADNE_TEST_ASSERT(canvas.boundaries>0u);
+    ARIADNE_TESTING_PROVE(canvas.boundaries>0u);
 
     Figure figure(ApproximateBoxType({{-4,+4},{-4,+4}}),projection);
     draw(figure,set);
     figure._paint_all(canvas);
-    ARIADNE_TEST_ASSERT(canvas.boundaries>1u);
+    ARIADNE_TESTING_PROVE(canvas.boundaries>1u);
 
     DrawerManager::instance().set_drawer(AffineDrawer(0u));
     draw(canvas,projection,set);
-    ARIADNE_TEST_ASSERT(canvas.boundaries>2u);
+    ARIADNE_TESTING_PROVE(canvas.boundaries>2u);
 }
-Int main() {
-    ARIADNE_TEST_CALL(test_validated_constrained_image_set_draw());
-    return ARIADNE_TEST_FAILURES;
+};
+
+int main(int argc, char** argv) {
+    ARIADNE_TESTING_SUITE("test_validated_constrained_image_set_draw");
+    ARIADNE_TESTING_ADD_TEST(TestValidatedConstrainedImageSetDraw, test_validated_constrained_image_set_draw);
+    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
 }

@@ -1,5 +1,5 @@
 #include <type_traits>
-#include "macro/testing.hpp"
+#include "ariadne-testing.hpp"
 #include "drawing/grid_paving_draw.hpp"
 #include "drawing/box_draw.hpp"
 #include "rendering/null_rendering.hpp"
@@ -12,7 +12,11 @@ class PavingCanvas final : public NullCanvas {
     Void fill_boundary(List<Point2d> const&) override { ++boundaries; }
 };
 
-Void test_paving_adapters() {
+class TestPavingDraw : public Ariadne::Testing::ContextFixture {
+  public:
+    using ContextFixture::ContextFixture;
+
+    Void test_paving_adapters() {
     static_assert(not std::is_base_of_v<Drawable2dInterface,SubPavingInterface>);
     static_assert(not std::is_base_of_v<Drawable2dInterface,GridTreePaving>);
 
@@ -23,7 +27,7 @@ Void test_paving_adapters() {
     PavingCanvas canvas;
     Projection2d projection(2u,0u,1u);
     draw(canvas,projection,static_cast<SubPavingInterface const&>(paving));
-    ARIADNE_TEST_EQUALS(canvas.boundaries,1u)
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries,1u);
 
     Figure figure(ApproximateBoxType({{-2,+2},{-2,+2}}),projection);
     figure << static_cast<SubPavingInterface const&>(paving);
@@ -38,10 +42,13 @@ Void test_paving_adapters() {
 
     // Figure owns independent clones of each paving.
     figure._paint_all(canvas);
-    ARIADNE_TEST_EQUALS(canvas.boundaries,8u)
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries,8u);
 }
 
-Int main() {
-    ARIADNE_TEST_CALL(test_paving_adapters())
-    return ARIADNE_TEST_FAILURES;
+};
+
+int main(int argc, char** argv) {
+    ARIADNE_TESTING_SUITE("test_paving_draw");
+    ARIADNE_TESTING_ADD_TEST(TestPavingDraw, test_paving_adapters);
+    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
 }

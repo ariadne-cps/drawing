@@ -5,7 +5,7 @@
 #include "drawing/drawer_manager.hpp"
 #include "drawing/drawer.hpp"
 #include "rendering/null_rendering.hpp"
-#include "macro/testing.hpp"
+#include "ariadne-testing.hpp"
 
 using namespace Ariadne;
 
@@ -15,7 +15,11 @@ class ConstraintCanvas final : public NullCanvas {
     Void fill_boundary(List<Point2d> const&) override { ++boundaries; }
 };
 
-Void test_bounded_constraint_set_draw() {
+class TestConstraintSetDraw : public Ariadne::Testing::ContextFixture {
+  public:
+    using ContextFixture::ContextFixture;
+
+    Void test_bounded_constraint_set_draw() {
     auto x=EffectiveScalarMultivariateFunction::coordinate(2u,0u);
     auto y=EffectiveScalarMultivariateFunction::coordinate(2u,1u);
     EffectiveVectorMultivariateFunction identity({x,y});
@@ -25,10 +29,13 @@ Void test_bounded_constraint_set_draw() {
     DrawerManager::instance().set_drawer(BoxDrawer());
     ConstraintCanvas canvas;
     draw(canvas,Projection2d(2u,0u,1u),bounded);
-    ARIADNE_TEST_ASSERT(canvas.boundaries>0u);
+    ARIADNE_TESTING_PROVE(canvas.boundaries>0u);
     DrawerManager::instance().set_drawer(AffineDrawer(0u));
 }
-Int main() {
-    ARIADNE_TEST_CALL(test_bounded_constraint_set_draw());
-    return ARIADNE_TEST_FAILURES;
+};
+
+int main(int argc, char** argv) {
+    ARIADNE_TESTING_SUITE("test_constraint_set_draw");
+    ARIADNE_TESTING_ADD_TEST(TestConstraintSetDraw, test_bounded_constraint_set_draw);
+    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
 }

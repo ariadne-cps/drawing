@@ -12,18 +12,18 @@
 #include "drawing/geometry_draw.hpp"
 #include "drawing/paving_draw.hpp"
 #include "drawing/grid_paving_draw.hpp"
-#include "macro/testing.hpp"
+#include "ariadne-testing.hpp"
 using namespace Ariadne;
 
-class TestConstrainedImageSetDraw {
+class TestConstrainedImageSetDraw : public Ariadne::Testing::ContextFixture {
     Figure figure;
   public:
-    TestConstrainedImageSetDraw()
-        : figure(ApproximateBoxType({{-1,+1},{-1,+1}}),Projection2d(2,0,1)) { }
+    explicit TestConstrainedImageSetDraw(Ariadne::Testing::Context& context)
+        : ContextFixture(context), figure(ApproximateBoxType({{-1,+1},{-1,+1}}),Projection2d(2,0,1)) { }
     Void test_draw(const StringType& str, const EffectiveConstrainedImageSet& set, Nat acc) {
         figure.clear();
         figure.set_bounding_box(ExactBoxType({{-2.75_x,+2.75_x},{-1.5_x,+2.0_x}}));
-        ARIADNE_TEST_ASSERT(set.dimension()<=std::numeric_limits<Nat>::max());
+        ARIADNE_TESTING_PROVE(set.dimension()<=std::numeric_limits<Nat>::max());
         GridTreePaving paving(static_cast<Nat>(set.dimension()));
         adjoin_outer_approximation_to(paving,set,acc+1);
         figure.set_fill_opacity(1.0);
@@ -58,8 +58,8 @@ class TestConstrainedImageSetDraw {
         test_draw("concave",EffectiveConstrainedImageSet(RealBox(2,RealInterval(-1.01_dec,1.01_dec)),{s,1.0_x*s*s+t},{2*s+0.25_x*s*s+t-2.0_x<=0}),acc);
     }
 };
-Int main() {
-    TestConstrainedImageSetDraw test;
-    ARIADNE_TEST_CALL(test.test_draw());
-    return ARIADNE_TEST_FAILURES;
+int main(int argc, char** argv) {
+    ARIADNE_TESTING_SUITE("test_constrained_image_set_draw");
+    ARIADNE_TESTING_ADD_TEST(TestConstrainedImageSetDraw, test_draw);
+    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
 }

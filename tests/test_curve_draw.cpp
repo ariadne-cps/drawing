@@ -4,7 +4,7 @@
  ***************************************************************************/
 #include "drawing/geometry_draw.hpp"
 #include "rendering/null_rendering.hpp"
-#include "macro/testing.hpp"
+#include "ariadne-testing.hpp"
 using namespace Ariadne;
 
 class CurveCanvas : public NullCanvas {
@@ -17,7 +17,11 @@ class CurveCanvas : public NullCanvas {
     Void stroke() override { ++strokes; }
 };
 
-Void test_interpolated_curve_draw() {
+class TestCurveDraw : public Ariadne::Testing::ContextFixture {
+  public:
+    using ContextFixture::ContextFixture;
+
+    Void test_interpolated_curve_draw() {
     using P=InterpolatedCurve::PointType;
     P a({FloatDPApproximation(1,dp),FloatDPApproximation(2,dp)});
     P b({FloatDPApproximation(3,dp),FloatDPApproximation(4,dp)});
@@ -26,40 +30,43 @@ Void test_interpolated_curve_draw() {
     InterpolatedCurve empty;
     CurveCanvas empty_canvas;
     draw(empty_canvas,projection,empty);
-    ARIADNE_TEST_EQUALS(empty_canvas.moves,0u);
-    ARIADNE_TEST_EQUALS(empty_canvas.lines,0u);
-    ARIADNE_TEST_EQUALS(empty_canvas.fills,0u);
-    ARIADNE_TEST_EQUALS(empty_canvas.strokes,0u);
+    ARIADNE_TESTING_EXPECT_EQUAL(empty_canvas.moves,0u);
+    ARIADNE_TESTING_EXPECT_EQUAL(empty_canvas.lines,0u);
+    ARIADNE_TESTING_EXPECT_EQUAL(empty_canvas.fills,0u);
+    ARIADNE_TESTING_EXPECT_EQUAL(empty_canvas.strokes,0u);
 
     InterpolatedCurve single(a);
     CurveCanvas single_canvas;
     draw(single_canvas,projection,single);
-    ARIADNE_TEST_EQUALS(single_canvas.moves,1u);
-    ARIADNE_TEST_EQUALS(single_canvas.lines,0u);
-    ARIADNE_TEST_EQUALS(single_canvas.fills,1u);
+    ARIADNE_TESTING_EXPECT_EQUAL(single_canvas.moves,1u);
+    ARIADNE_TESTING_EXPECT_EQUAL(single_canvas.lines,0u);
+    ARIADNE_TESTING_EXPECT_EQUAL(single_canvas.fills,1u);
 
     CurveCanvas canvas;
     InterpolatedCurve open(a,b);
     draw(canvas,projection,open);
-    ARIADNE_TEST_EQUALS(canvas.moves,1u);
-    ARIADNE_TEST_EQUALS(canvas.lines,1u);
-    ARIADNE_TEST_EQUALS(canvas.strokes,1u);
-    ARIADNE_TEST_EQUALS(canvas.last_x,3.0);
-    ARIADNE_TEST_EQUALS(canvas.last_y,4.0);
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.moves,1u);
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.lines,1u);
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.strokes,1u);
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.last_x,3.0);
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.last_y,4.0);
 
     open.insert(Dyadic(2),a);
     draw(canvas,projection,open);
-    ARIADNE_TEST_EQUALS(canvas.fills,1u);
-    ARIADNE_TEST_EQUALS(canvas.lines,3u);
-    ARIADNE_TEST_EQUALS(canvas.last_x,1.0);
-    ARIADNE_TEST_EQUALS(canvas.last_y,2.0);
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.fills,1u);
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.lines,3u);
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.last_x,1.0);
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.last_y,2.0);
 
     InterpolatedCurve flat(FloatDP(0,dp),Vector<FloatDP>({1.0_x,2.0_x},dp));
     flat.insert(FloatDP(1,dp),Vector<FloatDP>({1.0_x,2.0_x},dp));
     draw(canvas,projection,flat);
-    ARIADNE_TEST_EQUALS(canvas.fills,2u);
+    ARIADNE_TESTING_EXPECT_EQUAL(canvas.fills,2u);
 }
-Int main() {
-    ARIADNE_TEST_CALL(test_interpolated_curve_draw());
-    return ARIADNE_TEST_FAILURES;
+};
+
+int main(int argc, char** argv) {
+    ARIADNE_TESTING_SUITE("test_curve_draw");
+    ARIADNE_TESTING_ADD_TEST(TestCurveDraw, test_interpolated_curve_draw);
+    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
 }

@@ -4,7 +4,7 @@
  *  Copyright  2008-26  Pieter Collins, Luca Geretti
  ****************************************************************************/
 
-#include "macro/testing.hpp"
+#include "ariadne-testing.hpp"
 
 #include "function/function.hpp"
 #include "rendering/figure.hpp"
@@ -19,12 +19,9 @@
 
 using namespace Ariadne;
 
-class TestFigureDrawing {
+class TestFigureDrawing : public Ariadne::Testing::ContextFixture {
   public:
-    void test() {
-        ARIADNE_TEST_CALL(test_box_adapters())
-        ARIADNE_TEST_CALL(test_default_drawer())
-    }
+    using ContextFixture::ContextFixture;
 
     void test_box_adapters() {
         RealBox real_box({{-0.5_dec,0.5_dec},{-0.25_dec,0.25_dec}});
@@ -122,7 +119,9 @@ class TestFigureDrawing {
     }
 };
 
-Int main() {
-    TestFigureDrawing().test();
-    return ARIADNE_TEST_FAILURES;
+int main(int argc, char** argv) {
+    ARIADNE_TESTING_SUITE("test_figure_drawing");
+    ARIADNE_TESTING_ADD_TEST(TestFigureDrawing, test_box_adapters);
+    ARIADNE_TESTING_ADD_TEST(TestFigureDrawing, test_default_drawer);
+    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
 }
