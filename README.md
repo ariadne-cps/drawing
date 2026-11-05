@@ -65,7 +65,3 @@ Windows Release CI installs Drawing, then runs `python/tutorials/tutorial_drawin
 If you would like to contribute to Ariadne Drawing, please contact the developer:
 
 - Luca Geretti <luca.geretti@univr.it>
-
-## License
-
-Ariadne Drawing is released under the GNU General Public License v3.0.

@@ -1,4 +1,4 @@
-from pyariadne import *
+from pyariadne_drawing import *
 
 
 def test_drawing_command_line():
@@ -8,10 +8,10 @@ def test_drawing_command_line():
     assert not cli.acquire(["", "--drawer", "invalid"])
 
 def test_drawing_bindings():
-    import pyariadne
+    import pyariadne_drawing
     for name in ("Drawer", "BoxDrawer", "AffineDrawer", "GridDrawer",
                  "DrawerManager", "DrawingCommandLineInterface", "Figure"):
-        assert hasattr(pyariadne, name), name
+        assert hasattr(pyariadne_drawing, name), name
     manager = DrawerManager.instance()
     manager.set_drawer(AffineDrawer(0))
     assert isinstance(manager.drawer(), Drawer)
@@ -46,13 +46,13 @@ def test_drawing_single_box_constructors():
 
 def test_exact_box_list_set_uses_existing_set_binding():
     # Drawing must not register ListSet<ExactBoxType> twice.
-    import pyariadne
-    assert pyariadne.ExactBoxListSet is pyariadne.ListSetFloatDPExactBox
-    boxes = pyariadne.ExactBoxListSet(2)
+    import pyariadne_drawing
+    assert pyariadne_drawing.ExactBoxListSet is pyariadne_drawing.ListSetFloatDPExactBox
+    boxes = pyariadne_drawing.ExactBoxListSet(2)
     assert boxes.size() == 0
-    boxes.adjoin(pyariadne.FloatDPExactBox([
-        {pyariadne.exact(-1): pyariadne.exact(1)},
-        {pyariadne.exact(-1): pyariadne.exact(1)},
+    boxes.adjoin(pyariadne_drawing.FloatDPExactBox([
+        {pyariadne_drawing.exact(-1): pyariadne_drawing.exact(1)},
+        {pyariadne_drawing.exact(-1): pyariadne_drawing.exact(1)},
     ]))
     assert boxes.size() == 1
     assert boxes.dimension() == 2

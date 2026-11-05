@@ -14,7 +14,7 @@ if(Python3_FOUND)
     endif()
     add_subdirectory(bindings)
     if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
-        ariadne_finalize_python_module(NAME drawing)
+        ariadne_finalize_python_module(NAME drawing MODULE_IMPORT_NAME pyariadne_drawing)
         # Keep the module inside the selected CMake install prefix.
         # An absolute Python3_SITEARCH would ignore cmake --install --prefix.
         if(WIN32)

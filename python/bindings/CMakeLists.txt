@@ -26,4 +26,5 @@ target_link_libraries(pyariadne-drawing INTERFACE
     pyariadne-paving pyariadne-rendering
 )
 
-ariadne_add_python_module(NAME drawing MODULE_SOURCE drawing_module.cpp)
+ariadne_add_python_module(NAME drawing
+    MODULE_IMPORT_NAME pyariadne_drawing MODULE_SOURCE drawing_module.cpp)

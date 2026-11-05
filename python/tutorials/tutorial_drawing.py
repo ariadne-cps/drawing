@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from pyariadne import *
+from pyariadne_drawing import *
 
 
 def section(title):
