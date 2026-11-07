@@ -9,7 +9,7 @@
 #include "drawing/geometry_draw.hpp"
 #include "drawing/point_draw.hpp"
 #include "drawing/paving_draw.hpp"
-#include "drawing/grid_paving_draw.hpp"
+#include "drawing/binary_tree_paving_draw.hpp"
 #include "drawing/augmented_paving_draw.hpp"
 #include "drawing/list_set_draw.hpp"
 #include "drawing/drawer.hpp"

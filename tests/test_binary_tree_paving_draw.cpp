@@ -1,7 +1,7 @@
 /***************************************************************************
  * Drawing-only dispatch for grid cells, pavings and compact box sets.
  ***************************************************************************/
-#include "drawing/grid_paving_draw.hpp"
+#include "drawing/binary_tree_paving_draw.hpp"
 #include "drawing/geometry_draw.hpp"
 #include "rendering/null_rendering.hpp"
 #include "ariadne-testing.hpp"
@@ -16,9 +16,9 @@ class TestGridPavingDraw : public Ariadne::Testing::ContextFixture {
   public:
     using ContextFixture::ContextFixture;
 
-    Void test_grid_paving_draw() {
+    Void test_binary_tree_paving_draw() {
     GridCell cell(Grid(1u),0u,BinaryWord("01"));
-    GridTreePaving set(cell);
+    BinaryTreePaving set(cell);
     auto product_set=product(cell,set);
     GridPavingCanvas canvas;
     Projection2d projection(2u,0u,1u);
@@ -28,13 +28,13 @@ class TestGridPavingDraw : public Ariadne::Testing::ContextFixture {
     draw(canvas,projection,product_set);
     ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries,2u);
 
-    // The borrowed GridTreeSubpaving view must render the same enabled cells.
+    // The borrowed BinaryTreeSubpaving view must render the same enabled cells.
     // Also verify that its empty range does not emit a boundary.
-    GridTreeSubpaving const& subpaving=product_set;
+    BinaryTreeSubpaving const& subpaving=product_set;
     draw(canvas,projection,subpaving);
     ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries,3u);
-    GridTreePaving empty_paving(2u);
-    GridTreeSubpaving const& empty_subpaving=empty_paving;
+    BinaryTreePaving empty_paving(2u);
+    BinaryTreeSubpaving const& empty_subpaving=empty_paving;
     draw(canvas,projection,empty_subpaving);
     ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries,3u);
 
@@ -60,7 +60,7 @@ class TestGridPavingDraw : public Ariadne::Testing::ContextFixture {
 };
 
 int main(int argc, char** argv) {
-    ARIADNE_TESTING_SUITE("test_grid_paving_draw");
-    ARIADNE_TESTING_ADD_TEST(TestGridPavingDraw, test_grid_paving_draw);
+    ARIADNE_TESTING_SUITE("test_binary_tree_paving_draw");
+    ARIADNE_TESTING_ADD_TEST(TestGridPavingDraw, test_binary_tree_paving_draw);
     return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
 }

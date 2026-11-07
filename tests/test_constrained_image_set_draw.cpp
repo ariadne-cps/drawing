@@ -6,12 +6,12 @@
 #include "function/function.hpp"
 #include "geometry/box.hpp"
 #include "set/function_set.hpp"
-#include "paving/grid_paving.hpp"
+#include "paving/binary_tree_paving.hpp"
 #include "paving/set_approximation.hpp"
 #include "drawing/box_draw.hpp"
 #include "drawing/geometry_draw.hpp"
 #include "drawing/paving_draw.hpp"
-#include "drawing/grid_paving_draw.hpp"
+#include "drawing/binary_tree_paving_draw.hpp"
 #include "ariadne-testing.hpp"
 using namespace Ariadne;
 
@@ -24,7 +24,7 @@ class TestConstrainedImageSetDraw : public Ariadne::Testing::ContextFixture {
         figure.clear();
         figure.set_bounding_box(ExactBoxType({{-2.75_x,+2.75_x},{-1.5_x,+2.0_x}}));
         ARIADNE_TESTING_PROVE(set.dimension()<=std::numeric_limits<Nat>::max());
-        GridTreePaving paving(static_cast<Nat>(set.dimension()));
+        BinaryTreePaving paving(static_cast<Nat>(set.dimension()));
         adjoin_outer_approximation_to(paving,set,acc+1);
         figure.set_fill_opacity(1.0);
         figure.set_fill_colour(red);

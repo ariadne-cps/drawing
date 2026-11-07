@@ -14,7 +14,7 @@
 #include "drawing/geometry_draw.hpp"
 #include "drawing/point_draw.hpp"
 #include "drawing/paving_draw.hpp"
-#include "drawing/grid_paving_draw.hpp"
+#include "drawing/binary_tree_paving_draw.hpp"
 #include "drawing/list_set_draw.hpp"
 
 #include "rendering/figure.hpp"
@@ -144,7 +144,7 @@ Void export_drawing_figure_adapters(pybind11::module& module)
             Ariadne::draw(figure,cell); return figure;
         }, reference_internal);
     figure_class.def("draw",
-        [](Figure& figure, GridTreeSubpaving const& paving) -> Figure& {
+        [](Figure& figure, BinaryTreeSubpaving const& paving) -> Figure& {
             Ariadne::draw(figure,static_cast<SubPavingInterface const&>(paving)); return figure;
         }, reference_internal);
     figure_class.def("draw",

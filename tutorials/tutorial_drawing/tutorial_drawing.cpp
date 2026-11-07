@@ -83,7 +83,7 @@ int main() {
     Figure cells(to_rendering_box(view2d),plane);
     cells.draw(cell);
     save(cells,"tutorial_drawing_cell");
-    GridTreePaving paving(grid);
+    BinaryTreePaving paving(grid);
     paving.adjoin(cell);
     Figure paving_figure(to_rendering_box(view2d),plane);
     paving_figure.draw(static_cast<SubPavingInterface const&>(paving));

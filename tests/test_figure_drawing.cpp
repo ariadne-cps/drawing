@@ -15,7 +15,7 @@
 #include "geometry/box.hpp"
 #include "set/curve.hpp"
 #include "set/function_set.hpp"
-#include "paving/grid_paving.hpp"
+#include "paving/binary_tree_paving.hpp"
 
 using namespace Ariadne;
 
@@ -100,7 +100,7 @@ class TestFigureDrawing : public Ariadne::Testing::ContextFixture {
         g.write("test_rendering-curve");
         g.clear();
 
-        GridTreePaving gts(2);
+        BinaryTreePaving gts(2);
         gts.adjoin_outer_approximation(bx1,4);
         gts.adjoin_outer_approximation(bx2,5);
         gts.adjoin_outer_approximation(bx3,6);

@@ -3,7 +3,7 @@
 #define ARIADNE_DRAWING_AUGMENTED_PAVING_DRAW_HPP
 
 #include "paving/augmented_paving.hpp"
-#include "drawing/grid_paving_draw.hpp"
+#include "drawing/binary_tree_paving_draw.hpp"
 #include "rendering/figure.hpp"
 
 namespace Ariadne {

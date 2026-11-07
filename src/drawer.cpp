@@ -26,12 +26,12 @@
 #include "drawing/drawer.hpp"
 #include "drawing/geometry_draw.hpp"
 #include "drawing/box_draw.hpp"
-#include "drawing/grid_paving_draw.hpp"
+#include "drawing/binary_tree_paving_draw.hpp"
 
 #include "utility/macros.hpp"
 #include "set/function_set.hpp"
 #include "set/affine_set.hpp"
-#include "paving/grid_paving.hpp"
+#include "paving/binary_tree_paving.hpp"
 #include "paving/set_approximation.hpp"
 
 #include "rendering/rendering_interface.hpp"

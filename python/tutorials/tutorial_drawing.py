@@ -200,7 +200,7 @@ def tutorial_rendering():
     save(collection, "tutorial_drawing_list")
 
     grid = Grid(2)
-    paving = GridTreePaving(grid)
+    paving = BinaryTreePaving(grid)
     paving.adjoin_over_approximation(FloatDPExactBox([
         {exact(-1): exact(1)}, {exact(-1): exact(1)},
     ]), 0)

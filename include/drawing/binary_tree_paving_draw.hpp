@@ -1,5 +1,5 @@
 /***************************************************************************
- *            drawing/grid_paving_draw.hpp
+ *            drawing/binary_tree_paving_draw.hpp
  *
  *  Copyright  2026  Luca Geretti
  ****************************************************************************/
@@ -11,13 +11,13 @@
 #define ARIADNE_GRID_PAVING_DRAW_HPP
 
 #include "drawing/paving_draw.hpp"
-#include "paving/grid_paving.hpp"
+#include "paving/binary_tree_paving.hpp"
 
 namespace Ariadne {
 
-Void draw(CanvasInterface&, Projection2d const&, GridTreeSubpaving const&);
+Void draw(CanvasInterface&, Projection2d const&, BinaryTreeSubpaving const&);
 Void draw(CanvasInterface&, Projection2d const&, GridCell const&);
-Void draw(CanvasInterface&, Projection2d const&, GridTreePaving const&);
+Void draw(CanvasInterface&, Projection2d const&, BinaryTreePaving const&);
 Void draw(CanvasInterface&, Projection2d const&, EffectiveEuclideanCompactSetInterface const&);
 
 // The Figure clones the adapter; it must not retain a borrowed grid cell.

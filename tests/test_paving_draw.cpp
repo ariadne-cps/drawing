@@ -1,6 +1,6 @@
 #include <type_traits>
 #include "ariadne-testing.hpp"
-#include "drawing/grid_paving_draw.hpp"
+#include "drawing/binary_tree_paving_draw.hpp"
 #include "drawing/box_draw.hpp"
 #include "rendering/null_rendering.hpp"
 
@@ -18,10 +18,10 @@ class TestPavingDraw : public Ariadne::Testing::ContextFixture {
 
     Void test_paving_adapters() {
     static_assert(not std::is_base_of_v<Drawable2dInterface,SubPavingInterface>);
-    static_assert(not std::is_base_of_v<Drawable2dInterface,GridTreePaving>);
+    static_assert(not std::is_base_of_v<Drawable2dInterface,BinaryTreePaving>);
 
     Grid grid(2u);
-    GridTreePaving paving(grid);
+    BinaryTreePaving paving(grid);
     paving.adjoin(GridCell(grid,0u,BinaryWord()));
 
     PavingCanvas canvas;
@@ -31,7 +31,7 @@ class TestPavingDraw : public Ariadne::Testing::ContextFixture {
 
     Figure figure(ApproximateBoxType({{-2,+2},{-2,+2}}),projection);
     figure << static_cast<SubPavingInterface const&>(paving);
-    PavingHandle handle(new GridTreePaving(paving));
+    PavingHandle handle(new BinaryTreePaving(paving));
     figure << handle;
     SubPavingHandle sub_handle(static_cast<SubPavingInterface const&>(paving));
     figure << sub_handle;

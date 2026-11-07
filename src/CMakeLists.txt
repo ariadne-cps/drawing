@@ -7,7 +7,7 @@ add_library(DRAWING_SRC OBJECT
     drawing_command_line_interface.cpp
     figure_draw.cpp
     function_set_draw.cpp
-    grid_paving_draw.cpp
+    binary_tree_paving_draw.cpp
 )
 
 target_include_directories(DRAWING_SRC PRIVATE

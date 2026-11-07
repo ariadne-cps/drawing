@@ -9,7 +9,7 @@ set(UNIT_TESTS
     test_augmented_paving_draw
     test_figure_drawing
     test_validated_constrained_image_set_draw
-    test_grid_paving_draw
+    test_binary_tree_paving_draw
     test_curve_draw
     test_constraint_set_draw
     test_constrained_image_set_draw
