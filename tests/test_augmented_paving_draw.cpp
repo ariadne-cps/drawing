@@ -29,7 +29,7 @@ class TestAugmentedDraw : public Ariadne::Testing::ContextFixture {
         copy->draw(canvas,projection);
         ARIADNE_TESTING_PROVE(canvas.boundaries>0u);
 
-        Figure figure(ApproximateBoxType({{-2,+2},{-2,+2}}),projection);
+        Figure figure(ApproximateBoxType({{-2,+2},{-2,+2},{-2,+2},{-2,+2}}),projection);
         draw(figure,paving);
         figure << paving;
         figure._paint_all(canvas);
