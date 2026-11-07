@@ -6,6 +6,7 @@ set(UNIT_TESTS
     test_point_draw
     test_box_draw
     test_paving_draw
+    test_augmented_paving_draw
     test_figure_drawing
     test_validated_constrained_image_set_draw
     test_grid_paving_draw
