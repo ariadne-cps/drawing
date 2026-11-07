@@ -18,7 +18,9 @@ class AugmentedPavingDrawable final : public Drawable2dInterface {
   public:
     explicit AugmentedPavingDrawable(AugmentedPaving const& paving) : _paving(paving) { }
     AugmentedPavingDrawable* clone() const override { return new AugmentedPavingDrawable(*this); }
-    DimensionType dimension() const override { return _paving.dimension(); }
+    DimensionType dimension() const override {
+        return _paving.dimension()+_paving.auxiliary_mapping().result_size();
+    }
     Void draw(CanvasInterface& canvas, Projection2d const& projection) const override {
         Ariadne::draw(canvas,projection,_paving);
     }

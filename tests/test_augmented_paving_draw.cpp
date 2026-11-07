@@ -24,16 +24,21 @@ class TestAugmentedDraw : public Ariadne::Testing::ContextFixture {
         ARIADNE_TESTING_PROVE(canvas.boundaries>0u);
 
         AugmentedPavingDrawable drawable(paving);
-        ARIADNE_TESTING_EXPECT_EQUAL(drawable.dimension(),paving.dimension());
+        // Rendering the auxiliary graph requires the state and auxiliary axes.
+        ARIADNE_TESTING_EXPECT_EQUAL(paving.dimension(),2u);
+        ARIADNE_TESTING_EXPECT_EQUAL(drawable.dimension(),4u);
+        ARIADNE_TESTING_EXPECT_EQUAL(drawable.dimension(),paving.state_auxiliary_paving().dimension());
         auto copy=std::unique_ptr<Drawable2dInterface>(drawable.clone());
+        ARIADNE_TESTING_EXPECT_EQUAL(copy->dimension(),drawable.dimension());
         copy->draw(canvas,projection);
         ARIADNE_TESTING_PROVE(canvas.boundaries>0u);
 
         Figure figure(ApproximateBoxType({{-2,+2},{-2,+2},{-2,+2},{-2,+2}}),projection);
         draw(figure,paving);
         figure << paving;
+        const Nat boundaries_before_figure=canvas.boundaries;
         figure._paint_all(canvas);
-        ARIADNE_TESTING_PROVE(canvas.boundaries>0u);
+        ARIADNE_TESTING_PROVE(canvas.boundaries>boundaries_before_figure);
     }
 };
 int main(int argc, char** argv) {
