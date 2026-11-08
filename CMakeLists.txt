@@ -28,8 +28,6 @@ if(EXISTS "${PROJECT_SOURCE_DIR}/.git")
         "rendering|utility" "paving|bdd|threading|logging|utility")
     require_same_dependency_commit(PythonCommon CHAINS
         "paving|bdd|python-common" "rendering|python-common")
-    require_same_dependency_commit(Testing CHAINS
-        "testing" "paving|testing" "rendering|testing")
 endif()
 
 setup_project()
