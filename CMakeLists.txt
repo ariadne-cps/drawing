@@ -20,10 +20,10 @@ if(NOT TARGET ariadne-build)
 endif()
 
 if(EXISTS "${PROJECT_SOURCE_DIR}/.git")
-    # Pinned child commits guarantee their internal consistency.
+    # Testing is a development-only dependency, excluded from commit consistency checks.
     # Preserve explicit comparisons across independent dependency branches.
     require_same_dependency_commit(Build CHAINS
-        "build" "paving|build" "rendering|build" "testing|build")
+        "build" "paving|build" "rendering|build")
     require_same_dependency_commit(Utility CHAINS
         "rendering|utility" "paving|bdd|threading|logging|utility")
     require_same_dependency_commit(PythonCommon CHAINS
@@ -58,7 +58,7 @@ setup_project_library(
     LINK_LIBRARIES drawing
 )
 
-setup_standalone_project_tests(
+setup_standalone_project(
     TARGET ariadne-drawing
     TEST_DIRECTORY tests
     TEST_TARGET tests
