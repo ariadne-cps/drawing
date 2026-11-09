@@ -31,7 +31,7 @@ class TestPavingDraw : public Ariadne::Testing::ContextFixture {
 
     Figure figure(ApproximateBoxType({{-2,+2},{-2,+2}}),projection);
     figure << static_cast<SubPavingInterface const&>(paving);
-    PavingHandle handle(new BinaryTreePaving(paving));
+    Paving handle(new BinaryTreePaving(paving));
     figure << handle;
     SubPavingHandle sub_handle(static_cast<SubPavingInterface const&>(paving));
     figure << sub_handle;
