@@ -33,7 +33,7 @@ class TestPavingDraw : public Ariadne::Testing::ContextFixture {
     figure << static_cast<SubPavingInterface const&>(paving);
     Paving handle(new BinaryTreePaving(paving));
     figure << handle;
-    SubPavingHandle sub_handle(static_cast<SubPavingInterface const&>(paving));
+    SubPaving sub_handle(static_cast<SubPavingInterface const&>(paving));
     figure << sub_handle;
     figure.draw(static_cast<SubPavingInterface const&>(paving));
     figure.draw(paving);

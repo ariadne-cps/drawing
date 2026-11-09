@@ -57,13 +57,13 @@ inline Void draw(Figure& figure, Paving const& paving) {
 inline Figure& operator<<(Figure& figure, Paving const& paving) {
     draw(figure,paving); return figure;
 }
-inline Void draw_to_figure(Figure& figure, SubPavingHandle const& paving) {
+inline Void draw_to_figure(Figure& figure, SubPaving const& paving) {
     draw_to_figure(figure,static_cast<SubPavingInterface const&>(paving));
 }
-inline Void draw(Figure& figure, SubPavingHandle const& paving) {
+inline Void draw(Figure& figure, SubPaving const& paving) {
     draw_to_figure(figure,paving);
 }
-inline Figure& operator<<(Figure& figure, SubPavingHandle const& paving) {
+inline Figure& operator<<(Figure& figure, SubPaving const& paving) {
     draw(figure,paving); return figure;
 }
 
