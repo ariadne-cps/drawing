@@ -6,4 +6,3 @@ if(NOT TARGET rendering)
     ariadne_add_submodule(rendering)
 endif()
 
-ariadne_setup_testing()
