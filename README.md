@@ -37,17 +37,6 @@ cmake --build build --parallel --target everything
 ctest --test-dir build --output-on-failure
 ```
 
-## C++ tutorial
-
-The C++ tutorial is an external consumer of an installed library. Build and install Drawing first, then configure the tutorial with `CMAKE_PREFIX_PATH` pointing to the install prefix:
-
-```bash
-cmake --install build --prefix "$PWD/install"
-cmake -S tutorials/tutorial_drawing -B build-tutorial -DCMAKE_PREFIX_PATH="$PWD/install"
-cmake --build build-tutorial --parallel
-./build-tutorial/tutorial_drawing
-```
-
 ## Python bindings
 
 When a compatible Python development environment is available, the standalone build produces `pyariadne` from the transitive Paving and Set bindings plus the Rendering and Drawing bindings.
@@ -55,10 +44,6 @@ When a compatible Python development environment is available, the standalone bu
 ## Extraction status
 
 The drawing adapters live in this standalone repository; Paving and Rendering remain independent submodules. CMake checks Configuration consistency in the Paving dependency chain and Python Common consistency across Paving and Rendering. Rendering now pins the same Configuration commit, and cross-chain Configuration and Utility equality are checked. Release CI verifies the installed Drawing library through a separately configured C++ tutorial.
-
-## Windows Python tutorial
-
-Windows Release CI installs Drawing, then runs `python/tutorials/tutorial_drawing.py` using the installed `Lib/site-packages` directory on `PYTHONPATH` and the installed `bin` directory on `PATH`. The `pyariadne-paving` INTERFACE target contributes objects to the combined `pyariadne` extension; it does not produce a separate `.pyd` file.
 
 ## Contribution guidelines
 
