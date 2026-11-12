@@ -6,24 +6,24 @@
  ****************************************************************************/
 
 /*
- *  This file is part of Ariadne.
+ *  This file is part of Ariadne Drawing.
  *
- *  Ariadne is free software: you can redistribute it and/or modify
+ *  Ariadne Drawing is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  Ariadne is distributed in the hope that it will be useful,
+ *  Ariadne Drawing is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with Ariadne.  If not, see <https://www.gnu.org/licenses/>.
+ *  along with Ariadne Drawing. If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*! \file drawing/drawer_interface.hpp
- *  \brief Interface for drawing affine and nonlinear sets.
+/** @file drawing/drawer_interface.hpp
+ *  @brief Abstract interface for geometric drawers.
  */
 
 #ifndef ARIADNE_DRAWER_INTERFACE_HPP
@@ -37,15 +37,19 @@ namespace Ariadne {
 
 
 typedef Void Void;
+/** @brief CanvasInterface provides abstract interface for geometric drawers. */
 class CanvasInterface;
+/** @brief Projection2d provides abstract interface for geometric drawers. */
 struct Projection2d;
 typedef Projection2d Projection2d;
+/** @brief ValidatedConstrainedImageSet provides abstract interface for geometric drawers. */
 class ValidatedConstrainedImageSet;
 
 //! \brief A class for computing outer approximations to sets defined by functions.
 class DrawerInterface : public WritableInterface
 {
   public:
+    /** @brief Draw the object on a canvas. */
     virtual Void draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set) const = 0;
 };
 
@@ -55,6 +59,7 @@ class Drawer
 {
   public:
     using Handle<const DrawerInterface>::Handle;
+    /** @brief Draw the object on a canvas. */
     inline Void draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set) const {
         return this->_ptr->draw(cnvs,proj,set); }
     friend inline OutputStream& operator<<(OutputStream& os, Drawer const& drw) {
