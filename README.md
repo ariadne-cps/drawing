@@ -1,5 +1,6 @@
 # Ariadne Drawing
 
+[![Format Status](https://github.com/ariadne-cps/drawing/actions/workflows/format.yml/badge.svg)](https://github.com/ariadne-cps/drawing/actions/workflows/format.yml)
 [![macOS Status](https://github.com/ariadne-cps/drawing/actions/workflows/macos.yml/badge.svg)](https://github.com/ariadne-cps/drawing/actions/workflows/macos.yml)
 [![Ubuntu Status](https://github.com/ariadne-cps/drawing/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/ariadne-cps/drawing/actions/workflows/ubuntu.yml)
 [![Windows Status](https://github.com/ariadne-cps/drawing/actions/workflows/win.yml/badge.svg)](https://github.com/ariadne-cps/drawing/actions/workflows/win.yml)
