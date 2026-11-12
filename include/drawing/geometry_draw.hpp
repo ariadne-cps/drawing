@@ -1,7 +1,32 @@
 /***************************************************************************
  *            drawing/geometry_draw.hpp
- *  Mathematical rendering adapters owned exclusively by Drawing.
- ***************************************************************************/
+ *
+ *  Copyright  2026  Luca Geretti
+ *
+ ****************************************************************************/
+
+/*
+ *  This file is part of Ariadne Drawing.
+ *
+ *  Ariadne Drawing is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Ariadne Drawing is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Ariadne Drawing. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+// Mathematical rendering adapters owned exclusively by Drawing.
+/** @file drawing/geometry_draw.hpp
+ *  @brief Value-owning drawing adapters for geometric sets.
+ */
+
 #ifndef ARIADNE_GEOMETRY_DRAW_HPP
 #define ARIADNE_GEOMETRY_DRAW_HPP
 
@@ -16,21 +41,29 @@
 
 namespace Ariadne {
 
+/** @brief Draw the object on a canvas. */
 Void draw(CanvasInterface&, Projection2d const&, BoundedConstraintSet const&);
+/** @brief Draw the object on a canvas. */
 Void draw(CanvasInterface&, Projection2d const&, ConstrainedImageSet const&);
+/** @brief Draw the object on a canvas. */
 Void draw(CanvasInterface&, Projection2d const&, ValidatedConstrainedImageSet const&);
+/** @brief Draw the object on a canvas. */
 Void draw(CanvasInterface&, Projection2d const&, ValidatedAffineConstrainedImageSet const&);
+/** @brief Draw the object on a canvas. */
 Void draw(CanvasInterface&, Projection2d const&, InterpolatedCurve const&);
 
 // A Figure owns clones of its drawables. The adapters must therefore own
 // their mathematical values, rather than references to short-lived objects.
 template<class Set>
+/** @brief GeometryDrawable2d provides value-owning drawing adapters for geometric sets. */
 class GeometryDrawable2d final : public Drawable2dInterface {
   public:
     explicit GeometryDrawable2d(Set const& set) : _set(set) { }
     GeometryDrawable2d* clone() const override { return new GeometryDrawable2d(*this); }
     DimensionType dimension() const override { return _set.dimension(); }
+    /** @brief Draw the object on a canvas. */
     Void draw(CanvasInterface& canvas, Projection2d const& projection) const override {
+        /** @brief Draw the object on a canvas. */
         Ariadne::draw(canvas,projection,_set);
     }
   private:
