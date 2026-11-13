@@ -26,19 +26,19 @@
  *  @brief Implement box draw.
  */
 
-
 #include "drawing/box_draw.hpp"
-#include "rendering/rendering_interface.hpp"
+
 #include "rendering/geometry2d.hpp"
+#include "rendering/rendering_interface.hpp"
 
 namespace Ariadne {
 
-Void draw(CanvasInterface& c, Projection2d const& p, ApproximateBoxType const& bx) {
-    auto const& xl = numeric_cast<double>(bx[p.x_coordinate()].lower_bound());
-    auto const& xu = numeric_cast<double>(bx[p.x_coordinate()].upper_bound());
-    auto const& yl = numeric_cast<double>(bx[p.y_coordinate()].lower_bound());
-    auto const& yu = numeric_cast<double>(bx[p.y_coordinate()].upper_bound());
-    List<Point2d> boundary = {Point2d(xl,yl),Point2d(xu,yl),Point2d(xu,yu),Point2d(xl,yu)};
+Void draw(CanvasInterface& c, const Projection2d& p, const ApproximateBoxType& bx) {
+    const auto& xl = numeric_cast<double>(bx[p.x_coordinate()].lower_bound());
+    const auto& xu = numeric_cast<double>(bx[p.x_coordinate()].upper_bound());
+    const auto& yl = numeric_cast<double>(bx[p.y_coordinate()].lower_bound());
+    const auto& yu = numeric_cast<double>(bx[p.y_coordinate()].upper_bound());
+    List<Point2d> boundary = {Point2d(xl, yl), Point2d(xu, yl), Point2d(xu, yu), Point2d(xl, yu)};
     c.fill_boundary(boundary);
 }
 

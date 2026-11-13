@@ -28,11 +28,12 @@
 
 #include <sstream>
 
-#include "ariadne-testing.hpp"
-#include "set/function_set.hpp"
-#include "rendering/null_rendering.hpp"
 #include "drawing/drawer.hpp"
 #include "drawing/null_drawer.hpp"
+#include "rendering/null_rendering.hpp"
+#include "set/function_set.hpp"
+
+#include "ariadne-testing.hpp"
 
 using namespace Ariadne;
 
@@ -42,26 +43,26 @@ class TestDrawer : public Ariadne::Testing::ContextFixture {
 
     void test_concrete_drawers() {
         NullCanvas canvas;
-        Projection2d projection(2,0,1);
+        Projection2d projection(2, 0, 1);
         ValidatedConstrainedImageSet set(ExactBoxType::unit_box(2));
 
         BoxDrawer box_drawer;
-        box_drawer.draw(canvas,projection,set);
+        box_drawer.draw(canvas, projection, set);
         std::ostringstream box_stream;
         box_drawer._write(box_stream);
-        ARIADNE_TESTING_EXPECT_EQUAL(box_stream.str(),"BoxDrawer()");
+        ARIADNE_TESTING_EXPECT_EQUAL(box_stream.str(), "BoxDrawer()");
 
         AffineDrawer affine_drawer(1u);
-        affine_drawer.draw(canvas,projection,set);
+        affine_drawer.draw(canvas, projection, set);
         std::ostringstream affine_stream;
         affine_drawer._write(affine_stream);
-        ARIADNE_TESTING_EXPECT_EQUAL(affine_stream.str(),"AffineDrawer(splittings=1)");
+        ARIADNE_TESTING_EXPECT_EQUAL(affine_stream.str(), "AffineDrawer(splittings=1)");
 
         GridDrawer grid_drawer(1u);
-        grid_drawer.draw(canvas,projection,set);
+        grid_drawer.draw(canvas, projection, set);
         std::ostringstream grid_stream;
         grid_drawer._write(grid_stream);
-        ARIADNE_TESTING_EXPECT_EQUAL(grid_stream.str(),"GridDrawer(fineness=1)");
+        ARIADNE_TESTING_EXPECT_EQUAL(grid_stream.str(), "GridDrawer(fineness=1)");
     }
 
     void test_drawer() {

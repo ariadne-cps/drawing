@@ -35,44 +35,46 @@
 namespace Ariadne {
 
 /** @brief Draw the object on a canvas. */
-Void draw(CanvasInterface&, Projection2d const&, BinaryTreeSubpaving const&);
+Void draw(CanvasInterface&, const Projection2d&, const BinaryTreeSubpaving&);
 /** @brief Draw the object on a canvas. */
-Void draw(CanvasInterface&, Projection2d const&, GridCell const&);
+Void draw(CanvasInterface&, const Projection2d&, const GridCell&);
 /** @brief Draw the object on a canvas. */
-Void draw(CanvasInterface&, Projection2d const&, BinaryTreePaving const&);
+Void draw(CanvasInterface&, const Projection2d&, const BinaryTreePaving&);
 /** @brief Draw the object on a canvas. */
-Void draw(CanvasInterface&, Projection2d const&, EffectiveEuclideanCompactSetInterface const&);
+Void draw(CanvasInterface&, const Projection2d&, const EffectiveEuclideanCompactSetInterface&);
 
 // The Figure clones the adapter; it must not retain a borrowed grid cell.
 /** @brief GridCellDrawable provides rendering of binary-tree pavings and grid cells. */
 class GridCellDrawable final : public Drawable2dInterface {
   public:
-    explicit GridCellDrawable(GridCell const& cell) : _cell(cell) { }
+    explicit GridCellDrawable(const GridCell& cell) : _cell(cell) {}
     GridCellDrawable* clone() const override { return new GridCellDrawable(*this); }
     DimensionType dimension() const override { return _cell.dimension(); }
     /** @brief Draw the object on a canvas. */
-    Void draw(CanvasInterface& canvas, Projection2d const& projection) const override {
+    Void draw(CanvasInterface& canvas, const Projection2d& projection) const override {
         /** @brief Draw the object on a canvas. */
-        Ariadne::draw(canvas,projection,_cell);
+        Ariadne::draw(canvas, projection, _cell);
     }
+
   private:
     GridCell _cell;
 };
 
 /** @brief Draw the object on a canvas. */
-inline Void draw_to_figure(Figure& figure, GridCell const& cell) {
+inline Void draw_to_figure(Figure& figure, const GridCell& cell) {
     /** @brief Draw the object on a canvas. */
     figure.draw(GridCellDrawable(cell));
 }
 
 /** @brief Draw the object on a canvas. */
-inline Void draw(Figure& figure, GridCell const& cell) {
+inline Void draw(Figure& figure, const GridCell& cell) {
     /** @brief Draw the object on a canvas. */
-    draw_to_figure(figure,cell);
+    draw_to_figure(figure, cell);
 }
-inline Figure& operator<<(Figure& figure, GridCell const& cell) {
+inline Figure& operator<<(Figure& figure, const GridCell& cell) {
     /** @brief Draw the object on a canvas. */
-    draw(figure,cell); return figure;
+    draw(figure, cell);
+    return figure;
 }
 
 } // namespace Ariadne

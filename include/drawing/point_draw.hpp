@@ -37,7 +37,7 @@ namespace Ariadne {
 //! Draw a point on a canvas without coupling the mathematical Point to rendering.
 template<class X>
 /** @brief Draw the object on a canvas. */
-inline Void draw(CanvasInterface& canvas, Projection2d const& projection, Point<X> const& point) {
+inline Void draw(CanvasInterface& canvas, const Projection2d& projection, const Point<X>& point) {
     canvas.dot(numeric_cast<double>(point[projection.x_coordinate()]),
                /** @brief Perform the requested drawing operation. */
                numeric_cast<double>(point[projection.y_coordinate()]));
@@ -50,15 +50,15 @@ template<class X>
 /** @brief PointDrawable provides canvas rendering of mathematical points. */
 class PointDrawable final : public Drawable2dInterface {
   public:
-    explicit PointDrawable(Point<X> const& point) : _point(point) { }
+    explicit PointDrawable(const Point<X>& point) : _point(point) {}
 
     PointDrawable<X>* clone() const override { return new PointDrawable<X>(*this); }
     DimensionType dimension() const override { return _point.dimension(); }
 
     /** @brief Draw the object on a canvas. */
-    Void draw(CanvasInterface& canvas, Projection2d const& projection) const override {
+    Void draw(CanvasInterface& canvas, const Projection2d& projection) const override {
         /** @brief Draw the object on a canvas. */
-        Ariadne::draw(canvas,projection,_point);
+        Ariadne::draw(canvas, projection, _point);
     }
 
   private:
@@ -68,29 +68,29 @@ class PointDrawable final : public Drawable2dInterface {
 //! The Figure clones its drawable, so the temporary adapter is safe.
 template<class X>
 /** @brief Draw the object on a canvas. */
-inline Void draw_to_figure(Figure& figure, Point<X> const& point) {
+inline Void draw_to_figure(Figure& figure, const Point<X>& point) {
     /** @brief Draw the object on a canvas. */
     figure.draw(PointDrawable<X>(point));
 }
 
 template<class X>
 /** @brief Draw the object on a canvas. */
-inline Void draw(Figure& figure, Point<X> const& point) {
+inline Void draw(Figure& figure, const Point<X>& point) {
     /** @brief Draw the object on a canvas. */
-    draw_to_figure(figure,point);
+    draw_to_figure(figure, point);
 }
 
 template<class X>
-inline Figure& operator<<(Figure& figure, Point<X> const& point) {
+inline Figure& operator<<(Figure& figure, const Point<X>& point) {
     /** @brief Draw the object on a canvas. */
-    draw(figure,point);
+    draw(figure, point);
     return figure;
 }
 
 //! Project a point using rendering's two-coordinate projection descriptor.
 template<class X>
 /** @brief Perform the requested drawing operation. */
-inline Point<X> project(Point<X> const& pt, Projection2d const& p) {
+inline Point<X> project(const Point<X>& pt, const Projection2d& p) {
     /** @brief Construct the drawing object. */
     ARIADNE_PRECONDITION(pt.dimension() == p.n);
     /** @brief Perform the requested drawing operation. */
@@ -98,9 +98,9 @@ inline Point<X> project(Point<X> const& pt, Projection2d const& p) {
     /** @brief Perform the requested drawing operation. */
     rv.resize(2u);
     /** @brief Perform the requested drawing operation. */
-    rv.set(0,pt.at(p.i));
+    rv.set(0, pt.at(p.i));
     /** @brief Perform the requested drawing operation. */
-    rv.set(1,pt.at(p.j));
+    rv.set(1, pt.at(p.j));
     return Point<X>(rv);
 }
 

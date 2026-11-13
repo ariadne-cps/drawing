@@ -29,17 +29,17 @@
 #ifndef ARIADNE_LIST_SET_DRAW_HPP
 #define ARIADNE_LIST_SET_DRAW_HPP
 
-#include "set/list_set.hpp"
 #include "drawing/box_draw.hpp"
+#include "set/list_set.hpp"
 
 namespace Ariadne {
 
 template<class BS>
 /** @brief Draw the object on a canvas. */
-inline Void draw(CanvasInterface& canvas, Projection2d const& projection, ListSet<BS> const& set) {
-    for(SizeType i=0; i!=set.size(); ++i) {
+inline Void draw(CanvasInterface& canvas, const Projection2d& projection, const ListSet<BS>& set) {
+    for (SizeType i = 0; i != set.size(); ++i) {
         /** @brief Draw the object on a canvas. */
-        Ariadne::draw(canvas,projection,set[i]);
+        Ariadne::draw(canvas, projection, set[i]);
     }
 }
 
@@ -48,30 +48,31 @@ template<class BS>
 /** @brief ListSetDrawable provides rendering adapters for lists of sets. */
 class ListSetDrawable final : public Drawable2dInterface {
   public:
-    explicit ListSetDrawable(ListSet<BS> const& set) : _set(set) { }
+    explicit ListSetDrawable(const ListSet<BS>& set) : _set(set) {}
     ListSetDrawable* clone() const override { return new ListSetDrawable(*this); }
     DimensionType dimension() const override { return _set.dimension(); }
     /** @brief Draw the object on a canvas. */
-    Void draw(CanvasInterface& canvas, Projection2d const& projection) const override {
+    Void draw(CanvasInterface& canvas, const Projection2d& projection) const override {
         /** @brief Draw the object on a canvas. */
-        Ariadne::draw(canvas,projection,_set);
+        Ariadne::draw(canvas, projection, _set);
     }
+
   private:
     ListSet<BS> _set;
 };
 
 template<class BS>
 /** @brief Draw the object on a canvas. */
-inline Void draw_to_figure(Figure& figure, ListSet<BS> const& set) {
+inline Void draw_to_figure(Figure& figure, const ListSet<BS>& set) {
     /** @brief Draw the object on a canvas. */
     figure.draw(ListSetDrawable<BS>(set));
 }
 
 template<class BS>
 /** @brief Draw the object on a canvas. */
-inline Void draw(Figure& figure, ListSet<BS> const& set) {
+inline Void draw(Figure& figure, const ListSet<BS>& set) {
     /** @brief Draw the object on a canvas. */
-    draw_to_figure(figure,set);
+    draw_to_figure(figure, set);
 }
 
 } // namespace Ariadne

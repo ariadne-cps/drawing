@@ -26,11 +26,13 @@
  *  @brief Test drawing command line interface behavior.
  */
 
+#include <type_traits>
+
 #include "drawing/drawing_command_line_interface.hpp"
 #include "logging/logging.hpp"
 #include "threading/thread_manager.hpp"
+
 #include "ariadne-testing.hpp"
-#include <type_traits>
 
 using namespace Ariadne;
 
@@ -41,17 +43,15 @@ class TestCommandLineInterface : public Ariadne::Testing::ContextFixture {
     Void test_inherited_profile() {
         static_assert(std::is_base_of_v<ThreadingCommandLineInterface, DrawingCommandLineInterface>);
         DrawingCommandLineInterface command_line;
-        ARIADNE_TESTING_PROVE(command_line.acquire({
-            "",
-            "--scheduler","immediate",
-            "--concurrency","0",
-            "--verbosity","3",
-            "--theme","none",
-            "--drawer","none",
-            "--rendering","none"
-        }));
-        ARIADNE_TESTING_EXPECT_EQUAL(ThreadManager::instance().concurrency(),0u);
-        ARIADNE_TESTING_EXPECT_EQUAL(Logger::instance().configuration().verbosity(),3u);
+        ARIADNE_TESTING_PROVE(command_line.acquire({"",
+                                                    "--scheduler", "immediate",
+                                                    "--concurrency", "0",
+                                                    "--verbosity", "3",
+                                                    "--theme", "none",
+                                                    "--drawer", "none",
+                                                    "--rendering", "none"}));
+        ARIADNE_TESTING_EXPECT_EQUAL(ThreadManager::instance().concurrency(), 0u);
+        ARIADNE_TESTING_EXPECT_EQUAL(Logger::instance().configuration().verbosity(), 3u);
         ARIADNE_TESTING_PROVE(not Logger::instance().configuration().theme().has_style());
         Logger::instance().use_nonblocking_scheduler();
     }
@@ -64,58 +64,56 @@ class TestCommandLineInterface : public Ariadne::Testing::ContextFixture {
 
     Void test_from_c_arguments() {
         DrawingCommandLineInterface command_line;
-        const char* argv1[]={""};
-        ARIADNE_TESTING_PROVE(command_line.acquire(1,argv1));
-        const char* argv2[]={"",""};
-        ARIADNE_TESTING_PROVE(not command_line.acquire(2,argv2));
+        const char* argv1[] = {""};
+        ARIADNE_TESTING_PROVE(command_line.acquire(1, argv1));
+        const char* argv2[] = {"", ""};
+        ARIADNE_TESTING_PROVE(not command_line.acquire(2, argv2));
     }
 
     Void test_drawer_parsing() {
         DrawingCommandLineInterface command_line;
 
-        ARIADNE_TESTING_PROVE(command_line.acquire({"","-d","box"}));
-        ARIADNE_TESTING_PROVE(command_line.acquire({"","--drawer","box"}));
-        ARIADNE_TESTING_PROVE(not command_line.acquire({"","-d","bx"}));
-        ARIADNE_TESTING_PROVE(not command_line.acquire({"","-d","affine"}));
-        ARIADNE_TESTING_PROVE(not command_line.acquire({"","-d","affine@e"}));
-        ARIADNE_TESTING_PROVE(command_line.acquire({"","-d","affine@2"}));
-        ARIADNE_TESTING_PROVE(not command_line.acquire({"","-d","grid"}));
-        ARIADNE_TESTING_PROVE(not command_line.acquire({"","-d","grid@e"}));
-        ARIADNE_TESTING_PROVE(command_line.acquire({"","-d","grid@2"}));
-        ARIADNE_TESTING_PROVE(not command_line.acquire({"","-d","gri@2"}));
-        ARIADNE_TESTING_PROVE(not command_line.acquire({"","-d"}));
-        ARIADNE_TESTING_PROVE(command_line.acquire({"","-d","none"}));
-        ARIADNE_TESTING_PROVE(not command_line.acquire({"","-d","affine@-1"}));
+        ARIADNE_TESTING_PROVE(command_line.acquire({"", "-d", "box"}));
+        ARIADNE_TESTING_PROVE(command_line.acquire({"", "--drawer", "box"}));
+        ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-d", "bx"}));
+        ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-d", "affine"}));
+        ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-d", "affine@e"}));
+        ARIADNE_TESTING_PROVE(command_line.acquire({"", "-d", "affine@2"}));
+        ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-d", "grid"}));
+        ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-d", "grid@e"}));
+        ARIADNE_TESTING_PROVE(command_line.acquire({"", "-d", "grid@2"}));
+        ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-d", "gri@2"}));
+        ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-d"}));
+        ARIADNE_TESTING_PROVE(command_line.acquire({"", "-d", "none"}));
+        ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-d", "affine@-1"}));
     }
 
     Void test_rendering_parsing() {
         DrawingCommandLineInterface command_line;
 
-        ARIADNE_TESTING_PROVE(command_line.acquire({"","-g","default"}));
-        ARIADNE_TESTING_PROVE(command_line.acquire({"","--rendering","default"}));
-        ARIADNE_TESTING_PROVE(not command_line.acquire({"","-g","default_rendering"}));
-        ARIADNE_TESTING_PROVE(command_line.acquire({"","--rendering","none"}));
-        ARIADNE_TESTING_PROVE(not command_line.acquire({"","-g","wrong"}));
-        ARIADNE_TESTING_PROVE(command_line.acquire({"","-g","none"}));
-        ARIADNE_TESTING_PROVE(not command_line.acquire({"","-g"}));
+        ARIADNE_TESTING_PROVE(command_line.acquire({"", "-g", "default"}));
+        ARIADNE_TESTING_PROVE(command_line.acquire({"", "--rendering", "default"}));
+        ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-g", "default_rendering"}));
+        ARIADNE_TESTING_PROVE(command_line.acquire({"", "--rendering", "none"}));
+        ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-g", "wrong"}));
+        ARIADNE_TESTING_PROVE(command_line.acquire({"", "-g", "none"}));
+        ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-g"}));
     }
 
     Void test_composed_parsing() {
         ThreadManager::instance().set_concurrency(0);
         DrawingCommandLineInterface command_line;
 
-        ARIADNE_TESTING_PROVE(command_line.acquire({
-            "",
-            "--scheduler","immediate",
-            "--concurrency","0",
-            "--verbosity","4",
-            "--theme","none",
-            "--rendering","none"
-        }));
+        ARIADNE_TESTING_PROVE(command_line.acquire({"",
+                                                    "--scheduler", "immediate",
+                                                    "--concurrency", "0",
+                                                    "--verbosity", "4",
+                                                    "--theme", "none",
+                                                    "--rendering", "none"}));
         ARIADNE_TESTING_EXPECT_EQUAL(
-            ThreadManager::instance().concurrency(),0u);
+            ThreadManager::instance().concurrency(), 0u);
         ARIADNE_TESTING_EXPECT_EQUAL(
-            Logger::instance().configuration().verbosity(),4u);
+            Logger::instance().configuration().verbosity(), 4u);
         ARIADNE_TESTING_PROVE(
             not Logger::instance().configuration().theme().has_style());
 
@@ -123,51 +121,45 @@ class TestCommandLineInterface : public Ariadne::Testing::ContextFixture {
     }
 
     Void test_local_contribution() {
-        Nat custom_value=0u;
-        Bool custom_flag=false;
+        Nat custom_value = 0u;
+        Bool custom_flag = false;
 
         DrawingCommandLineInterface command_line;
         command_line.add(CommandLineContribution(
             "test-local",
-            {
-                make_valued_argument_parser(
-                    "",
-                    "custom-value",
-                    "Set a custom non-negative integer",
-                    [&custom_value](String const& value) -> VoidFunction {
-                        Int const parsed=std::stoi(value);
-                        if (parsed < 0) {
-                            throw std::runtime_error(
-                                "negative custom value");
-                        }
-                        return [&custom_value,parsed] {
-                            custom_value=static_cast<Nat>(parsed);
-                        };
-                    }),
-                make_unvalued_argument_parser(
-                    "",
-                    "custom-flag",
-                    "Enable a custom flag",
-                    [&custom_flag] {
-                        custom_flag=true;
-                    })
-            }));
+            {make_valued_argument_parser(
+                 "",
+                 "custom-value",
+                 "Set a custom non-negative integer",
+                 [&custom_value](const String& value) -> VoidFunction {
+                     const Int parsed = std::stoi(value);
+                     if (parsed < 0) {
+                         throw std::runtime_error(
+                             "negative custom value");
+                     }
+                     return [&custom_value, parsed] {
+                         custom_value = static_cast<Nat>(parsed);
+                     };
+                 }),
+             make_unvalued_argument_parser(
+                 "",
+                 "custom-flag",
+                 "Enable a custom flag",
+                 [&custom_flag] {
+                     custom_flag = true;
+                 })}));
 
-        ARIADNE_TESTING_PROVE(command_line.acquire({
-            "",
-            "--custom-value","3",
-            "--custom-flag",
-            "--verbosity","2"
-        }));
-        ARIADNE_TESTING_EXPECT_EQUAL(custom_value,3u);
+        ARIADNE_TESTING_PROVE(command_line.acquire({"",
+                                                    "--custom-value", "3",
+                                                    "--custom-flag",
+                                                    "--verbosity", "2"}));
+        ARIADNE_TESTING_EXPECT_EQUAL(custom_value, 3u);
         ARIADNE_TESTING_PROVE(custom_flag);
         ARIADNE_TESTING_EXPECT_EQUAL(
-            Logger::instance().configuration().verbosity(),2u);
+            Logger::instance().configuration().verbosity(), 2u);
 
-        ARIADNE_TESTING_PROVE(not command_line.acquire({
-            "",
-            "--custom-value","-1"
-        }));
+        ARIADNE_TESTING_PROVE(not command_line.acquire({"",
+                                                        "--custom-value", "-1"}));
     }
 };
 

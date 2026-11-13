@@ -30,51 +30,53 @@
 #ifndef ARIADNE_DRAWING_AUGMENTED_PAVING_DRAW_HPP
 #define ARIADNE_DRAWING_AUGMENTED_PAVING_DRAW_HPP
 
-#include "paving/augmented_paving.hpp"
 #include "drawing/binary_tree_paving_draw.hpp"
+#include "paving/augmented_paving.hpp"
 #include "rendering/figure.hpp"
 
 namespace Ariadne {
 
 // Render the auxiliary graph of a state paving.
 /** @brief Draw the object on a canvas. */
-inline Void draw(CanvasInterface& canvas, Projection2d const& projection, AugmentedPaving const& paving) {
+inline Void draw(CanvasInterface& canvas, const Projection2d& projection, const AugmentedPaving& paving) {
     /** @brief Draw the object on a canvas. */
-    Ariadne::draw(canvas,projection,paving.state_auxiliary_set());
+    Ariadne::draw(canvas, projection, paving.state_auxiliary_set());
 }
 
 // An independent copy is owned because Figure retains drawable clones.
 /** @brief AugmentedPavingDrawable provides rendering adapters for augmented pavings. */
 class AugmentedPavingDrawable final : public Drawable2dInterface {
   public:
-    explicit AugmentedPavingDrawable(AugmentedPaving const& paving) : _paving(paving) { }
+    explicit AugmentedPavingDrawable(const AugmentedPaving& paving) : _paving(paving) {}
     AugmentedPavingDrawable* clone() const override { return new AugmentedPavingDrawable(*this); }
     /** @brief Return the number of dimensions. */
     DimensionType dimension() const override {
-        return _paving.dimension()+_paving.auxiliary_mapping().result_size();
+        return _paving.dimension() + _paving.auxiliary_mapping().result_size();
     }
     /** @brief Draw the object on a canvas. */
-    Void draw(CanvasInterface& canvas, Projection2d const& projection) const override {
+    Void draw(CanvasInterface& canvas, const Projection2d& projection) const override {
         /** @brief Draw the object on a canvas. */
-        Ariadne::draw(canvas,projection,_paving);
+        Ariadne::draw(canvas, projection, _paving);
     }
+
   private:
     AugmentedPaving _paving;
 };
 
 /** @brief Draw the object on a canvas. */
-inline Void draw_to_figure(Figure& figure, AugmentedPaving const& paving) {
+inline Void draw_to_figure(Figure& figure, const AugmentedPaving& paving) {
     /** @brief Draw the object on a canvas. */
     figure.draw(AugmentedPavingDrawable(paving));
 }
 /** @brief Draw the object on a canvas. */
-inline Void draw(Figure& figure, AugmentedPaving const& paving) {
+inline Void draw(Figure& figure, const AugmentedPaving& paving) {
     /** @brief Draw the object on a canvas. */
-    draw_to_figure(figure,paving);
+    draw_to_figure(figure, paving);
 }
-inline Figure& operator<<(Figure& figure, AugmentedPaving const& paving) {
+inline Figure& operator<<(Figure& figure, const AugmentedPaving& paving) {
     /** @brief Draw the object on a canvas. */
-    draw_to_figure(figure,paving); return figure;
+    draw_to_figure(figure, paving);
+    return figure;
 }
 
 } // namespace Ariadne

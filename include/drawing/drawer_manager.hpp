@@ -38,17 +38,18 @@ class DrawerManager {
   private:
     /** @brief Construct the drawing object. */
     DrawerManager();
+
   public:
     /** @brief Construct the drawing object. */
-    DrawerManager(DrawerManager const&) = delete;
-    Void operator=(DrawerManager const&) = delete;
+    DrawerManager(const DrawerManager &) = delete;
+    Void operator=(const DrawerManager &) = delete;
 
     /** @brief Get or set the selected drawing strategy. */
-    static DrawerManager& instance();
+    static DrawerManager &instance();
     /** @brief Draw the object on a canvas. */
-    Drawer const& drawer() const;
+    const Drawer &drawer() const;
     /** @brief Get or set the selected drawing strategy. */
-    Void set_drawer(Drawer const& drawer);
+    Void set_drawer(const Drawer &drawer);
 
   private:
     Drawer _drawer;

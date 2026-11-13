@@ -26,27 +26,29 @@
  *  @brief Implement affine set draw.
  */
 
-#include "function/function.hpp"
 #include "drawing/geometry_draw.hpp"
-#include "rendering/rendering_interface.hpp"
-#include "rendering/geometry2d.hpp"
+#include "function/function.hpp"
 #include "logging/logging.hpp"
+#include "rendering/geometry2d.hpp"
+#include "rendering/rendering_interface.hpp"
 
 namespace Ariadne {
 
-Void draw(CanvasInterface& canvas, Projection2d const& projection, ValidatedAffineConstrainedImageSet const& set) {
+Void draw(CanvasInterface& canvas, const Projection2d& projection, const ValidatedAffineConstrainedImageSet& set) {
     LOGGING_SCOPE_CREATE;
-    LOGGING_PRINTLN("set="<<set);
-    LOGGING_PRINTLN("projection="<<projection);
+    LOGGING_PRINTLN("set=" << set);
+    LOGGING_PRINTLN("projection=" << projection);
 
     List<Point2d> boundary;
 
-    for(auto const& xy:set.boundary(projection.x_coordinate(),projection.y_coordinate())) {
-        boundary.push_back(Point2d(xy.first,xy.second));
+    for (const auto& xy: set.boundary(projection.x_coordinate(), projection.y_coordinate())) {
+        boundary.push_back(Point2d(xy.first, xy.second));
     }
-    LOGGING_PRINTLN("boundary="<<boundary);
+    LOGGING_PRINTLN("boundary=" << boundary);
 
-    if(boundary.empty()) { return; }
+    if (boundary.empty()) {
+        return;
+    }
 
     canvas.fill_boundary(boundary);
 }

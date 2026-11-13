@@ -26,19 +26,18 @@
  *  @brief Implement drawer.
  */
 
-#include "function/functional.hpp"
 #include "drawing/drawer.hpp"
-#include "drawing/geometry_draw.hpp"
-#include "drawing/box_draw.hpp"
-#include "drawing/binary_tree_paving_draw.hpp"
 
-#include "utility/macros.hpp"
-#include "set/function_set.hpp"
-#include "set/affine_set.hpp"
+#include "drawing/binary_tree_paving_draw.hpp"
+#include "drawing/box_draw.hpp"
+#include "drawing/geometry_draw.hpp"
+#include "function/functional.hpp"
 #include "paving/binary_tree_paving.hpp"
 #include "paving/set_approximation.hpp"
-
 #include "rendering/rendering_interface.hpp"
+#include "set/affine_set.hpp"
+#include "set/function_set.hpp"
+#include "utility/macros.hpp"
 
 namespace Ariadne {
 
@@ -46,40 +45,40 @@ Void box_draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedCo
 Void affine_draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set, Nat splittings_remaining);
 
 OutputStream& BoxDrawer::_write(OutputStream& os) const {
-    return os << "BoxDrawer()"; }
+    return os << "BoxDrawer()";
+}
 OutputStream& AffineDrawer::_write(OutputStream& os) const {
-    return os << "AffineDrawer(splittings=" << this->_splittings << ")"; }
+    return os << "AffineDrawer(splittings=" << this->_splittings << ")";
+}
 OutputStream& GridDrawer::_write(OutputStream& os) const {
-    return os << "GridDrawer(fineness=" << this->_fineness << ")"; }
+    return os << "GridDrawer(fineness=" << this->_fineness << ")";
+}
 
 Void BoxDrawer::draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set) const {
-    box_draw(cnvs,proj,set);
+    box_draw(cnvs, proj, set);
 }
 
 Void AffineDrawer::draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set) const {
-    affine_draw(cnvs,proj,set,this->_splittings);
+    affine_draw(cnvs, proj, set, this->_splittings);
 }
 
 Void GridDrawer::draw(CanvasInterface& canvas, const Projection2d& projection, const ValidatedConstrainedImageSet& set) const {
-    Ariadne::draw(canvas,projection,outer_approximation(set,Grid(set.dimension()),this->_fineness));
+    Ariadne::draw(canvas, projection, outer_approximation(set, Grid(set.dimension()), this->_fineness));
 }
 
-Void box_draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set)
-{
-    Ariadne::draw(cnvs,proj,cast_exact_box(apply(set.function(),set.domain())));
+Void box_draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set) {
+    Ariadne::draw(cnvs, proj, cast_exact_box(apply(set.function(), set.domain())));
 }
 
-Void affine_draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set, Nat splittings_remaining)
-{
-    if(splittings_remaining==0) {
-        Ariadne::draw(cnvs,proj,set.affine_over_approximation());
+Void affine_draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set, Nat splittings_remaining) {
+    if (splittings_remaining == 0) {
+        Ariadne::draw(cnvs, proj, set.affine_over_approximation());
     } else {
-        Pair<ValidatedConstrainedImageSet,ValidatedConstrainedImageSet> split=set.split();
-        affine_draw(cnvs,proj,split.first,splittings_remaining-1u);
-        affine_draw(cnvs,proj,split.second,splittings_remaining-1u);
+        Pair<ValidatedConstrainedImageSet, ValidatedConstrainedImageSet> split = set.split();
+        affine_draw(cnvs, proj, split.first, splittings_remaining - 1u);
+        affine_draw(cnvs, proj, split.second, splittings_remaining - 1u);
     }
 }
 
 } // namespace Ariadne
-
 

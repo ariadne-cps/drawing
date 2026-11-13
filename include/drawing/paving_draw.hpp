@@ -30,78 +30,83 @@
 #define ARIADNE_PAVING_DRAW_HPP
 
 #include <memory>
-#include "paving/paving_interface.hpp"
+
 #include "drawing/box_draw.hpp"
+#include "paving/paving_interface.hpp"
 
 namespace Ariadne {
 
 //! Draw the cells of a paving through its mathematical interface.
-inline Void draw(CanvasInterface& canvas, Projection2d const& projection, SubPavingInterface const& paving) {
-    for(auto iter=paving.begin(); iter!=paving.end(); ++iter) {
+inline Void draw(CanvasInterface& canvas, const Projection2d& projection, const SubPavingInterface& paving) {
+    for (auto iter = paving.begin(); iter != paving.end(); ++iter) {
         /** @brief Draw the object on a canvas. */
-        Ariadne::draw(canvas,projection,iter->box());
+        Ariadne::draw(canvas, projection, iter->box());
     }
 }
 
 //! A value-owning rendering adapter; the paving can outlive its original handle.
 class SubPavingDrawable final : public Drawable2dInterface {
   public:
-    explicit SubPavingDrawable(SubPavingInterface const& paving) : _paving(paving.clone()) { }
-    SubPavingDrawable(SubPavingDrawable const& other) : _paving(other._paving->clone()) { }
+    explicit SubPavingDrawable(const SubPavingInterface& paving) : _paving(paving.clone()) {}
+    SubPavingDrawable(const SubPavingDrawable& other) : _paving(other._paving->clone()) {}
     SubPavingDrawable* clone() const override { return new SubPavingDrawable(*this); }
     DimensionType dimension() const override { return _paving->dimension(); }
     /** @brief Draw the object on a canvas. */
-    Void draw(CanvasInterface& canvas, Projection2d const& projection) const override {
+    Void draw(CanvasInterface& canvas, const Projection2d& projection) const override {
         /** @brief Draw the object on a canvas. */
-        Ariadne::draw(canvas,projection,*_paving);
+        Ariadne::draw(canvas, projection, *_paving);
     }
+
   private:
     std::unique_ptr<SubPavingInterface> _paving;
 };
 
 /** @brief Draw the object on a canvas. */
-inline Void draw_to_figure(Figure& figure, SubPavingInterface const& paving) {
+inline Void draw_to_figure(Figure& figure, const SubPavingInterface& paving) {
     /** @brief Draw the object on a canvas. */
     figure.draw(SubPavingDrawable(paving));
 }
 
 /** @brief Draw the object on a canvas. */
-inline Void draw(Figure& figure, SubPavingInterface const& paving) {
+inline Void draw(Figure& figure, const SubPavingInterface& paving) {
     /** @brief Draw the object on a canvas. */
-    draw_to_figure(figure,paving);
+    draw_to_figure(figure, paving);
 }
-inline Figure& operator<<(Figure& figure, SubPavingInterface const& paving) {
+inline Figure& operator<<(Figure& figure, const SubPavingInterface& paving) {
     /** @brief Draw the object on a canvas. */
-    draw(figure,paving); return figure;
+    draw(figure, paving);
+    return figure;
 }
 
 /** @brief Draw the object on a canvas. */
-inline Void draw_to_figure(Figure& figure, Paving const& paving) {
+inline Void draw_to_figure(Figure& figure, const Paving& paving) {
     /** @brief Draw the object on a canvas. */
-    draw_to_figure(figure,static_cast<PavingInterface const&>(paving));
+    draw_to_figure(figure, static_cast<const PavingInterface&>(paving));
 }
 /** @brief Draw the object on a canvas. */
-inline Void draw(Figure& figure, Paving const& paving) {
+inline Void draw(Figure& figure, const Paving& paving) {
     /** @brief Draw the object on a canvas. */
-    draw_to_figure(figure,paving);
+    draw_to_figure(figure, paving);
 }
-inline Figure& operator<<(Figure& figure, Paving const& paving) {
+inline Figure& operator<<(Figure& figure, const Paving& paving) {
     /** @brief Draw the object on a canvas. */
-    draw(figure,paving); return figure;
-}
-/** @brief Draw the object on a canvas. */
-inline Void draw_to_figure(Figure& figure, SubPaving const& paving) {
-    /** @brief Draw the object on a canvas. */
-    draw_to_figure(figure,static_cast<SubPavingInterface const&>(paving));
+    draw(figure, paving);
+    return figure;
 }
 /** @brief Draw the object on a canvas. */
-inline Void draw(Figure& figure, SubPaving const& paving) {
+inline Void draw_to_figure(Figure& figure, const SubPaving& paving) {
     /** @brief Draw the object on a canvas. */
-    draw_to_figure(figure,paving);
+    draw_to_figure(figure, static_cast<const SubPavingInterface&>(paving));
 }
-inline Figure& operator<<(Figure& figure, SubPaving const& paving) {
+/** @brief Draw the object on a canvas. */
+inline Void draw(Figure& figure, const SubPaving& paving) {
     /** @brief Draw the object on a canvas. */
-    draw(figure,paving); return figure;
+    draw_to_figure(figure, paving);
+}
+inline Figure& operator<<(Figure& figure, const SubPaving& paving) {
+    /** @brief Draw the object on a canvas. */
+    draw(figure, paving);
+    return figure;
 }
 
 } // namespace Ariadne

@@ -33,8 +33,8 @@
 // Load complete numeric and function types before affine_set.hpp.
 #include "function/function.hpp"
 #include "set/affine_set.hpp"
-#include "set/function_set.hpp"
 #include "set/curve.hpp"
+#include "set/function_set.hpp"
 // Figure constructors from mathematical boxes need the Drawing conversion adapter.
 #include "drawing/box_draw.hpp"
 #include "rendering/figure.hpp"
@@ -42,15 +42,15 @@
 namespace Ariadne {
 
 /** @brief Draw the object on a canvas. */
-Void draw(CanvasInterface&, Projection2d const&, BoundedConstraintSet const&);
+Void draw(CanvasInterface&, const Projection2d&, const BoundedConstraintSet&);
 /** @brief Draw the object on a canvas. */
-Void draw(CanvasInterface&, Projection2d const&, ConstrainedImageSet const&);
+Void draw(CanvasInterface&, const Projection2d&, const ConstrainedImageSet&);
 /** @brief Draw the object on a canvas. */
-Void draw(CanvasInterface&, Projection2d const&, ValidatedConstrainedImageSet const&);
+Void draw(CanvasInterface&, const Projection2d&, const ValidatedConstrainedImageSet&);
 /** @brief Draw the object on a canvas. */
-Void draw(CanvasInterface&, Projection2d const&, ValidatedAffineConstrainedImageSet const&);
+Void draw(CanvasInterface&, const Projection2d&, const ValidatedAffineConstrainedImageSet&);
 /** @brief Draw the object on a canvas. */
-Void draw(CanvasInterface&, Projection2d const&, InterpolatedCurve const&);
+Void draw(CanvasInterface&, const Projection2d&, const InterpolatedCurve&);
 
 // A Figure owns clones of its drawables. The adapters must therefore own
 // their mathematical values, rather than references to short-lived objects.
@@ -58,27 +58,29 @@ template<class Set>
 /** @brief GeometryDrawable2d provides value-owning drawing adapters for geometric sets. */
 class GeometryDrawable2d final : public Drawable2dInterface {
   public:
-    explicit GeometryDrawable2d(Set const& set) : _set(set) { }
+    explicit GeometryDrawable2d(const Set& set) : _set(set) {}
     GeometryDrawable2d* clone() const override { return new GeometryDrawable2d(*this); }
     DimensionType dimension() const override { return _set.dimension(); }
     /** @brief Draw the object on a canvas. */
-    Void draw(CanvasInterface& canvas, Projection2d const& projection) const override {
+    Void draw(CanvasInterface& canvas, const Projection2d& projection) const override {
         /** @brief Draw the object on a canvas. */
-        Ariadne::draw(canvas,projection,_set);
+        Ariadne::draw(canvas, projection, _set);
     }
+
   private:
     Set _set;
 };
 
-#define ARIADNE_DRAWING_ADAPT(TYPE) \
+#define ARIADNE_DRAWING_ADAPT(TYPE)                               \
     inline Void draw_to_figure(Figure& figure, TYPE const& set) { \
-        figure.draw(GeometryDrawable2d<TYPE>(set)); \
-    } \
-    inline Void draw(Figure& figure, TYPE const& set) { \
-        draw_to_figure(figure,set); \
-    } \
-    inline Figure& operator<<(Figure& figure, TYPE const& set) { \
-        draw(figure,set); return figure; \
+        figure.draw(GeometryDrawable2d<TYPE>(set));               \
+    }                                                             \
+    inline Void draw(Figure& figure, TYPE const& set) {           \
+        draw_to_figure(figure, set);                              \
+    }                                                             \
+    inline Figure& operator<<(Figure& figure, TYPE const& set) {  \
+        draw(figure, set);                                        \
+        return figure;                                            \
     }
 
 ARIADNE_DRAWING_ADAPT(BoundedConstraintSet)

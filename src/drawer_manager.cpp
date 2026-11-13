@@ -27,22 +27,23 @@
  */
 
 #include "drawing/drawer_manager.hpp"
+
 #include "drawing/drawer.hpp"
 
 namespace Ariadne {
 
-DrawerManager::DrawerManager() : _drawer(AffineDrawer(0)) { }
+DrawerManager::DrawerManager() : _drawer(AffineDrawer(0)) {}
 
 DrawerManager& DrawerManager::instance() {
     static DrawerManager instance;
     return instance;
 }
 
-Drawer const& DrawerManager::drawer() const {
+const Drawer& DrawerManager::drawer() const {
     return _drawer;
 }
 
-Void DrawerManager::set_drawer(Drawer const& drawer) {
+Void DrawerManager::set_drawer(const Drawer& drawer) {
     _drawer = drawer;
 }
 

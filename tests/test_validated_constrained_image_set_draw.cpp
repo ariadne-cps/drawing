@@ -26,43 +26,52 @@
  *  @brief Test validated constrained image set draw behavior.
  */
 
-#include "drawing/geometry_draw.hpp"
 #include "drawing/drawer.hpp"
 #include "drawing/drawer_manager.hpp"
+#include "drawing/geometry_draw.hpp"
 #include "rendering/null_rendering.hpp"
+
 #include "ariadne-testing.hpp"
 using namespace Ariadne;
 
 class ValidatedImageCanvas final : public NullCanvas {
   public:
-    Nat boundaries=0u;
-    Void fill_boundary(List<Point2d> const&) override { ++boundaries; }
+    Nat boundaries = 0u;
+    Void fill_boundary(const List<Point2d>&) override { ++boundaries; }
 };
 class TestValidatedConstrainedImageSetDraw : public Ariadne::Testing::ContextFixture {
   public:
     using ContextFixture::ContextFixture;
 
     Void test_validated_constrained_image_set_draw() {
-    auto x=ValidatedScalarMultivariateFunction::coordinate(2u,0u);
-    auto y=ValidatedScalarMultivariateFunction::coordinate(2u,1u);
-    ValidatedVectorMultivariateFunction mapping({x+y,x-y});
-    ValidatedConstrainedImageSet set(ExactBoxType{{-1.0_x,1.0_x},{-2.0_x,2.0_x}},mapping);
-    Projection2d projection(2u,0u,1u);
-    ValidatedImageCanvas canvas;
+        auto x = ValidatedScalarMultivariateFunction::coordinate(2u, 0u);
+        auto y = ValidatedScalarMultivariateFunction::coordinate(2u, 1u);
+        ValidatedVectorMultivariateFunction mapping({x + y, x - y});
+        ValidatedConstrainedImageSet set(ExactBoxType{
+                                             {-1.0_x, 1.0_x},
+                                             {-2.0_x, 2.0_x}
+        },
+                                         mapping);
+        Projection2d projection(2u, 0u, 1u);
+        ValidatedImageCanvas canvas;
 
-    DrawerManager::instance().set_drawer(BoxDrawer());
-    draw(canvas,projection,set);
-    ARIADNE_TESTING_PROVE(canvas.boundaries>0u);
+        DrawerManager::instance().set_drawer(BoxDrawer());
+        draw(canvas, projection, set);
+        ARIADNE_TESTING_PROVE(canvas.boundaries > 0u);
 
-    Figure figure(ApproximateBoxType({{-4,+4},{-4,+4}}),projection);
-    draw(figure,set);
-    figure._paint_all(canvas);
-    ARIADNE_TESTING_PROVE(canvas.boundaries>1u);
+        Figure figure(ApproximateBoxType({
+                          {-4, +4},
+                          {-4, +4}
+        }),
+                      projection);
+        draw(figure, set);
+        figure._paint_all(canvas);
+        ARIADNE_TESTING_PROVE(canvas.boundaries > 1u);
 
-    DrawerManager::instance().set_drawer(AffineDrawer(0u));
-    draw(canvas,projection,set);
-    ARIADNE_TESTING_PROVE(canvas.boundaries>2u);
-}
+        DrawerManager::instance().set_drawer(AffineDrawer(0u));
+        draw(canvas, projection, set);
+        ARIADNE_TESTING_PROVE(canvas.boundaries > 2u);
+    }
 };
 
 int main(int argc, char** argv) {

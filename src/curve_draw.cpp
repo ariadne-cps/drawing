@@ -26,31 +26,31 @@
  *  @brief Implement curve draw.
  */
 
+#include "algebra/vector.hpp"
 #include "drawing/geometry_draw.hpp"
 #include "geometry/point.hpp"
-#include "algebra/vector.hpp"
 #include "numeric/numeric.hpp"
 #include "rendering/rendering_interface.hpp"
 
 namespace Ariadne {
 
-
-Void draw(CanvasInterface& c, Projection2d const& p, InterpolatedCurve const& curve)
-{
+Void draw(CanvasInterface& c, const Projection2d& p, const InterpolatedCurve& curve) {
     // InterpolatedCurve::end() denotes the last point (not past-the-end).
-    if(curve.size()==0u) { return; }
-    DimensionType xi=p.x_coordinate();
-    DimensionType yi=p.y_coordinate();
-    auto iter=curve.begin();
-    auto const last=curve.end();
-    auto pt=join(iter->second,iter->first);
-    c.move_to(pt[xi].get_d(),pt[yi].get_d());
-    while(iter!=last) {
-        ++iter;
-        pt=join(iter->second,iter->first);
-        c.line_to(pt[xi].get_d(),pt[yi].get_d());
+    if (curve.size() == 0u) {
+        return;
     }
-    if(decide(curve.begin()->second==last->second)) {
+    DimensionType xi = p.x_coordinate();
+    DimensionType yi = p.y_coordinate();
+    auto iter = curve.begin();
+    const auto last = curve.end();
+    auto pt = join(iter->second, iter->first);
+    c.move_to(pt[xi].get_d(), pt[yi].get_d());
+    while (iter != last) {
+        ++iter;
+        pt = join(iter->second, iter->first);
+        c.line_to(pt[xi].get_d(), pt[yi].get_d());
+    }
+    if (decide(curve.begin()->second == last->second)) {
         c.fill();
     } else {
         c.stroke();

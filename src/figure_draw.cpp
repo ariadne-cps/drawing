@@ -27,17 +27,17 @@
  */
 
 #include "drawing/box_draw.hpp"
-#include "rendering/figure.hpp"
 #include "numeric/numeric.hpp"
+#include "rendering/figure.hpp"
 
 namespace Ariadne {
 
 Void draw(Figure& fig, const RealBox& box) {
-    draw_to_figure(fig,box);
+    draw_to_figure(fig, box);
 }
 
-Void draw(Figure& fig, FloatDPApproximateBox const& box) {
-    draw_to_figure(fig,box);
+Void draw(Figure& fig, const FloatDPApproximateBox& box) {
+    draw_to_figure(fig, box);
 }
 
 } // namespace Ariadne

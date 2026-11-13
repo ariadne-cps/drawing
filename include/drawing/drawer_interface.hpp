@@ -30,11 +30,11 @@
 #define ARIADNE_DRAWER_INTERFACE_HPP
 
 #include <iosfwd>
-#include "utility/writable.hpp"
+
 #include "utility/handle.hpp"
+#include "utility/writable.hpp"
 
 namespace Ariadne {
-
 
 typedef Void Void;
 /** @brief CanvasInterface provides abstract interface for geometric drawers. */
@@ -46,8 +46,7 @@ typedef Projection2d Projection2d;
 class ValidatedConstrainedImageSet;
 
 //! \brief A class for computing outer approximations to sets defined by functions.
-class DrawerInterface : public WritableInterface
-{
+class DrawerInterface : public WritableInterface {
   public:
     /** @brief Draw the object on a canvas. */
     virtual Void draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set) const = 0;
@@ -55,18 +54,18 @@ class DrawerInterface : public WritableInterface
 
 //! \brief A class for computing outer approximations to sets defined by functions.
 class Drawer
-    : public Handle<const DrawerInterface>
-{
+    : public Handle<const DrawerInterface> {
   public:
     using Handle<const DrawerInterface>::Handle;
     /** @brief Draw the object on a canvas. */
     inline Void draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set) const {
-        return this->_ptr->draw(cnvs,proj,set); }
-    friend inline OutputStream& operator<<(OutputStream& os, Drawer const& drw) {
-        return drw._ptr->_write(os); }
+        return this->_ptr->draw(cnvs, proj, set);
+    }
+    friend inline OutputStream& operator<<(OutputStream& os, const Drawer& drw) {
+        return drw._ptr->_write(os);
+    }
 };
 
-
-} //namespace Ariadne
+} // namespace Ariadne
 
 #endif /* ARIADNE_DRAWER_INTERFACE_HPP */
