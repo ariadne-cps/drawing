@@ -18,7 +18,7 @@ set(UNIT_TESTS
 foreach(TEST ${UNIT_TESTS})
     add_executable(${TEST} ${TEST}.cpp)
     target_link_libraries(${TEST} PRIVATE ariadne-drawing drawing ariadne-testing)
-    add_test(NAME ${TEST} COMMAND $<TARGET_FILE:${TEST}> --concise)
+    add_test(NAME ${TEST} COMMAND $<TARGET_FILE:${TEST}> --concise --logtonull)
     set_property(TEST ${TEST} PROPERTY LABELS "drawing")
 endforeach()
 add_custom_target(tests)

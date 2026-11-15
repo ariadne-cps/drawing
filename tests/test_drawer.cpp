@@ -30,6 +30,7 @@
 
 #include "drawing/drawer.hpp"
 #include "drawing/null_drawer.hpp"
+#include "logging/test_runner.hpp"
 #include "rendering/null_rendering.hpp"
 #include "set/function_set.hpp"
 
@@ -88,5 +89,5 @@ int main(int argc, char** argv) {
     ARIADNE_TESTING_SUITE("test_drawer");
     ARIADNE_TESTING_ADD_TEST(TestDrawer, test_drawer);
     ARIADNE_TESTING_ADD_TEST(TestDrawer, test_concrete_drawers);
-    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
+    return Ariadne::Testing::run_logging_suite(ariadne_test_suite, argc, argv);
 }

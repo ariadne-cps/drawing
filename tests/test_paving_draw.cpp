@@ -30,6 +30,7 @@
 
 #include "drawing/binary_tree_paving_draw.hpp"
 #include "drawing/box_draw.hpp"
+#include "logging/test_runner.hpp"
 #include "rendering/null_rendering.hpp"
 
 #include "ariadne-testing.hpp"
@@ -83,5 +84,5 @@ class TestPavingDraw : public Ariadne::Testing::ContextFixture {
 int main(int argc, char **argv) {
     ARIADNE_TESTING_SUITE("test_paving_draw");
     ARIADNE_TESTING_ADD_TEST(TestPavingDraw, test_paving_adapters);
-    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
+    return Ariadne::Testing::run_logging_suite(ariadne_test_suite, argc, argv);
 }

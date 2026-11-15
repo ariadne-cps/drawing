@@ -32,6 +32,7 @@
 
 #include "drawing/box_draw.hpp"
 #include "drawing/list_set_draw.hpp"
+#include "logging/test_runner.hpp"
 #include "rendering/null_rendering.hpp"
 
 #include "ariadne-testing.hpp"
@@ -167,5 +168,5 @@ int main(int argc, char** argv) {
     ARIADNE_TESTING_ADD_TEST(TestBoxDraw, test_box_drawing);
     ARIADNE_TESTING_ADD_TEST(TestBoxDraw, test_box_figure);
     ARIADNE_TESTING_ADD_TEST(TestBoxDraw, test_coloured_box_plot);
-    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
+    return Ariadne::Testing::run_logging_suite(ariadne_test_suite, argc, argv);
 }

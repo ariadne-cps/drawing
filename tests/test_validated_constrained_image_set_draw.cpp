@@ -29,6 +29,7 @@
 #include "drawing/drawer.hpp"
 #include "drawing/drawer_manager.hpp"
 #include "drawing/geometry_draw.hpp"
+#include "logging/test_runner.hpp"
 #include "rendering/null_rendering.hpp"
 
 #include "ariadne-testing.hpp"
@@ -77,5 +78,5 @@ class TestValidatedConstrainedImageSetDraw : public Ariadne::Testing::ContextFix
 int main(int argc, char** argv) {
     ARIADNE_TESTING_SUITE("test_validated_constrained_image_set_draw");
     ARIADNE_TESTING_ADD_TEST(TestValidatedConstrainedImageSetDraw, test_validated_constrained_image_set_draw);
-    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
+    return Ariadne::Testing::run_logging_suite(ariadne_test_suite, argc, argv);
 }

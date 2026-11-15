@@ -29,6 +29,7 @@
 #include <type_traits>
 
 #include "drawing/augmented_paving_draw.hpp"
+#include "logging/test_runner.hpp"
 #include "rendering/null_rendering.hpp"
 
 #include "ariadne-testing.hpp"
@@ -84,5 +85,5 @@ class TestAugmentedDraw : public Ariadne::Testing::ContextFixture {
 int main(int argc, char** argv) {
     ARIADNE_TESTING_SUITE("test_augmented_paving_draw");
     ARIADNE_TESTING_ADD_TEST(TestAugmentedDraw, test_augmented_draw);
-    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
+    return Ariadne::Testing::run_logging_suite(ariadne_test_suite, argc, argv);
 }

@@ -34,6 +34,7 @@
 #include "function/function.hpp"
 #include "geometry/box.hpp"
 #include "logging/logging.hpp"
+#include "logging/test_runner.hpp"
 #include "rendering/geometry2d.hpp"
 #include "rendering/null_rendering.hpp"
 #include "set/affine_set.hpp"
@@ -410,5 +411,5 @@ int main(int argc, char** argv) {
     ARIADNE_TESTING_ADD_TEST(TestAffineSetDraw, test_draw);
     ARIADNE_TESTING_ADD_TEST(TestAffineSetDiagnostics, test_infeasible_affine_set_draw);
     ARIADNE_TESTING_ADD_TEST(TestAffineSetDiagnostics, test_verbose_affine_set_draw);
-    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
+    return Ariadne::Testing::run_logging_suite(ariadne_test_suite, argc, argv);
 }

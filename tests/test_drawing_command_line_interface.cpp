@@ -30,6 +30,7 @@
 
 #include "drawing/drawing_command_line_interface.hpp"
 #include "logging/logging.hpp"
+#include "logging/test_runner.hpp"
 #include "threading/thread_manager.hpp"
 
 #include "ariadne-testing.hpp"
@@ -172,5 +173,5 @@ int main(int argc, char** argv) {
     ARIADNE_TESTING_ADD_TEST(TestCommandLineInterface, test_rendering_parsing);
     ARIADNE_TESTING_ADD_TEST(TestCommandLineInterface, test_composed_parsing);
     ARIADNE_TESTING_ADD_TEST(TestCommandLineInterface, test_local_contribution);
-    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
+    return Ariadne::Testing::run_logging_suite(ariadne_test_suite, argc, argv);
 }

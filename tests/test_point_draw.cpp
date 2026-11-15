@@ -32,6 +32,7 @@
 #include "drawing/box_draw.hpp"
 #include "drawing/point_draw.hpp"
 #include "geometry/box.hpp"
+#include "logging/test_runner.hpp"
 #include "rendering/null_rendering.hpp"
 
 #include "ariadne-testing.hpp"
@@ -108,5 +109,5 @@ int main(int argc, char** argv) {
     ARIADNE_TESTING_ADD_TEST(TestPointDraw, test_canvas_point);
     ARIADNE_TESTING_ADD_TEST(TestPointDraw, test_point_projection);
     ARIADNE_TESTING_ADD_TEST(TestPointDraw, test_figure_point);
-    return ARIADNE_TESTING_RUN_TESTS_WITH_ARGS(argc, argv);
+    return Ariadne::Testing::run_logging_suite(ariadne_test_suite, argc, argv);
 }
