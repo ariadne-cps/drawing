@@ -45,8 +45,8 @@ Void draw(CanvasInterface& canvas, const Projection2d& projection, const Validat
     // families of enclosures (including the SPRE22 benchmark).
     for (const auto& constraint : set.constraint_models()) {
         const auto range = constraint.function().range();
-        if (definitely(range.lower_bound() > constraint.upper_bound().upper_bound()) ||
-            definitely(range.upper_bound() < constraint.lower_bound().lower_bound())) {
+        if (definitely(range.lower_bound() > constraint.upper_bound()) ||
+            definitely(range.upper_bound() < constraint.lower_bound())) {
             LOGGING_PRINTLN("empty: inconsistent affine guard");
             return;
         }
