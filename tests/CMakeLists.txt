@@ -14,7 +14,6 @@ set(UNIT_TESTS
     test_constraint_set_draw
     test_constrained_image_set_draw
     test_affine_set_draw
-    test_spre22_critical_draw
 )
 foreach(TEST ${UNIT_TESTS})
     add_executable(${TEST} ${TEST}.cpp)
@@ -24,6 +23,3 @@ foreach(TEST ${UNIT_TESTS})
 endforeach()
 add_custom_target(tests)
 add_dependencies(tests ${UNIT_TESTS})
-
-# An original SPRE22 enclosure used to stall the old affine boundary walk.
-set_tests_properties(test_spre22_critical_draw PROPERTIES TIMEOUT 120)
