@@ -28,6 +28,7 @@
 
 #include "drawing/geometry_draw.hpp"
 #include "function/function.hpp"
+#include "set/polytope.hpp"
 #include "logging/logging.hpp"
 #include "rendering/geometry2d.hpp"
 #include "rendering/rendering_interface.hpp"
@@ -39,17 +40,31 @@ Void draw(CanvasInterface& canvas, const Projection2d& projection, const Validat
     LOGGING_PRINTLN("set=" << set);
     LOGGING_PRINTLN("projection=" << projection);
 
-    List<Point2d> boundary;
+    // A single definitely violated affine guard proves emptiness cheaply.
+    // The full LP emptiness check is intentionally avoided for plotting large
+    // families of enclosures (including the SPRE22 benchmark).
+    for (const auto& constraint : set.constraint_models()) {
+        const auto range = constraint.function().range();
+        if (definitely(range.lower_bound() > constraint.upper_bound().upper_bound()) ||
+            definitely(range.upper_bound() < constraint.lower_bound().lower_bound())) {
+            LOGGING_PRINTLN("empty: inconsistent affine guard");
+            return;
+        }
+    }
 
-    for (const auto& xy: set.boundary(projection.x_coordinate(), projection.y_coordinate())) {
-        boundary.push_back(Point2d(xy.first, xy.second));
+    // The certified outer projection does not traverse the potentially
+    // cycling affine boundary. Geometry remains exact until this adapter
+    // converts its vertices into display coordinates.
+    const Polytope enclosure = outer_project2d(
+        set, projection.x_coordinate(), projection.y_coordinate());
+    LOGGING_PRINTLN("projection_vertices=" << enclosure.number_of_vertices());
+    if (enclosure.empty()) return;
+
+    List<Point2d> boundary;
+    for (const auto& vertex : enclosure.vertices()) {
+        boundary.push_back(Point2d(vertex[0].get_d(), vertex[1].get_d()));
     }
     LOGGING_PRINTLN("boundary=" << boundary);
-
-    if (boundary.empty()) {
-        return;
-    }
-
     canvas.fill_boundary(boundary);
 }
 

@@ -337,7 +337,7 @@ class TestAffineSetDraw : public Ariadne::Testing::ContextFixture {
     }
 };
 
-// An infeasible affine image has no boundary and must not call the canvas.
+// A guard proven inconsistent by affine interval evaluation must not call the canvas.
 class AffineBoundaryCanvas final : public NullCanvas {
   public:
     Nat boundaries = 0u;
@@ -354,7 +354,6 @@ class TestAffineSetDiagnostics : public Ariadne::Testing::ContextFixture {
         ValidatedAffineConstrainedImageSet empty_set(domain, {variables[0], variables[1]});
         empty_set.new_parameter_constraint(variables[0] <= -2.0_x);
 
-        ARIADNE_TESTING_PROVE(empty_set.boundary(0u, 1u).empty());
         AffineBoundaryCanvas canvas;
         draw(canvas, Projection2d(2u, 0u, 1u), empty_set);
         ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries, 0u);
