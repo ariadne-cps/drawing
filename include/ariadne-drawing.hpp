@@ -29,8 +29,6 @@
 #ifndef ARIADNE_ARIADNE_DRAWING_HPP
 #define ARIADNE_ARIADNE_DRAWING_HPP
 
-#include "drawing/augmented_paving_draw.hpp"
-#include "drawing/binary_tree_paving_draw.hpp"
 #include "drawing/box_draw.hpp"
 #include "drawing/drawer.hpp"
 #include "drawing/drawer_manager.hpp"
@@ -38,12 +36,11 @@
 #include "drawing/geometry_draw.hpp"
 #include "drawing/list_set_draw.hpp"
 #include "drawing/null_drawer.hpp"
-#include "drawing/paving_draw.hpp"
 #include "drawing/point_draw.hpp"
 #include "rendering/figure.hpp"
 #include "rendering/rendering_manager.hpp"
 
-#include "ariadne-paving.hpp"
+#include "ariadne-set.hpp"
 #include "ariadne-rendering.hpp"
 
 #endif

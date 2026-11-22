@@ -151,13 +151,6 @@ def tutorial_rendering():
     affine_view.draw(set3d)
     save(affine_view, "tutorial_drawing_drawer_affine")
 
-    drawer_manager.set_drawer(GridDrawer(4))
-    grid_view = Figure(viewport3d, Projection2d(3, 0, 1))
-    grid_view.set_fill_colour(orange)
-    grid_view.set_fill_opacity(0.25)
-    grid_view.draw(set3d)
-    save(grid_view, "tutorial_drawing_drawer_grid")
-
     drawer_manager.set_drawer(AffineDrawer(0))
 
 
@@ -199,19 +192,6 @@ def tutorial_rendering():
     collection.draw(list_set)
     save(collection, "tutorial_drawing_list")
 
-    grid = Grid(2)
-    paving = BinaryTreePaving(grid)
-    paving.adjoin_over_approximation(FloatDPExactBox([
-        {exact(-1): exact(1)}, {exact(-1): exact(1)},
-    ]), 0)
-    cell = next(iter(paving))
-    cells = Figure(view2d, plane)
-    cells.draw(cell)
-    save(cells, "tutorial_drawing_cell")
-    paving_view = Figure(view2d, plane)
-    paving_view.draw(paving)
-    save(paving_view, "tutorial_drawing_paving")
-
     domain = real_box([("-1", "1"), ("-1", "1")])
     # Match the C++ single-box constructors without an intermediate mapping.
     bounded = BoundedConstraintSet(domain)
@@ -233,7 +213,7 @@ def tutorial_rendering():
     print("Projection2d: choose which coordinates of a higher-dimensional object are displayed.")
     print("RenderingProperties / Colour: control line, fill and opacity independently of geometry.")
     print("RenderingManager: choose the rendering backend and nonlinear-set drawer globally.")
-    print("BoxDrawer / AffineDrawer / GridDrawer: trade rendering cost for geometric detail.")
+    print("BoxDrawer / AffineDrawer: trade rendering cost for geometric detail.")
     print("DefaultRenderingBackend: materialise figures as PNG files.")
 
 

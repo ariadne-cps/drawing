@@ -26,21 +26,27 @@
  *  @brief Test constrained image set draw behavior.
  */
 
-#include <limits>
 
-#include "drawing/binary_tree_paving_draw.hpp"
 #include "drawing/box_draw.hpp"
+#include "drawing/drawer.hpp"
+#include "drawing/drawer_manager.hpp"
 #include "drawing/geometry_draw.hpp"
-#include "drawing/paving_draw.hpp"
 #include "function/function.hpp"
 #include "geometry/box.hpp"
 #include "logging/test_runner.hpp"
-#include "paving/binary_tree_paving.hpp"
-#include "paving/set_approximation.hpp"
+#include "rendering/null_rendering.hpp"
 #include "set/function_set.hpp"
 
 #include "ariadne-testing.hpp"
 using namespace Ariadne;
+
+// Count rendering operations rather than merely checking that the drawing
+// scenario completed without raising an exception.
+class CountingConstrainedImageCanvas final : public NullCanvas {
+  public:
+    Nat boundaries = 0u;
+    Void fill_boundary(const List<Point2d>&) override { ++boundaries; }
+};
 
 class TestConstrainedImageSetDraw : public Ariadne::Testing::ContextFixture {
     Figure figure;
@@ -52,19 +58,15 @@ class TestConstrainedImageSetDraw : public Ariadne::Testing::ContextFixture {
                                               {-1, +1}
     }),
                                           Projection2d(2, 0, 1)) {}
-    Void draw_constrained_image_case(const StringType& str, const EffectiveConstrainedImageSet& set, Nat acc) {
+    Void draw_constrained_image_case(const StringType& str, const EffectiveConstrainedImageSet& set) {
         figure.clear();
         figure.set_bounding_box(ExactBoxType({
             {-2.75_x, +2.75_x},
             { -1.5_x,  +2.0_x}
         }));
-        ARIADNE_TESTING_PROVE(set.dimension() <= std::numeric_limits<Nat>::max());
-        BinaryTreePaving paving(static_cast<Nat>(set.dimension()));
-        adjoin_outer_approximation_to(paving, set, acc + 1);
         figure.set_fill_opacity(1.0);
         figure.set_fill_colour(red);
-        paving.recombine();
-        draw(figure, paving);
+        draw(figure, set);
         figure.set_fill_colour(green);
         figure.set_fill_opacity(0.5);
         typedef EffectiveConstrainedImageSet CIS;
@@ -100,19 +102,23 @@ class TestConstrainedImageSetDraw : public Ariadne::Testing::ContextFixture {
         figure.draw(s14);
         figure.draw(s15);
         figure.draw(s16);
+        CountingConstrainedImageCanvas canvas;
+        figure._paint_all(canvas);
+        // The original set and all 16 refinements must each render a boundary.
+        ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries, 17u);
         figure.write((StringType("test_function_set-draw-") + str).c_str());
         figure.clear();
     }
 
     Void test_draw() {
+        DrawerManager::instance().set_drawer(BoxDrawer());
         EffectiveScalarMultivariateFunction s = EffectiveScalarMultivariateFunction::coordinate(2, 0);
         EffectiveScalarMultivariateFunction t = EffectiveScalarMultivariateFunction::coordinate(2, 1);
         EffectiveScalarMultivariateFunction x = EffectiveScalarMultivariateFunction::coordinate(2, 0);
         EffectiveScalarMultivariateFunction y = EffectiveScalarMultivariateFunction::coordinate(2, 1);
-        Nat acc = 2u;
 
-        draw_constrained_image_case("ellipse", EffectiveConstrainedImageSet(RealBox(2, RealInterval(-1, 1)), {2 * s + t, s + t}, {s * s + t * t <= 0.75_x}), acc + 1u);
-        draw_constrained_image_case("concave", EffectiveConstrainedImageSet(RealBox(2, RealInterval(-1.01_dec, 1.01_dec)), {s, 1.0_x * s * s + t}, {2 * s + 0.25_x * s * s + t - 2.0_x <= 0}), acc);
+        draw_constrained_image_case("ellipse", EffectiveConstrainedImageSet(RealBox(2, RealInterval(-1, 1)), {2 * s + t, s + t}, {s * s + t * t <= 0.75_x}));
+        draw_constrained_image_case("concave", EffectiveConstrainedImageSet(RealBox(2, RealInterval(-1.01_dec, 1.01_dec)), {s, 1.0_x * s * s + t}, {2 * s + 0.25_x * s * s + t - 2.0_x <= 0}));
     }
 };
 int main(int argc, char** argv) {

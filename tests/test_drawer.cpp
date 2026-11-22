@@ -59,11 +59,6 @@ class TestDrawer : public Ariadne::Testing::ContextFixture {
         affine_drawer._write(affine_stream);
         ARIADNE_TESTING_EXPECT_EQUAL(affine_stream.str(), "AffineDrawer(splittings=1)");
 
-        GridDrawer grid_drawer(1u);
-        grid_drawer.draw(canvas, projection, set);
-        std::ostringstream grid_stream;
-        grid_drawer._write(grid_stream);
-        ARIADNE_TESTING_EXPECT_EQUAL(grid_stream.str(), "GridDrawer(fineness=1)");
     }
 
     void test_drawer() {

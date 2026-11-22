@@ -43,7 +43,7 @@ ArgumentParser make_drawer_argument_parser() {
     return make_valued_argument_parser(
         "d",
         "drawer",
-        "Choose the drawer as a <value> in [ box | grid@X | affine@X | none ] with X a non-negative integer, where none disables drawing (default: affine@0)",
+        "Choose the drawer as a <value> in [ box | affine@X | none ] with X a non-negative integer, where none disables drawing (default: affine@0)",
         [](const String& value) -> VoidFunction {
             Drawer drawer = NullDrawer();
 
@@ -62,9 +62,7 @@ ArgumentParser make_drawer_argument_parser() {
                     }
 
                     const String drawer_name = value.substr(0, at_pos);
-                    if (drawer_name == "grid") {
-                        drawer = GridDrawer(static_cast<Nat>(accuracy));
-                    } else if (drawer_name == "affine") {
+                    if (drawer_name == "affine") {
                         drawer = AffineDrawer(static_cast<Nat>(accuracy));
                     } else {
                         throw std::runtime_error("invalid drawer");
