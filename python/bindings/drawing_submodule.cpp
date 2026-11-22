@@ -45,7 +45,16 @@ namespace {
 
 Void export_cli(pybind11::module& module) {
     pybind11::class_<CommandLineInterface> base_class(module, "CommandLineInterface");
-    base_class.def("acquire", pybind11::overload_cast<const List<String>&>(&CommandLineInterface::acquire, pybind11::const_));
+    // Python sequences need an explicit adapter: Ariadne::List<Ariadne::String>
+    // is not a std::vector<std::string> for pybind11's automatic conversion.
+    base_class.def("acquire", [](const CommandLineInterface& cli,
+                                   const std::vector<std::string>& arguments) {
+        List<String> args;
+        for (const auto& argument : arguments) {
+            args.append(String(argument));
+        }
+        return cli.acquire(args);
+    });
 
     pybind11::class_<DrawingCommandLineInterface, CommandLineInterface> drawing_class(module, "DrawingCommandLineInterface");
     drawing_class.def(pybind11::init<>());

@@ -28,14 +28,25 @@
 
 
 #include "drawing/box_draw.hpp"
+#include "drawing/drawer.hpp"
+#include "drawing/drawer_manager.hpp"
 #include "drawing/geometry_draw.hpp"
 #include "function/function.hpp"
 #include "geometry/box.hpp"
 #include "logging/test_runner.hpp"
+#include "rendering/null_rendering.hpp"
 #include "set/function_set.hpp"
 
 #include "ariadne-testing.hpp"
 using namespace Ariadne;
+
+// Count rendering operations rather than merely checking that the drawing
+// scenario completed without raising an exception.
+class CountingConstrainedImageCanvas final : public NullCanvas {
+  public:
+    Nat boundaries = 0u;
+    Void fill_boundary(const List<Point2d>&) override { ++boundaries; }
+};
 
 class TestConstrainedImageSetDraw : public Ariadne::Testing::ContextFixture {
     Figure figure;
@@ -91,11 +102,16 @@ class TestConstrainedImageSetDraw : public Ariadne::Testing::ContextFixture {
         figure.draw(s14);
         figure.draw(s15);
         figure.draw(s16);
+        CountingConstrainedImageCanvas canvas;
+        figure._paint_all(canvas);
+        // The original set and all 16 refinements must each render a boundary.
+        ARIADNE_TESTING_EXPECT_EQUAL(canvas.boundaries, 17u);
         figure.write((StringType("test_function_set-draw-") + str).c_str());
         figure.clear();
     }
 
     Void test_draw() {
+        DrawerManager::instance().set_drawer(BoxDrawer());
         EffectiveScalarMultivariateFunction s = EffectiveScalarMultivariateFunction::coordinate(2, 0);
         EffectiveScalarMultivariateFunction t = EffectiveScalarMultivariateFunction::coordinate(2, 1);
         EffectiveScalarMultivariateFunction x = EffectiveScalarMultivariateFunction::coordinate(2, 0);
