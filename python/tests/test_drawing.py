@@ -15,8 +15,12 @@ def test_drawing_bindings():
     manager = DrawerManager.instance()
     manager.set_drawer(AffineDrawer(0))
     assert isinstance(manager.drawer(), Drawer)
+    assert str(manager.drawer()) == "AffineDrawer(splittings=0)"
+    assert repr(manager.drawer()) == "AffineDrawer(splittings=0)"
     manager.set_drawer(BoxDrawer())
     assert isinstance(manager.drawer(), Drawer)
+    assert str(manager.drawer()) == "BoxDrawer()"
+    assert repr(manager.drawer()) == "BoxDrawer()"
 
 
 def test_tutorial_numeric_constructors():

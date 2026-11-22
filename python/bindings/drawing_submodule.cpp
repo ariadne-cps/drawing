@@ -36,6 +36,7 @@
 #include "geometry/box.hpp"
 #include "pybind11.hpp"
 #include "rendering/figure.hpp"
+#include "utilities.hpp"
 
 
 using namespace Ariadne;
