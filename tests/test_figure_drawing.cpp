@@ -29,11 +29,9 @@
 #include "drawing/box_draw.hpp"
 #include "drawing/drawer.hpp"
 #include "drawing/geometry_draw.hpp"
-#include "drawing/paving_draw.hpp"
 #include "function/function.hpp"
 #include "geometry/box.hpp"
 #include "logging/test_runner.hpp"
-#include "paving/binary_tree_paving.hpp"
 #include "rendering/figure.hpp"
 #include "set/curve.hpp"
 #include "set/function_set.hpp"
@@ -154,22 +152,7 @@ class TestFigureDrawing : public Ariadne::Testing::ContextFixture {
         g.write("test_rendering-curve");
         g.clear();
 
-        BinaryTreePaving gts(2);
-        gts.adjoin_outer_approximation(bx1, 4);
-        gts.adjoin_outer_approximation(bx2, 5);
-        gts.adjoin_outer_approximation(bx3, 6);
-        gts.adjoin_outer_approximation(bx4, 7);
-        gts.adjoin_outer_approximation(bx5, 8);
-        gts.recombine();
 
-        ExactBoxType bbox(2);
-        bbox[0] = ExactIntervalType(-2, 2);
-        bbox[1] = ExactIntervalType(-2, 2);
-        g.set_bounding_box(bbox);
-        g.set_projection(2, 0, 1);
-        g << gts;
-        g.write("test_rendering-paving");
-        g.clear();
     }
 
     void test_default_drawer() {

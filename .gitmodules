@@ -1,9 +1,9 @@
 [submodule "bui"]
 	path = ss/bui
 	url = https://github.com/ariadne-cps/build
-[submodule "pav"]
-	path = ss/pav
-	url = https://github.com/ariadne-cps/paving
+[submodule "set"]
+	path = ss/set
+	url = https://github.com/ariadne-cps/set
 [submodule "ren"]
 	path = ss/ren
 	url = https://github.com/ariadne-cps/rendering

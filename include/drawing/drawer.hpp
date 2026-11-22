@@ -60,18 +60,6 @@ class AffineDrawer : public DrawerInterface {
     OutputStream& _write(OutputStream& os) const;
 };
 
-//! \brief Pave the set and draw the computed cells.
-class GridDrawer : public DrawerInterface {
-    Nat _fineness;
-
-  public:
-    GridDrawer(Nat fineness) : _fineness(fineness) {}
-    /** @brief Draw the object on a canvas. */
-    Void draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set) const;
-    /** @brief Perform the requested drawing operation. */
-    OutputStream& _write(OutputStream& os) const;
-};
-
 } // namespace Ariadne
 
 #endif /* ARIADNE_DRAWER_HPP */

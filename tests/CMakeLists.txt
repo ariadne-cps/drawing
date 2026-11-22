@@ -5,11 +5,8 @@ set(UNIT_TESTS
     test_drawing_command_line_interface
     test_point_draw
     test_box_draw
-    test_paving_draw
-    test_augmented_paving_draw
     test_figure_drawing
     test_validated_constrained_image_set_draw
-    test_binary_tree_paving_draw
     test_curve_draw
     test_constraint_set_draw
     test_constrained_image_set_draw

@@ -28,12 +28,9 @@
 
 #include "drawing/drawer.hpp"
 
-#include "drawing/binary_tree_paving_draw.hpp"
 #include "drawing/box_draw.hpp"
 #include "drawing/geometry_draw.hpp"
 #include "function/functional.hpp"
-#include "paving/binary_tree_paving.hpp"
-#include "paving/set_approximation.hpp"
 #include "rendering/rendering_interface.hpp"
 #include "set/affine_set.hpp"
 #include "set/function_set.hpp"
@@ -50,9 +47,6 @@ OutputStream& BoxDrawer::_write(OutputStream& os) const {
 OutputStream& AffineDrawer::_write(OutputStream& os) const {
     return os << "AffineDrawer(splittings=" << this->_splittings << ")";
 }
-OutputStream& GridDrawer::_write(OutputStream& os) const {
-    return os << "GridDrawer(fineness=" << this->_fineness << ")";
-}
 
 Void BoxDrawer::draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set) const {
     box_draw(cnvs, proj, set);
@@ -62,9 +56,6 @@ Void AffineDrawer::draw(CanvasInterface& cnvs, const Projection2d& proj, const V
     affine_draw(cnvs, proj, set, this->_splittings);
 }
 
-Void GridDrawer::draw(CanvasInterface& canvas, const Projection2d& projection, const ValidatedConstrainedImageSet& set) const {
-    Ariadne::draw(canvas, projection, outer_approximation(set, Grid(set.dimension()), this->_fineness));
-}
 
 Void box_draw(CanvasInterface& cnvs, const Projection2d& proj, const ValidatedConstrainedImageSet& set) {
     Ariadne::draw(cnvs, proj, cast_exact_box(apply(set.function(), set.domain())));

@@ -8,7 +8,7 @@
 [![Coverage Status](https://github.com/ariadne-cps/drawing/actions/workflows/coverage.yml/badge.svg)](https://github.com/ariadne-cps/drawing/actions/workflows/coverage.yml)
 [![codecov](https://codecov.io/gh/ariadne-cps/drawing/branch/main/graph/badge.svg)](https://codecov.io/gh/ariadne-cps/drawing)
 
-Ariadne Drawing provides mathematical drawing adapters and drawing strategies that connect Ariadne's Paving and Set layers to the independent Rendering library. Drawing is distinct from rasterization: it converts mathematical sets into drawing operations and selects approximation strategies.
+Ariadne Drawing provides mathematical drawing adapters and drawing strategies that connect Ariadne's Set layer to the independent Rendering library. Drawing is distinct from rasterization: it converts mathematical sets into drawing operations and selects approximation strategies.
 Although independently maintained and usable, this repository is also part of the [Ariadne repository structure](https://github.com/ariadne-cps/ariadne/blob/main/doc/structure.md).
 
 ## Layout
@@ -21,12 +21,12 @@ The umbrella header is `include/ariadne-drawing.hpp`.
 
 Drawing depends on:
 
-- [ariadne-cps/paving](https://github.com/ariadne-cps/paving), as Git submodule `ss/pav`, providing sets, grids, pavings, functions and their lower dependencies.
+- [ariadne-cps/set](https://github.com/ariadne-cps/set), as Git submodule `ss/set`, providing geometric sets and their lower dependencies.
 - [ariadne-cps/rendering](https://github.com/ariadne-cps/rendering), as a direct Git submodule, for `Figure`, `CanvasInterface` and the rendering backend.
 - [ariadne-cps/build](https://github.com/ariadne-cps/build) for shared build configuration.
 - [ariadne-cps/testing](https://github.com/ariadne-cps/testing), as Git submodule `ss/tst`, for independent C++ fixture tests and diagnostics.
 
-The intended graph is **drawing → paving and rendering**. Paving and Rendering build independently of Drawing. Paving provides Set, BDD, and their transitive dependencies. Rendering and Paving pin the same Configuration commit; CMake checks cross-path commit consistency.
+The intended graph is **drawing → set and rendering**. Drawing does not depend on Paving. Paving-specific drawing adapters and grid-based approximation policies belong to higher-level consumers, not to Drawing.
 
 ## Build
 
@@ -40,11 +40,11 @@ ctest --test-dir build --output-on-failure
 
 ## Python bindings
 
-When a compatible Python development environment is available, the standalone build produces `pyariadne` from the transitive Paving and Set bindings plus the Rendering and Drawing bindings.
+When a compatible Python development environment is available, the standalone build produces `pyariadne` from the transitive Set bindings plus the Rendering and Drawing bindings.
 
 ## Extraction status
 
-The drawing adapters live in this standalone repository; Paving and Rendering remain independent submodules. CMake checks Configuration consistency in the Paving dependency chain and Python Common consistency across Paving and Rendering. Rendering now pins the same Configuration commit, and cross-chain Configuration and Utility equality are checked. Release CI verifies the installed Drawing library through a separately configured C++ tutorial.
+The drawing adapters live in this standalone repository; Set and Rendering remain independent submodules. CMake checks shared Build, Utility and Python Common dependency consistency across Set and Rendering. Release CI verifies the installed Drawing library through a separately configured C++ tutorial.
 
 ## Contribution guidelines
 

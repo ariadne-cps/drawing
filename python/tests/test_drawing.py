@@ -9,7 +9,7 @@ def test_drawing_command_line():
 
 def test_drawing_bindings():
     import pyariadne_drawing
-    for name in ("Drawer", "BoxDrawer", "AffineDrawer", "GridDrawer",
+    for name in ("Drawer", "BoxDrawer", "AffineDrawer",
                  "DrawerManager", "DrawingCommandLineInterface", "Figure"):
         assert hasattr(pyariadne_drawing, name), name
     manager = DrawerManager.instance()

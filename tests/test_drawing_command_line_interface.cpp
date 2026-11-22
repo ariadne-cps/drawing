@@ -82,7 +82,7 @@ class TestCommandLineInterface : public Ariadne::Testing::ContextFixture {
         ARIADNE_TESTING_PROVE(command_line.acquire({"", "-d", "affine@2"}));
         ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-d", "grid"}));
         ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-d", "grid@e"}));
-        ARIADNE_TESTING_PROVE(command_line.acquire({"", "-d", "grid@2"}));
+        ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-d", "grid@2"}));
         ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-d", "gri@2"}));
         ARIADNE_TESTING_PROVE(not command_line.acquire({"", "-d"}));
         ARIADNE_TESTING_PROVE(command_line.acquire({"", "-d", "none"}));

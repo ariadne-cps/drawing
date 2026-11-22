@@ -26,17 +26,12 @@
  *  @brief Test constrained image set draw behavior.
  */
 
-#include <limits>
 
-#include "drawing/binary_tree_paving_draw.hpp"
 #include "drawing/box_draw.hpp"
 #include "drawing/geometry_draw.hpp"
-#include "drawing/paving_draw.hpp"
 #include "function/function.hpp"
 #include "geometry/box.hpp"
 #include "logging/test_runner.hpp"
-#include "paving/binary_tree_paving.hpp"
-#include "paving/set_approximation.hpp"
 #include "set/function_set.hpp"
 
 #include "ariadne-testing.hpp"
@@ -52,19 +47,15 @@ class TestConstrainedImageSetDraw : public Ariadne::Testing::ContextFixture {
                                               {-1, +1}
     }),
                                           Projection2d(2, 0, 1)) {}
-    Void draw_constrained_image_case(const StringType& str, const EffectiveConstrainedImageSet& set, Nat acc) {
+    Void draw_constrained_image_case(const StringType& str, const EffectiveConstrainedImageSet& set) {
         figure.clear();
         figure.set_bounding_box(ExactBoxType({
             {-2.75_x, +2.75_x},
             { -1.5_x,  +2.0_x}
         }));
-        ARIADNE_TESTING_PROVE(set.dimension() <= std::numeric_limits<Nat>::max());
-        BinaryTreePaving paving(static_cast<Nat>(set.dimension()));
-        adjoin_outer_approximation_to(paving, set, acc + 1);
         figure.set_fill_opacity(1.0);
         figure.set_fill_colour(red);
-        paving.recombine();
-        draw(figure, paving);
+        draw(figure, set);
         figure.set_fill_colour(green);
         figure.set_fill_opacity(0.5);
         typedef EffectiveConstrainedImageSet CIS;
@@ -109,10 +100,9 @@ class TestConstrainedImageSetDraw : public Ariadne::Testing::ContextFixture {
         EffectiveScalarMultivariateFunction t = EffectiveScalarMultivariateFunction::coordinate(2, 1);
         EffectiveScalarMultivariateFunction x = EffectiveScalarMultivariateFunction::coordinate(2, 0);
         EffectiveScalarMultivariateFunction y = EffectiveScalarMultivariateFunction::coordinate(2, 1);
-        Nat acc = 2u;
 
-        draw_constrained_image_case("ellipse", EffectiveConstrainedImageSet(RealBox(2, RealInterval(-1, 1)), {2 * s + t, s + t}, {s * s + t * t <= 0.75_x}), acc + 1u);
-        draw_constrained_image_case("concave", EffectiveConstrainedImageSet(RealBox(2, RealInterval(-1.01_dec, 1.01_dec)), {s, 1.0_x * s * s + t}, {2 * s + 0.25_x * s * s + t - 2.0_x <= 0}), acc);
+        draw_constrained_image_case("ellipse", EffectiveConstrainedImageSet(RealBox(2, RealInterval(-1, 1)), {2 * s + t, s + t}, {s * s + t * t <= 0.75_x}));
+        draw_constrained_image_case("concave", EffectiveConstrainedImageSet(RealBox(2, RealInterval(-1.01_dec, 1.01_dec)), {s, 1.0_x * s * s + t}, {2 * s + 0.25_x * s * s + t - 2.0_x <= 0}));
     }
 };
 int main(int argc, char** argv) {

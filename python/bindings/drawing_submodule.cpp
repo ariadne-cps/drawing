@@ -26,20 +26,17 @@
  *  @brief Provide Python bindings for drawing primitives.
  */
 
-#include "drawing/binary_tree_paving_draw.hpp"
 #include "drawing/box_draw.hpp"
 #include "drawing/drawer.hpp"
 #include "drawing/drawer_manager.hpp"
 #include "drawing/drawing_command_line_interface.hpp"
 #include "drawing/geometry_draw.hpp"
 #include "drawing/list_set_draw.hpp"
-#include "drawing/paving_draw.hpp"
 #include "drawing/point_draw.hpp"
 #include "geometry/box.hpp"
 #include "pybind11.hpp"
 #include "rendering/figure.hpp"
 
-#include "paving-utilities.hpp"
 
 using namespace Ariadne;
 
@@ -62,11 +59,6 @@ Void export_drawer(pybind11::module& module) {
     affine_drawer_class.def(pybind11::init<Nat>());
     pybind11::implicitly_convertible<AffineDrawer, Drawer>();
     drawer_class.def(pybind11::init<AffineDrawer>());
-
-    pybind11::class_<GridDrawer> grid_drawer_class(module, "GridDrawer");
-    grid_drawer_class.def(pybind11::init<Nat>());
-    pybind11::implicitly_convertible<GridDrawer, Drawer>();
-    drawer_class.def(pybind11::init<GridDrawer>());
 
     pybind11::class_<BoxDrawer> box_drawer_class(module, "BoxDrawer");
     box_drawer_class.def(pybind11::init<>());
@@ -133,10 +125,6 @@ Void export_drawing_figure_adapters(pybind11::module& module) {
             draw_to_figure(figure,set); return figure; }, reference_internal);
     figure_class.def("draw", [](Figure& figure, const FloatDPPoint& point) -> Figure& {
             Ariadne::draw(figure,point); return figure; }, reference_internal);
-    figure_class.def("draw", [](Figure& figure, const GridCell& cell) -> Figure& {
-            Ariadne::draw(figure,cell); return figure; }, reference_internal);
-    figure_class.def("draw", [](Figure& figure, const BinaryTreeSubpaving& paving) -> Figure& {
-            Ariadne::draw(figure,static_cast< const SubPavingInterface &>(paving)); return figure; }, reference_internal);
     figure_class.def("draw", [](Figure& figure, const ListSet<ExactBoxType>& boxes) -> Figure& {
             Ariadne::draw(figure,boxes); return figure; }, reference_internal);
 }

@@ -77,11 +77,6 @@ int main() {
     draw(affine_view,set);
     save(affine_view,"tutorial_drawing_drawer_affine");
 
-    manager.set_drawer(GridDrawer(4));
-    Figure grid_view(to_rendering_box(viewport3d),Projection2d(3,0,1));
-    draw(grid_view,set);
-    save(grid_view,"tutorial_drawing_drawer_grid");
-
 
     // Additional mathematical objects supported by the Drawing adapters.
     manager.set_drawer(BoxDrawer());
@@ -105,17 +100,6 @@ int main() {
     Figure boxes_list(to_rendering_box(view2d),plane);
     boxes_list.draw(list);
     save(boxes_list,"tutorial_drawing_list");
-
-    Grid grid(2u);
-    GridCell cell(grid,0u,BinaryWord());
-    Figure cells(to_rendering_box(view2d),plane);
-    cells.draw(cell);
-    save(cells,"tutorial_drawing_cell");
-    BinaryTreePaving paving(grid);
-    paving.adjoin(cell);
-    Figure paving_figure(to_rendering_box(view2d),plane);
-    paving_figure.draw(static_cast<SubPavingInterface const&>(paving));
-    save(paving_figure,"tutorial_drawing_paving");
 
     RealBox domain({{-1.0_dec,1.0_dec},{-1.0_dec,1.0_dec}});
     BoundedConstraintSet bounded(domain);
