@@ -21,9 +21,12 @@ endif()
 
 
 require_same_dependency_commit(Build CHAINS
-    "build" "set|build" "rendering|build")
+    "build" "set|build" "rendering|build" "threading|build")
 require_same_dependency_commit(Utility CHAINS
     "rendering|utility" "set|linear-programming|logging|utility")
+require_same_dependency_commit(Logging CHAINS
+    "set|linear-programming|logging" "threading|logging"
+    "rendering|benchmarking|logging")
 require_same_dependency_commit(PythonCommon CHAINS
     "rendering|python-common" "set|linear-programming|algebra|interval|numeric|foundation|python-common")
 

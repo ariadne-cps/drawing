@@ -23,10 +23,11 @@ Drawing depends on:
 
 - [ariadne-cps/set](https://github.com/ariadne-cps/set), as Git submodule `ss/set`, providing geometric sets and their lower dependencies.
 - [ariadne-cps/rendering](https://github.com/ariadne-cps/rendering), as a direct Git submodule, for `Figure`, `CanvasInterface` and the rendering backend.
+- [ariadne-cps/threading](https://github.com/ariadne-cps/threading), as Git submodule `ss/thr`, for the inherited threading/logging command-line interface.
 - [ariadne-cps/build](https://github.com/ariadne-cps/build) for shared build configuration.
 - [ariadne-cps/testing](https://github.com/ariadne-cps/testing), as Git submodule `ss/tst`, for independent C++ fixture tests and diagnostics.
 
-The intended graph is **drawing → set and rendering**. Drawing does not depend on Paving. Paving-specific drawing adapters and grid-based approximation policies belong to higher-level consumers, not to Drawing.
+The intended graph is **drawing → set, rendering and threading**. Drawing does not depend on Paving. Paving-specific drawing adapters and grid-based approximation policies belong to higher-level consumers, not to Drawing.
 
 ## Build
 
@@ -44,7 +45,7 @@ When a compatible Python development environment is available, the standalone bu
 
 ## Extraction status
 
-The drawing adapters live in this standalone repository; Set and Rendering remain independent submodules. CMake checks shared Build, Utility and Python Common dependency consistency across Set and Rendering. Release CI verifies the installed Drawing library through a separately configured C++ tutorial.
+The drawing adapters live in this standalone repository; Set and Rendering remain independent submodules. CMake checks shared Build, Logging, Utility and Python Common dependency consistency across Set, Rendering and Threading. Release CI verifies the installed Drawing library through a separately configured C++ tutorial.
 
 ## Contribution guidelines
 
